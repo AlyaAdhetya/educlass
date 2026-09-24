@@ -39,25 +39,16 @@ export default function Login() {
       icon: GraduationCap,
       color: 'blue',
       defaultEmail: 'budi.santoso@student.kampus.ac.id',
-      badgeText: 'Portal Pembelajar',
+      badgeText: 'Portal Pelajar',
       placeholder: 'nim@student.kampus.ac.id'
     },
-    dosen: {
-      title: 'Dosen / Pengajar',
-      subtitle: 'Kelola kelas, tugas, & pantau progres',
-      icon: School,
-      color: 'indigo',
-      defaultEmail: 'dr.hendra@kampus.ac.id',
-      badgeText: 'Portal Instruktur',
-      placeholder: 'nip.nama@kampus.ac.id'
-    },
     admin: {
-      title: 'Super Admin',
-      subtitle: 'Manajemen pengguna & sistem akademik',
+      title: 'Administrator',
+      subtitle: 'Kelola sistem, materi, kuis & pengguna',
       icon: ShieldCheck,
       color: 'amber',
       defaultEmail: 'admin@educlass.ac.id',
-      badgeText: 'Administrator',
+      badgeText: 'Admin Panel',
       placeholder: 'admin@educlass.ac.id'
     }
   };
@@ -77,28 +68,12 @@ export default function Login() {
   const handleLogin = (e) => {
     e.preventDefault();
     setIsLoading(true);
-
     setTimeout(() => {
-      // Mock user authentication
-      const hasTakenTest = role === 'mahasiswa' ? !isNewStudent : true;
-      const userName = 
-        role === 'mahasiswa' 
-          ? (isNewStudent ? 'Maba Baru' : 'Budi Santoso') 
-          : role === 'dosen' 
-            ? 'Dr. Hendra, M.Hum.' 
-            : 'Super Administrator';
-
-      setAuth({ id: '1', email, name: userName }, role, hasTakenTest);
+      const userName = role === 'mahasiswa' ? 'Budi Santoso' : 'Super Administrator';
+      setAuth({ id: '1', email, name: userName }, role);
       setIsLoading(false);
-
       if (role === 'mahasiswa') {
-        if (!hasTakenTest) {
-          navigate('/placement-test');
-        } else {
-          navigate('/dashboard');
-        }
-      } else if (role === 'dosen') {
-        navigate('/dosen');
+        navigate('/dashboard');
       } else {
         navigate('/admin');
       }
@@ -255,7 +230,7 @@ export default function Login() {
             <label className="text-xs font-semibold text-slate-700 uppercase tracking-wider block">
               Masuk Sebagai Peran:
             </label>
-            <div className="grid grid-cols-3 gap-2 p-1 bg-slate-100/90 rounded-xl border border-slate-200/80">
+            <div className="grid grid-cols-2 gap-2 p-1 bg-slate-100/90 rounded-xl border border-slate-200/80">
               {Object.entries(roleConfigs).map(([key, config]) => {
                 const IconComponent = config.icon;
                 const isSelected = role === key;
@@ -296,21 +271,7 @@ export default function Login() {
                 onClick={() => handleQuickDemo('mahasiswa', false)}
                 className="text-[11px] px-2.5 py-1 bg-white hover:bg-blue-600 hover:text-white text-slate-700 font-medium rounded-lg border border-slate-200 shadow-xs transition-colors cursor-pointer"
               >
-                🎓 Mhs Baru (Tes)
-              </button>
-              <button
-                type="button"
-                onClick={() => handleQuickDemo('mahasiswa', true)}
-                className="text-[11px] px-2.5 py-1 bg-white hover:bg-blue-600 hover:text-white text-slate-700 font-medium rounded-lg border border-slate-200 shadow-xs transition-colors cursor-pointer"
-              >
-                🎓 Mhs Aktif (Dashboard)
-              </button>
-              <button
-                type="button"
-                onClick={() => handleQuickDemo('dosen', false)}
-                className="text-[11px] px-2.5 py-1 bg-white hover:bg-indigo-600 hover:text-white text-slate-700 font-medium rounded-lg border border-slate-200 shadow-xs transition-colors cursor-pointer"
-              >
-                👨‍🏫 Dosen
+                🎓 Mahasiswa
               </button>
               <button
                 type="button"
@@ -400,18 +361,6 @@ export default function Login() {
                   />
                   <span>Ingat sesi di perangkat ini</span>
                 </label>
-
-                {role === 'mahasiswa' && (
-                  <label className="flex items-center gap-1.5 cursor-pointer select-none text-slate-600 hover:text-blue-600 font-medium">
-                    <input
-                      type="checkbox"
-                      checked={isNewStudent}
-                      onChange={(e) => setIsNewStudent(e.target.checked)}
-                      className="w-3.5 h-3.5 rounded border-slate-300 text-blue-600 focus:ring-blue-500 focus:ring-offset-0 cursor-pointer"
-                    />
-                    <span>Alur Mahasiswa Baru (Placement Test)</span>
-                  </label>
-                )}
               </div>
             </div>
 
@@ -438,7 +387,7 @@ export default function Login() {
           {/* Footer & Registration Link */}
           <div className="pt-2 text-center text-xs text-slate-500 space-y-3">
             <p>
-              Belum memiliki akun mahasiswa atau dosen?{' '}
+              Belum memiliki akun mahasiswa?{' '}
               <Link to="/register" className="text-blue-600 font-semibold hover:underline">
                 Daftar akun baru di sini
               </Link>

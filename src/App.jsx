@@ -4,58 +4,56 @@ import AuthLayout from './layouts/AuthLayout';
 import DashboardLayout from './layouts/DashboardLayout';
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
+import Profile from './pages/Profile';
+
+// Mahasiswa Pages
 import MahasiswaDashboard from './pages/mahasiswa/Dashboard';
 import Modules from './pages/mahasiswa/Modules';
-import PlacementTest from './pages/mahasiswa/PlacementTest';
-import Exam from './pages/mahasiswa/Exam';
-import Leaderboard from './pages/mahasiswa/Leaderboard';
-import DosenDashboard from './pages/dosen/Dashboard';
-import DosenClasses from './pages/dosen/Classes';
-import CreateClass from './pages/dosen/CreateClass';
-import Materials from './pages/dosen/Materials';
-import ClassTasks from './pages/dosen/ClassTasks';
-import ClassStudents from './pages/dosen/ClassStudents';
+import Progress from './pages/mahasiswa/Progress';
+import Rewards from './pages/mahasiswa/Rewards';
+import MaterialDetail from './pages/mahasiswa/MaterialDetail';
+import LessonQuiz from './pages/mahasiswa/LessonQuiz';
+
+// Admin Pages
 import AdminDashboard from './pages/admin/Dashboard';
 import AdminUsers from './pages/admin/Users';
-import AdminMonitoring from './pages/admin/Monitoring';
+import AdminMaterials from './pages/admin/Materials';
+import AdminQuizzes from './pages/admin/Quizzes';
+import AdminReports from './pages/admin/Reports';
 
 export default function App() {
   return (
     <Routes>
       <Route path="/" element={<Navigate to="/login" replace />} />
-      
+
       {/* Auth Routes */}
       <Route element={<AuthLayout />}>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
       </Route>
 
-      {/* Placement Test (No Sidebar) */}
-      <Route path="/placement-test" element={<PlacementTest />} />
+      {/* Shared Protected Route (Profile - accessible by any logged-in user) */}
+      <Route element={<DashboardLayout />}>
+        <Route path="/profile" element={<Profile />} />
+      </Route>
 
       {/* Mahasiswa Routes */}
       <Route element={<DashboardLayout allowedRoles={['mahasiswa']} />}>
         <Route path="/dashboard" element={<MahasiswaDashboard />} />
         <Route path="/dashboard/modules" element={<Modules />} />
-        <Route path="/dashboard/exams" element={<Exam />} />
-        <Route path="/dashboard/leaderboard" element={<Leaderboard />} />
-      </Route>
-
-      {/* Dosen Routes */}
-      <Route element={<DashboardLayout allowedRoles={['dosen']} />}>
-        <Route path="/dosen" element={<DosenDashboard />} />
-        <Route path="/dosen/classes" element={<DosenClasses />} />
-        <Route path="/dosen/classes/new" element={<CreateClass />} />
-        <Route path="/dosen/classes/:id/materials" element={<Materials />} />
-        <Route path="/dosen/classes/:id/tasks" element={<ClassTasks />} />
-        <Route path="/dosen/classes/:id/students" element={<ClassStudents />} />
+        <Route path="/dashboard/modules/:id" element={<MaterialDetail />} />
+        <Route path="/dashboard/modules/:id/quiz" element={<LessonQuiz />} />
+        <Route path="/dashboard/progress" element={<Progress />} />
+        <Route path="/dashboard/rewards" element={<Rewards />} />
       </Route>
 
       {/* Admin Routes */}
       <Route element={<DashboardLayout allowedRoles={['admin']} />}>
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/admin/users" element={<AdminUsers />} />
-        <Route path="/admin/monitoring" element={<AdminMonitoring />} />
+        <Route path="/admin/materials" element={<AdminMaterials />} />
+        <Route path="/admin/quizzes" element={<AdminQuizzes />} />
+        <Route path="/admin/reports" element={<AdminReports />} />
       </Route>
     </Routes>
   );
