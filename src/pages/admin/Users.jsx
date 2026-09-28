@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/ca
 import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/input';
 import { Label } from '../../components/ui/label';
-import { Search, Users, GraduationCap, BookOpen, X, Eye, EyeOff } from 'lucide-react';
+import { Search, Users, GraduationCap, Shield, X, Eye, EyeOff } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const mockMahasiswa = [
@@ -12,9 +12,9 @@ const mockMahasiswa = [
   { id: 3, name: 'Raka Pratama', email: 'raka@kampus.ac.id', nim: '2021003', level: 'Advanced', status: 'Aktif' },
 ];
 
-const mockDosen = [
-  { id: 1, name: 'Dr. Andi Wijaya', email: 'andi@kampus.ac.id', nip: 'D001', department: 'Bahasa Inggris', status: 'Aktif' },
-  { id: 2, name: 'Bpk. Budi Rahmat, M.Pd', email: 'budi.r@kampus.ac.id', nip: 'D002', department: 'Bahasa Inggris', status: 'Aktif' },
+const mockAdmins = [
+  { id: 1, name: 'Super Administrator', email: 'admin@educlass.ac.id', role: 'Super Admin', status: 'Aktif' },
+  { id: 2, name: 'Staf Akademik Bahasa', email: 'staf.akademik@kampus.ac.id', role: 'Evaluator Kuis', status: 'Aktif' },
 ];
 
 function EditModal({ user, type, onClose }) {
@@ -42,10 +42,10 @@ function EditModal({ user, type, onClose }) {
               <Input defaultValue={user?.nim} />
             </div>
           )}
-          {type === 'Dosen' && (
+          {type === 'Administrator' && (
             <div className="space-y-2">
-              <Label>NIP</Label>
-              <Input defaultValue={user?.nip} />
+              <Label>Peran Sistem</Label>
+              <Input defaultValue={user?.role} />
             </div>
           )}
           <div className="space-y-2">
@@ -97,7 +97,7 @@ function UserTable({ data, type, onEdit }) {
           <CardTitle className="flex items-center gap-2">
             {type === 'Mahasiswa'
               ? <GraduationCap className="h-5 w-5 text-primary" />
-              : <BookOpen className="h-5 w-5 text-primary" />}
+              : <Shield className="h-5 w-5 text-primary" />}
             Data {type}
           </CardTitle>
           <div className="relative w-64">
@@ -118,9 +118,8 @@ function UserTable({ data, type, onEdit }) {
               <tr>
                 <th className="px-4 py-3 font-medium">Nama Lengkap</th>
                 <th className="px-4 py-3 font-medium">Email</th>
-                <th className="px-4 py-3 font-medium">{type === 'Mahasiswa' ? 'NIM' : 'NIP'}</th>
+                <th className="px-4 py-3 font-medium">{type === 'Mahasiswa' ? 'NIM' : 'Peran'}</th>
                 {type === 'Mahasiswa' && <th className="px-4 py-3 font-medium">Level</th>}
-                {type === 'Dosen' && <th className="px-4 py-3 font-medium">Jurusan</th>}
                 <th className="px-4 py-3 font-medium">Status</th>
                 <th className="px-4 py-3 font-medium text-right">Aksi</th>
               </tr>
@@ -130,14 +129,11 @@ function UserTable({ data, type, onEdit }) {
                 <tr key={u.id} className="border-t hover:bg-muted/50 transition-colors">
                   <td className="px-4 py-3 font-medium">{u.name}</td>
                   <td className="px-4 py-3 text-muted-foreground">{u.email}</td>
-                  <td className="px-4 py-3 text-muted-foreground">{type === 'Mahasiswa' ? u.nim : u.nip}</td>
+                  <td className="px-4 py-3 text-muted-foreground">{type === 'Mahasiswa' ? u.nim : u.role}</td>
                   {type === 'Mahasiswa' && (
                     <td className="px-4 py-3">
                       <span className="px-2 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary">{u.level}</span>
                     </td>
-                  )}
-                  {type === 'Dosen' && (
-                    <td className="px-4 py-3 text-muted-foreground">{u.department}</td>
                   )}
                   <td className="px-4 py-3">
                     <span className="px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">{u.status}</span>
@@ -173,7 +169,7 @@ export default function AdminUsers() {
     <div className="p-8 max-w-6xl mx-auto space-y-8">
       <div>
         <h1 className="text-3xl font-bold tracking-tight">Manajemen Pengguna</h1>
-        <p className="text-muted-foreground mt-2">Kelola akun Dosen dan Mahasiswa yang terdaftar di sistem.</p>
+        <p className="text-muted-foreground mt-2">Kelola akun Mahasiswa dan Administrator yang terdaftar di sistem.</p>
       </div>
 
       {/* Monitoring Cards */}
@@ -198,16 +194,16 @@ export default function AdminUsers() {
 
         <button
           className="text-left"
-          onClick={() => document.getElementById('section-dosen').scrollIntoView({ behavior: 'smooth' })}
+          onClick={() => document.getElementById('section-admin').scrollIntoView({ behavior: 'smooth' })}
         >
           <Card className="hover:shadow-md hover:border-primary/40 transition-all cursor-pointer">
             <CardContent className="flex items-center gap-6 pt-6">
               <div className="bg-secondary p-4 rounded-full">
-                <BookOpen className="h-8 w-8 text-secondary-foreground" />
+                <Shield className="h-8 w-8 text-secondary-foreground" />
               </div>
               <div>
-                <p className="text-sm text-muted-foreground">Total Dosen</p>
-                <p className="text-4xl font-extrabold">{mockDosen.length}</p>
+                <p className="text-sm text-muted-foreground">Total Administrator & Staf</p>
+                <p className="text-4xl font-extrabold">{mockAdmins.length}</p>
                 <p className="text-sm text-muted-foreground mt-1">Klik untuk lihat data</p>
               </div>
             </CardContent>
@@ -220,9 +216,9 @@ export default function AdminUsers() {
         <UserTable data={mockMahasiswa} type="Mahasiswa" onEdit={handleEdit} />
       </div>
 
-      {/* Dosen Table */}
-      <div id="section-dosen">
-        <UserTable data={mockDosen} type="Dosen" onEdit={handleEdit} />
+      {/* Admin Table */}
+      <div id="section-admin">
+        <UserTable data={mockAdmins} type="Administrator" onEdit={handleEdit} />
       </div>
 
       {/* Edit Modal */}

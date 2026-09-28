@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>EduClass - Masuk ke Akun Belajar</title>
+<!-- Google Fonts: Nunito Sans -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,300..1000;1,6..12,300..1000&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS CDN with forms container-queries -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "surface-container-low": "#eff4ff",
+            "on-secondary": "#ffffff",
+            "primary-fixed-dim": "#b4c5ff",
+            "tertiary-container": "#007e37",
+            "on-primary-fixed-variant": "#003ea8",
+            "on-tertiary": "#ffffff",
+            "surface-variant": "#d3e4fe",
+            "outline-variant": "#c3c6d7",
+            "secondary": "#795900",
+            "background": "#f8f9ff",
+            "error": "#ba1a1a",
+            "surface-container": "#e5eeff",
+            "surface-container-lowest": "#ffffff",
+            "inverse-surface": "#213145",
+            "on-secondary-container": "#6f5100",
+            "on-primary-fixed": "#00174b",
+            "on-secondary-fixed": "#261a00",
+            "on-primary": "#ffffff",
+            "on-secondary-fixed-variant": "#5c4300",
+            "inverse-on-surface": "#eaf1ff",
+            "surface-tint": "#0053db",
+            "error-container": "#ffdad6",
+            "secondary-fixed": "#ffdf9f",
+            "secondary-container": "#ffc329",
+            "primary-container": "#2563eb",
+            "on-error-container": "#93000a",
+            "surface": "#f8f9ff",
+            "on-primary-container": "#eeefff",
+            "on-surface-variant": "#434655",
+            "on-background": "#0b1c30",
+            "outline": "#737686",
+            "secondary-fixed-dim": "#f9bd22",
+            "surface-bright": "#f8f9ff",
+            "surface-container-high": "#dce9ff",
+            "primary": "#004ac6",
+            "surface-container-highest": "#d3e4fe",
+            "surface-dim": "#cbdbf5",
+            "tertiary-fixed": "#6bff8f",
+            "inverse-primary": "#b4c5ff",
+            "on-surface": "#0b1c30",
+            "on-tertiary-fixed": "#002109",
+            "on-tertiary-fixed-variant": "#005321",
+            "on-tertiary-container": "#c1ffc5",
+            "tertiary-fixed-dim": "#4ae176",
+            "primary-fixed": "#dbe1ff",
+            "on-error": "#ffffff",
+            "tertiary": "#006229"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "2xl": "1rem",
+            "3xl": "1.5rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-lg": "1.5rem",
+            "space-xl": "2rem",
+            "margin": "2rem",
+            "space-sm": "0.5rem",
+            "margin-mobile": "1rem",
+            "gutter-mobile": "1rem",
+            "gutter": "1.5rem",
+            "space-md": "1rem",
+            "space-xs": "0.25rem",
+            "space-2xl": "3rem"
+          },
+          "fontFamily": {
+            "headline-lg-mobile": ["Nunito Sans"],
+            "body-lg": ["Nunito Sans"],
+            "headline-sm": ["Nunito Sans"],
+            "body-md": ["Nunito Sans"],
+            "title-md": ["Nunito Sans"],
+            "headline-md": ["Nunito Sans"],
+            "title-sm": ["Nunito Sans"],
+            "headline-lg": ["Nunito Sans"],
+            "label-md": ["Nunito Sans"],
+            "label-sm": ["Nunito Sans"],
+            "headline-xl": ["Nunito Sans"],
+            "label-lg": ["Nunito Sans"],
+            "body-sm": ["Nunito Sans"],
+            "headline-xl-mobile": ["Nunito Sans"]
+          },
+          "fontSize": {
+            "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "800" }],
+            "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+            "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "700" }],
+            "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+            "title-md": ["18px", { "lineHeight": "26px", "fontWeight": "700" }],
+            "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "700" }],
+            "title-sm": ["16px", { "lineHeight": "24px", "fontWeight": "700" }],
+            "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "800" }],
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.03em", "fontWeight": "700" }],
+            "label-sm": ["10px", { "lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "700" }],
+            "headline-xl": ["40px", { "lineHeight": "48px", "fontWeight": "800" }],
+            "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "800" }],
+            "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "500" }],
+            "headline-xl-mobile": ["30px", { "lineHeight": "38px", "fontWeight": "800" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 500, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .material-symbols-outlined.fill-icon {
+      font-variation-settings: 'FILL' 1, 'wght' 600, 'GRAD' 0, 'opsz' 24;
+    }
+    
+    /* Tactile 3D Button Effects */
+    .tactile-btn {
+      transition: all 0.12s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .tactile-btn:active {
+      transform: translateY(2px);
+      box-shadow: none;
+    }
+
+    /* Ambient float animation for mascot & badges */
+    @keyframes subtle-float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-8px); }
+    }
+    .animate-float {
+      animation: subtle-float 5s ease-in-out infinite;
+    }
+    .animate-float-delayed {
+      animation: subtle-float 6s ease-in-out 1.5s infinite;
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface antialiased font-body-md min-h-screen selection:bg-surface-variant selection:text-primary">
+<!-- Main Grid Wrapper: 45 / 55 Split Desktop Screen -->
+<div class="min-h-screen w-full flex flex-col lg:flex-row">
+<!-- LEFT SIDE: Playful Mascot Hero & EduClass Branding (45% on lg) -->
+<section class="lg:w-[46%] w-full bg-gradient-to-br from-surface-container-low via-surface-container to-surface-variant relative flex flex-col justify-between p-6 sm:p-10 lg:p-12 overflow-hidden border-b lg:border-b-0 lg:border-r border-outline-variant/30">
+<!-- Subtle Floating Decorative Background Ornaments -->
+<div class="absolute -top-16 -left-16 w-64 h-64 bg-surface-container-lowest/40 rounded-full blur-2xl pointer-events-none"></div>
+<div class="absolute top-1/3 -right-20 w-80 h-80 bg-primary-fixed/40 rounded-full blur-3xl pointer-events-none"></div>
+<div class="absolute bottom-8 left-12 w-48 h-48 bg-secondary-fixed/30 rounded-full blur-xl pointer-events-none"></div>
+<!-- Star / Sparkle Floating Emblems -->
+<div class="absolute top-16 right-16 text-secondary-fixed-dim select-none opacity-80 animate-pulse">
+<span class="material-symbols-outlined fill-icon text-3xl" data-icon="star">star</span>
+</div>
+<div class="absolute top-1/2 left-8 text-primary select-none opacity-40">
+<span class="material-symbols-outlined fill-icon text-2xl" data-icon="sparkles">arrow_back_ios_new</span>
+</div>
+<div class="absolute bottom-36 right-12 text-secondary-container select-none opacity-90 animate-bounce">
+<span class="material-symbols-outlined fill-icon text-4xl" data-icon="auto_awesome">auto_awesome</span>
+</div>
+<!-- Top Header & Brand Anchor -->
+<div class="relative z-10 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<img alt="EduClass Academic Official Logo" class="h-11 sm:h-12 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1VRSkasOGTbAkcmOvJONBh4UEVyRPtVn2_g6LHqlAx206Om31LRFXi6z3At9OtczNF8mqwYzasPc8aj0sHuZKkbc06DGhEqYUgJQUdISLBoHT5F0LWB9DP6xbwyFrlESLiqCnsanCgL08AKKAn2GOSb3ejBV9TMnbo7HqQ2-xTPEUi3JqlWjpu_oEROqCsZGM92zk-Zasuv1ixyqX9r_-7JoFGe0PLkDA3csyNZIU6Z5_7Fx5g"/>
+</div>
+<div class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface-container-lowest/80 backdrop-blur-sm border border-outline-variant/40 shadow-sm text-primary font-label-md">
+<span class="material-symbols-outlined fill-icon text-primary text-base" data-icon="verified">verified</span>
+<span>Official TOEFL Prep</span>
+</div>
+</div>
+<!-- Centerpiece: Hootie Mascot & Welcoming Speech Bubble -->
+<div class="relative z-10 my-auto py-8 flex flex-col items-center text-center">
+<!-- Speech Bubble Badge -->
+<div class="relative mb-4 bg-surface-container-lowest border-2 border-outline-variant/40 shadow-sm rounded-2xl px-5 py-3 text-on-surface-variant max-w-sm animate-float">
+<div class="flex items-center gap-2 justify-center">
+<span class="material-symbols-outlined text-secondary fill-icon text-xl" data-icon="waving_hand">waving_hand</span>
+<span class="font-title-sm text-on-surface">Halo Calon Scholar!</span>
+</div>
+<p class="font-body-sm text-on-surface-variant mt-0.5">Siap taklukkan target skor TOEFL ITP hari ini?</p>
+<!-- Speech triangle bottom -->
+<div class="absolute -bottom-2.5 left-1/2 -translate-x-1/2 w-4 h-4 bg-surface-container-lowest border-b-2 border-r-2 border-outline-variant/40 rotate-45"></div>
+</div>
+<!-- 3D Mascot Image -->
+<div class="relative group">
+<div class="absolute inset-0 bg-primary-container/10 rounded-full blur-2xl transform scale-90 group-hover:scale-105 transition-transform duration-500"></div>
+<img alt="EduClass Hootie Owl mascot with graduation cap holding learning book" class="relative w-56 sm:w-64 lg:w-72 h-auto object-contain drop-shadow-2xl transition-transform duration-300 hover:scale-105" src="https://lh3.googleusercontent.com/aida/AEtjO1WKOUWNWWUx_sHWOzGnN49KrY9RR8iBRP5EuRhYWEb9wn3hY5hSYCOTZYL6sTnRaLO-NJaAUyEIWJJYiTtLBf1_wFNlJlbK5Um7pgkgbGIvyxS7xMUrUUMs2XWgtaYfPydxTXqiVitOKomWPY021WC00wtuKTeS6_JJcCo4kMH46yKHvdlLXZgEBBzrPjTnBm05gwg_GjJeXl5pFW28VPeMrAfhE_5gvXXSj_acCAwDK0-fmluQo-lUsXs"/>
+</div>
+<!-- Tagline Headline -->
+<div class="mt-4 max-w-md">
+<h2 class="font-headline-md text-primary tracking-tight">Belajar Cerdas, Raih Beasiswa Impian</h2>
+<p class="font-body-sm text-on-surface-variant mt-1.5">Platform latihan adaptif CEFR &amp; simulasi resmi TOEFL ITP berstandar kurikulum universitas.</p>
+</div>
+</div>
+<!-- Bottom Feature Badges / Gamified Micro-Highlights -->
+<div class="relative z-10 pt-4">
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+<div class="flex items-center gap-2.5 px-3 py-2.5 rounded-xl bg-surface-container-lowest/85 backdrop-blur-sm border border-outline-variant/30 shadow-sm">
+<div class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined text-lg" data-icon="track_changes">track_changes</span>
+</div>
+<div class="text-left leading-tight">
+<p class="font-label-sm text-on-surface-variant uppercase">Silabus</p>
+<p class="font-label-lg text-on-surface">TOEFL ITP Prep</p>
+</div>
+</div>
+<div class="flex items-center gap-2.5 px-3 py-2.5 rounded-xl bg-surface-container-lowest/85 backdrop-blur-sm border border-outline-variant/30 shadow-sm">
+<div class="w-8 h-8 rounded-lg bg-secondary-fixed/50 flex items-center justify-center text-secondary shrink-0">
+<span class="material-symbols-outlined fill-icon text-lg" data-icon="local_fire_department">local_fire_department</span>
+</div>
+<div class="text-left leading-tight">
+<p class="font-label-sm text-on-surface-variant uppercase">Sistem</p>
+<p class="font-label-lg text-on-surface">Gamified XP</p>
+</div>
+</div>
+<div class="flex items-center gap-2.5 px-3 py-2.5 rounded-xl bg-surface-container-lowest/85 backdrop-blur-sm border border-outline-variant/30 shadow-sm">
+<div class="w-8 h-8 rounded-lg bg-tertiary-fixed/40 flex items-center justify-center text-tertiary shrink-0">
+<span class="material-symbols-outlined fill-icon text-lg" data-icon="group">group</span>
+</div>
+<div class="text-left leading-tight">
+<p class="font-label-sm text-on-surface-variant uppercase">Komunitas</p>
+<p class="font-label-lg text-on-surface">10.000+ Aktif</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- RIGHT SIDE: Clean Educational SaaS Login Portal (54% on lg) -->
+<main class="lg:w-[54%] w-full bg-surface-container-lowest flex flex-col justify-between p-6 sm:p-12 lg:p-16 overflow-y-auto">
+<!-- Top Secondary Help Row -->
+<div class="w-full max-w-xl mx-auto flex items-center justify-end gap-3 text-on-surface-variant">
+<a class="inline-flex items-center gap-1 font-label-md text-on-surface-variant hover:text-primary transition-colors py-1 px-2 rounded-lg hover:bg-surface-container-low" href="#bantuan">
+<span class="material-symbols-outlined text-base" data-icon="help">help</span>
+<span>Pusat Bantuan</span>
+</a>
+<span class="text-outline-variant">•</span>
+<div class="inline-flex items-center gap-1 font-label-md text-on-surface-variant">
+<span class="material-symbols-outlined text-base text-tertiary fill-icon" data-icon="check_circle">check_circle</span>
+<span>Sistem Normal</span>
+</div>
+</div>
+<!-- Main Form Container -->
+<div class="w-full max-w-xl mx-auto my-auto py-6">
+<!-- Header Section -->
+<div class="mb-6">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface-container text-primary font-label-sm mb-3">
+<span class="material-symbols-outlined text-sm" data-icon="lock_open">lock_open</span>
+<span>PORTAL LOGIN AKADEMIK</span>
+</div>
+<h1 class="font-headline-lg text-on-background tracking-tight">Masuk ke EduClass</h1>
+<p class="font-body-md text-on-surface-variant mt-1">Lanjutkan perjalanan persiapan TOEFL &amp; sertifikasi akademikmu hari ini.</p>
+</div>
+<!-- Segmented Tab Switcher / Role Toggle -->
+<div class="p-1.5 bg-surface-container-low border border-outline-variant/30 rounded-2xl flex items-center gap-1.5 mb-6 shadow-inner">
+<button class="flex-1 py-2.5 px-4 rounded-xl font-label-lg flex items-center justify-center gap-2 bg-primary-container text-on-primary shadow-md border-b-2 border-primary transition-all duration-150" id="tab-student" type="button">
+<span class="text-base">🎓</span>
+<span>Mahasiswa</span>
+</button>
+<button class="flex-1 py-2.5 px-4 rounded-xl font-label-lg flex items-center justify-center gap-2 text-on-surface-variant hover:text-primary hover:bg-surface-container transition-all duration-150" id="tab-admin" type="button">
+<span class="text-base">🛡️</span>
+<span>Administrator</span>
+</button>
+</div>
+<!-- Login Form -->
+<form class="space-y-4" onsubmit="event.preventDefault();">
+<!-- Input Email -->
+<div class="space-y-1.5">
+<label class="block font-label-lg text-on-surface" for="email-input">Email Kampus / Akun EduClass</label>
+<div class="relative rounded-2xl shadow-sm">
+<div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-outline">
+<span class="material-symbols-outlined text-xl" data-icon="mail">mail</span>
+</div>
+<input class="w-full pl-11 pr-4 py-3 bg-surface-container-lowest border-2 border-outline-variant/40 rounded-2xl font-body-md text-on-surface placeholder:text-outline-variant focus:border-primary-container focus:ring-4 focus:ring-primary-fixed transition-all outline-none" id="email-input" placeholder="nama@mahasiswa.ac.id" type="email" value="budi.santoso@mahasiswa.ac.id"/>
+</div>
+</div>
+<!-- Input Password -->
+<div class="space-y-1.5">
+<div class="flex items-center justify-between">
+<label class="block font-label-lg text-on-surface" for="password-input">Kata Sandi</label>
+<a class="font-label-md text-primary hover:underline hover:text-primary-container" href="#lupa-sandi">Lupa kata sandi?</a>
+</div>
+<div class="relative rounded-2xl shadow-sm">
+<div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-outline">
+<span class="material-symbols-outlined text-xl" data-icon="lock">lock</span>
+</div>
+<input class="w-full pl-11 pr-11 py-3 bg-surface-container-lowest border-2 border-outline-variant/40 rounded-2xl font-body-md text-on-surface placeholder:text-outline-variant focus:border-primary-container focus:ring-4 focus:ring-primary-fixed transition-all outline-none" id="password-input" placeholder="••••••••" type="password" value="rahasia123"/>
+<button class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-outline hover:text-on-surface" id="toggle-password" type="button">
+<span class="material-symbols-outlined text-xl" data-icon="visibility">visibility</span>
+</button>
+</div>
+</div>
+<!-- Remember Me Checkbox -->
+<div class="flex items-center justify-between pt-1">
+<label class="flex items-center gap-2.5 cursor-pointer select-none">
+<input checked="" class="w-5 h-5 rounded-lg border-2 border-outline-variant/60 text-primary-container focus:ring-primary-container cursor-pointer transition" type="checkbox"/>
+<span class="font-body-sm text-on-surface-variant">Ingat saya di perangkat ini</span>
+</label>
+<span class="inline-flex items-center gap-1 font-label-sm text-tertiary bg-tertiary-fixed/30 px-2 py-0.5 rounded-md">
+<span class="material-symbols-outlined text-xs fill-icon" data-icon="shield">shield</span>
+<span>Koneksi Aman</span>
+</span>
+</div>
+<!-- Primary Tactile 3D Action CTA Button -->
+<div class="pt-2">
+<button class="tactile-btn w-full py-3.5 px-6 rounded-2xl bg-primary-container hover:bg-blue-600 text-on-primary font-title-md border-b-4 border-primary shadow-lg flex items-center justify-center gap-2 active:border-b-2 active:translate-y-0.5 cursor-pointer" type="submit">
+<span>Masuk Sekarang</span>
+<span class="material-symbols-outlined text-xl" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</form>
+<!-- Divider Quick Access Demo -->
+<div class="relative my-6 text-center">
+<div class="absolute inset-0 flex items-center">
+<div class="w-full border-t border-outline-variant/30"></div>
+</div>
+<span class="relative px-4 bg-surface-container-lowest font-label-md text-outline">atau masuk cepat (Akses Demo)</span>
+</div>
+<!-- Demo Quick Click Buttons Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+<!-- Demo Student -->
+<button class="tactile-btn p-3 rounded-2xl bg-surface-container-low border-2 border-primary-fixed hover:border-primary-container/60 hover:bg-surface-container text-left flex items-center gap-3 border-b-4 border-b-primary-fixed-dim active:border-b-2 active:translate-y-0.5" id="demo-student-btn" type="button">
+<div class="w-10 h-10 rounded-xl bg-surface-container-lowest flex items-center justify-center text-xl shadow-xs shrink-0">
+              🎓
+            </div>
+<div class="min-w-0">
+<p class="font-label-lg text-primary truncate">Mahasiswa - Budi</p>
+<p class="font-label-sm text-on-surface-variant">TOEFL Target 550</p>
+</div>
+</button>
+<!-- Demo Admin -->
+<button class="tactile-btn p-3 rounded-2xl bg-surface-bright border-2 border-outline-variant/40 hover:border-inverse-surface/40 hover:bg-surface-container-low text-left flex items-center gap-3 border-b-4 border-b-outline-variant active:border-b-2 active:translate-y-0.5" id="demo-admin-btn" type="button">
+<div class="w-10 h-10 rounded-xl bg-surface-container-lowest flex items-center justify-center text-xl shadow-xs shrink-0">
+              🛡️
+            </div>
+<div class="min-w-0">
+<p class="font-label-lg text-on-surface truncate">Admin - Super Admin</p>
+<p class="font-label-sm text-on-surface-variant">Kelola Kurikulum</p>
+</div>
+</button>
+</div>
+<!-- Campus SSO Alternative -->
+<div>
+<button class="w-full py-2.5 px-4 rounded-xl border-2 border-outline-variant/40 hover:border-outline hover:bg-surface-container-low text-on-surface font-label-lg flex items-center justify-center gap-2.5 transition" type="button">
+<span class="material-symbols-outlined text-primary text-xl" data-icon="account_balance">account_balance</span>
+<span>Masuk dengan Akun Kampus (SSO Dikti)</span>
+</button>
+</div>
+</div>
+<!-- Footer Info & Registration Prompt -->
+<div class="w-full max-w-xl mx-auto pt-4 border-t border-outline-variant/20 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
+<div>
+<span class="font-body-sm text-on-surface-variant">Belum punya akun? </span>
+<a class="font-label-lg text-primary hover:underline hover:text-primary-container" href="#daftar">Daftar gratis sekarang</a>
+</div>
+<div class="flex items-center gap-1.5 font-label-sm text-outline">
+<span class="material-symbols-outlined text-sm" data-icon="verified_user">verified_user</span>
+<span>Enkripsi Standar Dikti &amp; Kemendikbud</span>
+</div>
+</div>
+</main>
+</div>
+<!-- Micro-Interactions Script for Quick Demo & Role Switching -->
+<script>
+    const tabStudent = document.getElementById('tab-student');
+    const tabAdmin = document.getElementById('tab-admin');
+    const emailInput = document.getElementById('email-input');
+    const passwordInput = document.getElementById('password-input');
+    const demoStudentBtn = document.getElementById('demo-student-btn');
+    const demoAdminBtn = document.getElementById('demo-admin-btn');
+    const togglePasswordBtn = document.getElementById('toggle-password');
+
+    function setRoleStudent() {
+      tabStudent.className = "flex-1 py-2.5 px-4 rounded-xl font-label-lg flex items-center justify-center gap-2 bg-primary-container text-on-primary shadow-md border-b-2 border-primary transition-all duration-150";
+      tabAdmin.className = "flex-1 py-2.5 px-4 rounded-xl font-label-lg flex items-center justify-center gap-2 text-on-surface-variant hover:text-primary hover:bg-surface-container transition-all duration-150";
+      emailInput.value = "budi.santoso@mahasiswa.ac.id";
+      passwordInput.value = "rahasia123";
+    }
+
+    function setRoleAdmin() {
+      tabAdmin.className = "flex-1 py-2.5 px-4 rounded-xl font-label-lg flex items-center justify-center gap-2 bg-inverse-surface text-surface-bright shadow-md border-b-2 border-on-surface transition-all duration-150";
+      tabStudent.className = "flex-1 py-2.5 px-4 rounded-xl font-label-lg flex items-center justify-center gap-2 text-on-surface-variant hover:text-primary hover:bg-surface-container transition-all duration-150";
+      emailInput.value = "admin.utama@educlass.ac.id";
+      passwordInput.value = "adminMaster2025!";
+    }
+
+    tabStudent.addEventListener('click', setRoleStudent);
+    tabAdmin.addEventListener('click', setRoleAdmin);
+
+    demoStudentBtn.addEventListener('click', () => {
+      setRoleStudent();
+      emailInput.focus();
+    });
+
+    demoAdminBtn.addEventListener('click', () => {
+      setRoleAdmin();
+      emailInput.focus();
+    });
+
+    togglePasswordBtn.addEventListener('click', () => {
+      const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+      passwordInput.setAttribute('type', type);
+      const iconSpan = togglePasswordBtn.querySelector('span');
+      iconSpan.textContent = type === 'password' ? 'visibility' : 'visibility_off';
+    });
+  </script>
+</body></html>

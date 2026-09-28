@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>EduClass RPG - Guild League &amp; Leaderboard</title>
+<!-- Google Fonts: Plus Jakarta Sans -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS with plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "surface-container-highest": "#dae2fd",
+            "sky-focus": "#0EA5E9",
+            "on-surface-variant": "#464554",
+            "on-primary-fixed-variant": "#2f2ebe",
+            "on-secondary-fixed": "#002113",
+            "primary": "#4648d4",
+            "electric-violet": "#6366F1",
+            "outline": "#767586",
+            "surface-card": "#FFFFFF",
+            "surface-bright": "#faf8ff",
+            "electric-violet-deep": "#4F46E5",
+            "surface": "#faf8ff",
+            "secondary": "#006c49",
+            "inverse-primary": "#c0c1ff",
+            "emerald-mint-shadow": "#047857",
+            "on-surface": "#131b2e",
+            "tertiary-container": "#a36700",
+            "error-container": "#ffdad6",
+            "on-tertiary-fixed-variant": "#653e00",
+            "on-primary": "#ffffff",
+            "inverse-on-surface": "#eef0ff",
+            "surface-variant": "#dae2fd",
+            "surface-tint": "#494bd6",
+            "on-tertiary": "#ffffff",
+            "coral-pulse": "#F43F5E",
+            "primary-fixed": "#e1e0ff",
+            "surface-container-low": "#f2f3ff",
+            "on-primary-fixed": "#07006c",
+            "sunburst-amber-shadow": "#B45309",
+            "primary-fixed-dim": "#c0c1ff",
+            "sunburst-amber": "#F59E0B",
+            "surface-container-lowest": "#ffffff",
+            "coral-pulse-shadow": "#BE123C",
+            "secondary-container": "#6cf8bb",
+            "on-error-container": "#93000a",
+            "secondary-fixed-dim": "#4edea3",
+            "on-tertiary-fixed": "#2a1700",
+            "on-secondary-fixed-variant": "#005236",
+            "on-secondary": "#ffffff",
+            "on-primary-container": "#fffbff",
+            "surface-glass": "rgba(255, 255, 255, 0.82)",
+            "on-secondary-container": "#00714d",
+            "outline-variant": "#c7c4d7",
+            "secondary-fixed": "#6ffbbe",
+            "background": "#faf8ff",
+            "on-background": "#131b2e",
+            "tertiary": "#825100",
+            "tertiary-fixed-dim": "#ffb95f",
+            "electric-violet-shadow": "#3730A3",
+            "surface-dim": "#d2d9f4",
+            "surface-container": "#eaedff",
+            "on-tertiary-container": "#fffbff",
+            "surface-container-high": "#e2e7ff",
+            "emerald-mint": "#10B981",
+            "inverse-surface": "#283044",
+            "tertiary-fixed": "#ffddb8",
+            "error": "#ba1a1a",
+            "primary-container": "#6063ee",
+            "on-error": "#ffffff",
+            "surface-canvas": "#F8FAFC"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-md": "1rem",
+            "space-xl": "2rem",
+            "gutter-sm": "1rem",
+            "margin-mobile": "1rem",
+            "gutter": "1.5rem",
+            "space-lg": "1.5rem",
+            "space-2xl": "3rem",
+            "space-sm": "0.5rem",
+            "margin": "2rem",
+            "space-xs": "0.25rem"
+          },
+          "fontFamily": {
+            "display-hero": ["Plus Jakarta Sans"],
+            "title-md": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "label-md": ["Plus Jakarta Sans"],
+            "headline-lg-mobile": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "stat-counter": ["Plus Jakarta Sans"],
+            "body-lg": ["Plus Jakarta Sans"],
+            "label-lg": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"],
+            "body-strong": ["Plus Jakarta Sans"],
+            "label-sm": ["Plus Jakarta Sans"],
+            "display-hero-mobile": ["Plus Jakarta Sans"],
+            "headline-sm": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "display-hero": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.03em", "fontWeight": "800" }],
+            "title-md": ["18px", { "lineHeight": "26px", "fontWeight": "600" }],
+            "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.015em", "fontWeight": "700" }],
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "700" }],
+            "headline-lg-mobile": ["26px", { "lineHeight": "34px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "stat-counter": ["22px", { "lineHeight": "26px", "fontWeight": "800" }],
+            "body-lg": ["16px", { "lineHeight": "26px", "fontWeight": "400" }],
+            "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "700" }],
+            "body-md": ["14px", { "lineHeight": "22px", "fontWeight": "400" }],
+            "body-strong": ["14px", { "lineHeight": "22px", "fontWeight": "600" }],
+            "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.03em", "fontWeight": "600" }],
+            "display-hero-mobile": ["34px", { "lineHeight": "42px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+            "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "600" }]
+          }
+        },
+      },
+    }
+  </script>
+</head>
+<body class="bg-background text-on-surface min-h-screen flex flex-col font-body-md antialiased selection:bg-electric-violet/20 selection:text-electric-violet-deep overflow-x-hidden">
+<!-- TOP APP BAR (Shared Components: glassmorphic_game_bar) -->
+<header class="docked full-width top-0 sticky z-50 bg-surface-glass backdrop-blur-md shadow-sm border-b border-outline-variant/60">
+<div class="flex justify-between items-center w-full px-6 py-3">
+<!-- Brand & Product Name -->
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-electric-violet flex items-center justify-center text-white border-b-[3px] border-electric-violet-shadow shadow-sm">
+<span class="material-symbols-outlined" data-icon="sports_esports" data-weight="fill" style="font-variation-settings: 'FILL' 1;">sports_esports</span>
+</div>
+<div>
+<span class="font-headline-md text-headline-md font-black text-electric-violet tracking-tight">EduClass RPG</span>
+<span class="hidden md:inline-block ml-2 px-2 py-0.5 rounded-full bg-surface-container-high text-primary font-label-sm text-label-sm uppercase">CEFR League Hub</span>
+</div>
+</div>
+<!-- Stat Counters & Resources Gamified Pills -->
+<div class="flex items-center gap-2 sm:gap-3">
+<!-- Energy / Hearts -->
+<div class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-rose-50 border border-coral-pulse/20 text-coral-pulse hover:scale-105 active:scale-95 transition-transform duration-150 cursor-pointer shadow-sm">
+<span class="material-symbols-outlined text-coral-pulse" data-icon="favorite" data-weight="fill" style="font-variation-settings: 'FILL' 1;">favorite</span>
+<span class="font-stat-counter text-stat-counter text-[16px] leading-tight">5/5</span>
+</div>
+<!-- Streak Pill -->
+<div class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#FEF3C7] border border-sunburst-amber/30 text-sunburst-amber-shadow hover:scale-105 active:scale-95 transition-transform duration-150 cursor-pointer shadow-sm">
+<span class="material-symbols-outlined text-sunburst-amber" data-icon="local_fire_department" data-weight="fill" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+<span class="font-stat-counter text-stat-counter text-[16px] leading-tight">18 Hari</span>
+</div>
+<!-- Diamond / Gem Resource -->
+<div class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-sky-50 border border-sky-focus/30 text-sky-focus hover:scale-105 active:scale-95 transition-transform duration-150 cursor-pointer shadow-sm">
+<span class="material-symbols-outlined text-sky-focus" data-icon="diamond" data-weight="fill" style="font-variation-settings: 'FILL' 1;">diamond</span>
+<span class="font-stat-counter text-stat-counter text-[16px] leading-tight">1,420</span>
+</div>
+<!-- Audio toggle -->
+<button class="w-9 h-9 rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface-variant flex items-center justify-center hover:scale-105 active:scale-95 transition-transform duration-150" title="Audio Game FX">
+<span class="material-symbols-outlined" data-icon="volume_up">volume_up</span>
+</button>
+<!-- Student Inventory / Backpack -->
+<button class="relative w-9 h-9 rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface-variant flex items-center justify-center hover:scale-105 active:scale-95 transition-transform duration-150" title="Item Bag">
+<span class="material-symbols-outlined" data-icon="backpack">backpack</span>
+<span class="absolute -top-1 -right-1 w-3 h-3 bg-coral-pulse rounded-full border-2 border-white"></span>
+</button>
+<!-- Avatar Quick Badge -->
+<div class="hidden sm:flex items-center gap-2 pl-2 border-l border-outline-variant/60">
+<img alt="Student avatar level 14 badge with silver laurels" class="w-10 h-10 rounded-xl object-cover border-2 border-electric-violet-deep shadow-sm" data-alt="Close up 3D render avatar of a studious RPG scholar character wearing glowing purple enchanter robes and silver laurels wreath, high quality vibrant light style" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAzt9QeSJrnbX0tNxzSyKqv9pny--AGEqPqAs31jazhPkJi9fHE3g0AWbq9rKMFcDZL27RH54L2n1-fLoWYXJ_OJNU9lsiyToq-ZHG4gpIdpXfv7MCq4v9KUBZ7SCBwm37qz7wQogxDDxejaL3EEAdGQYeICfbFcaKEE7NMRDcynZ1BAilB0dIsq7zdzcNgdws5Y22Bl0DXlNIPh0TNVFgHfnpgpgLUZVg17TDyr59AISaB0Ow5S_xO7g"/>
+</div>
+</div>
+</div>
+</header>
+<!-- BODY CONTENT WRAPPER WITH SIDE NAV RAIL -->
+<div class="flex flex-1 w-full max-w-[1440px] mx-auto">
+<!-- SIDE NAV BAR (Shared Components: tactical_rpg_rail) -->
+<!-- Guild League is currently ACTIVE -->
+<aside class="hidden lg:flex docked left h-[calc(100vh-61px)] sticky top-[61px] w-64 flex-col justify-between shrink-0 border-r border-outline-variant/60 bg-surface p-4">
+<div class="space-y-6">
+<!-- Scholar Rank Profile Snippet -->
+<div class="p-3.5 rounded-2xl bg-surface-container-low border border-outline-variant/50 flex items-center gap-3">
+<div class="relative">
+<img alt="Knight academic profile avatar with golden laurels" class="w-12 h-12 rounded-xl object-cover border-2 border-sunburst-amber shadow-sm" data-alt="Charming isometric 3D portrait of a collegiate student dressed as an academic knight with a feather cap and golden laurels, bright cinematic lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBwkwpehCSaTjJQJ2vQ9lp9XiEH8RcyIMbHVjwRzOtIRa6mXpv2GNgv3AIYIE3qiLSZhrV46_pv7M7K4XFkBYUK5O2wP0hX4ODEIL_y2eIaO5WPs3Vj8A9STn4fTU8QQT1yxv5caXev6DjJVaSE8SIJ2GW_xuMcDWIi_L7FNlEvShAZOaBzRMosX_UiCCf81mxFB2CQ8a2bNeTEVzzzDZ9UWkQfWONUppXCtK6uNRz99V_uoEvE9PkK7g"/>
+<span class="absolute -bottom-1 -right-1 px-1.5 py-0.2 bg-sunburst-amber text-white font-label-sm text-[10px] rounded-full font-bold">Lv.14</span>
+</div>
+<div class="min-w-0">
+<p class="font-title-md text-title-md font-bold text-on-surface truncate">Level 14 Scholar</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant truncate">CEFR B2 • TOEFL Prep</p>
+</div>
+</div>
+<!-- CTA: Daily Quest Log -->
+<button class="w-full py-2.5 px-4 rounded-xl bg-electric-violet hover:bg-electric-violet-deep text-white font-label-lg text-label-lg font-bold border-b-[4px] border-electric-violet-shadow active:translate-y-[2px] active:border-b-[2px] transition-all flex items-center justify-center gap-2 shadow-sm">
+<span class="material-symbols-outlined text-[20px]" data-icon="assignment" data-weight="fill" style="font-variation-settings: 'FILL' 1;">assignment</span>
+          Daily Quest Log
+        </button>
+<!-- Primary Navigation Tabs -->
+<nav class="space-y-1.5">
+<!-- 1: Quest Map (Inactive) -->
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant font-medium rounded-xl hover:bg-surface-container transition-colors hover:scale-105 active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined text-[22px]" data-icon="map">map</span>
+<span class="font-body-strong text-body-strong">Quest Map</span>
+</a>
+<!-- 2: Guild League (ACTIVE) -->
+<a class="flex items-center gap-3 px-4 py-3 bg-primary-container text-on-primary rounded-xl font-bold border-b-4 border-electric-violet-deep active:translate-y-[2px] active:border-b-2 shadow-sm" href="#">
+<span class="material-symbols-outlined text-[22px]" data-icon="emoji_events" data-weight="fill" style="font-variation-settings: 'FILL' 1;">emoji_events</span>
+<span class="font-body-strong text-body-strong">Guild League</span>
+<span class="ml-auto w-2 h-2 rounded-full bg-emerald-mint animate-ping"></span>
+</a>
+<!-- 3: Boss Arena (Inactive) -->
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant font-medium rounded-xl hover:bg-surface-container transition-colors hover:scale-105 active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined text-[22px]" data-icon="swords">swords</span>
+<span class="font-body-strong text-body-strong">Boss Arena</span>
+</a>
+<!-- 4: Marketplace (Inactive) -->
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant font-medium rounded-xl hover:bg-surface-container transition-colors hover:scale-105 active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined text-[22px]" data-icon="storefront">storefront</span>
+<span class="font-body-strong text-body-strong">Marketplace</span>
+</a>
+<!-- 5: Academic Rubric (Inactive) -->
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant font-medium rounded-xl hover:bg-surface-container transition-colors hover:scale-105 active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined text-[22px]" data-icon="menu_book">menu_book</span>
+<span class="font-body-strong text-body-strong">Academic Rubric</span>
+</a>
+</nav>
+</div>
+<!-- Footer Rail Tabs -->
+<div class="pt-4 border-t border-outline-variant/50 space-y-1">
+<a class="flex items-center gap-3 px-4 py-2.5 text-on-surface-variant font-medium rounded-xl hover:bg-surface-container transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="inventory_2">inventory_2</span>
+<span class="font-label-md text-label-md">Class Archive</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2.5 text-on-surface-variant font-medium rounded-xl hover:bg-surface-container transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="settings">settings</span>
+<span class="font-label-md text-label-md">Settings</span>
+</a>
+</div>
+</aside>
+<!-- MAIN INTERACTIVE CANVAS -->
+<main class="flex-1 p-4 md:p-6 lg:p-8 space-y-8 overflow-y-auto">
+<!-- 1. BANNER MUSIM LIGA (Tactile & Hero Gamified) -->
+<section class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-primary to-electric-violet p-6 md:p-8 text-white shadow-lg border-b-[5px] border-electric-violet-shadow">
+<!-- Background Decorative Geometric Stars & Shapes -->
+<div class="absolute -right-8 -bottom-10 opacity-15 pointer-events-none">
+<span class="material-symbols-outlined text-[200px]" data-icon="trophy">trophy</span>
+</div>
+<div class="absolute top-3 right-24 opacity-20 pointer-events-none">
+<span class="material-symbols-outlined text-[80px]" data-icon="stars">stars</span>
+</div>
+<div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+<div class="space-y-2 max-w-2xl">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-white font-label-sm text-label-sm font-bold tracking-wide uppercase">
+<span class="material-symbols-outlined text-[16px] text-sunburst-amber" data-icon="military_tech" data-weight="fill" style="font-variation-settings: 'FILL' 1;">military_tech</span>
+              Turnamen Esports Akademik Mingguan
+            </div>
+<h1 class="font-headline-lg text-headline-lg font-black tracking-tight leading-tight">
+              Liga Mahasiswa Semester Ganjil - Minggu ke-4
+            </h1>
+<p class="font-body-lg text-body-lg text-white/90">
+              Divisi <span class="font-bold underline decoration-sky-focus underline-offset-4">Obsidian &amp; Diamond</span> (Kelas 3B Bahasa Inggris Akademis). Selesaikan kuis harian, writing drill, dan grammar boss!
+            </p>
+</div>
+<!-- Countdown Pill & Division Badge -->
+<div class="flex flex-col sm:flex-row md:flex-col items-start md:items-end gap-3 shrink-0">
+<div class="bg-black/25 backdrop-blur-md rounded-2xl p-4 border border-white/20 flex items-center gap-4 shadow-inner">
+<div class="w-10 h-10 rounded-xl bg-sunburst-amber flex items-center justify-center text-white border-b-[3px] border-sunburst-amber-shadow shadow-sm">
+<span class="material-symbols-outlined" data-icon="timer">timer</span>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-white/70 uppercase">Sisa Waktu Zona</p>
+<div class="font-stat-counter text-stat-counter text-white flex items-center gap-1.5">
+<span id="countdown-days">2 Hari</span>
+<span class="text-sunburst-amber">:</span>
+<span id="countdown-hours">14 Jam</span>
+<span class="text-xs font-normal text-white/75 bg-coral-pulse/80 px-2 py-0.5 rounded-full ml-1 animate-pulse">Menegangkan!</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-2 text-white/80 font-label-md text-label-md">
+<span class="material-symbols-outlined text-emerald-mint" data-icon="check_circle">check_circle</span>
+              Auto-Promosi Aktif pada Minggu 23:59 WIB
+            </div>
+</div>
+</div>
+</section>
+<!-- 2. SUB-MODE TABS -->
+<section class="flex flex-wrap items-center justify-between gap-4 border-b border-outline-variant/60 pb-3">
+<div class="inline-flex p-1.5 rounded-2xl bg-surface-container border border-outline-variant/40 gap-1.5 shadow-sm">
+<!-- Tab 1: Active -->
+<button class="px-5 py-2.5 rounded-xl bg-white text-electric-violet font-title-md text-title-md font-bold shadow-sm border-b-[3px] border-electric-violet flex items-center gap-2 transition-all">
+<span class="material-symbols-outlined text-[20px]" data-icon="group" data-weight="fill" style="font-variation-settings: 'FILL' 1;">group</span>
+            Leaderboard Kelas 3B
+          </button>
+<!-- Tab 2 -->
+<button class="px-5 py-2.5 rounded-xl text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high font-body-strong text-body-strong flex items-center gap-2 transition-colors">
+<span class="material-symbols-outlined text-[20px]" data-icon="shield">shield</span>
+            Turnamen Antar Kampus / Guild Battle
+          </button>
+<!-- Tab 3 -->
+<button class="px-5 py-2.5 rounded-xl text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high font-body-strong text-body-strong flex items-center gap-2 transition-colors">
+<span class="material-symbols-outlined text-[20px]" data-icon="flare">flare</span>
+            Streak Hall of Fame
+          </button>
+</div>
+<!-- Filter & Search Controls -->
+<div class="flex items-center gap-2.5">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-2.5 text-outline text-[18px]" data-icon="search">search</span>
+<input class="pl-9 pr-4 py-2 text-sm bg-white rounded-xl border border-outline-variant/70 focus:outline-none focus:ring-2 focus:ring-electric-violet text-on-surface placeholder:text-outline shadow-sm" placeholder="Cari nama mahasiswa..." type="text"/>
+</div>
+<button class="p-2.5 bg-white border border-outline-variant/70 rounded-xl text-on-surface-variant hover:bg-surface-container flex items-center justify-center shadow-sm" title="Filter Divisi">
+<span class="material-symbols-outlined text-[20px]" data-icon="filter_list">filter_list</span>
+</button>
+</div>
+</section>
+<!-- 3. TOP 3 3D PODIUM SECTION (Tactile Gamified) -->
+<section class="p-6 md:p-8 rounded-3xl bg-surface-glass backdrop-blur-md border border-outline-variant/70 shadow-sm relative overflow-hidden">
+<div class="text-center max-w-md mx-auto mb-10">
+<span class="px-3 py-1 rounded-full bg-sunburst-amber/20 text-sunburst-amber-shadow font-label-md text-label-md uppercase tracking-wider font-extrabold">
+            Panggung Kehormatan Mingguan
+          </span>
+<h2 class="font-headline-md text-headline-md font-black text-on-surface mt-1">Podium Tiga Jawara Akademik</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Top 3 mahasiswa dengan kontribusi XP menulis esai &amp; grammar duel tertinggi!</p>
+</div>
+<!-- 3D Podium Layout -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 items-end max-w-4xl mx-auto pt-6 pb-2">
+<!-- RANK 2 (Silver) -->
+<div class="order-2 md:order-1 flex flex-col items-center">
+<div class="relative group cursor-pointer mb-3">
+<!-- Laurel / Medal Badge -->
+<div class="absolute -top-6 left-1/2 -translate-x-1/2 w-10 h-10 rounded-full bg-slate-200 border-2 border-white shadow-md flex items-center justify-center text-slate-700 z-10">
+<span class="material-symbols-outlined text-[24px]" data-icon="workspace_premium" data-weight="fill" style="font-variation-settings: 'FILL' 1;">workspace_premium</span>
+</div>
+<img alt="Portrait avatar of Naufal top student wearing scholar mage gear with glowing silver amulet" class="w-24 h-24 rounded-2xl object-cover border-4 border-slate-300 shadow-lg group-hover:scale-105 transition-transform duration-200" data-alt="Vibrant 3D rendered avatar character of a young collegiate scholar wearing high-tech silver mage robes with a glowing silver amulet against an energizing lavender background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAzg9ck1zewjJb7x3O9YaMOpGw_qa31vWpsoF5Kv0_AoUuIFQGB55kAvWhz_Ddw49WgPT2xtIDJVXg8vVOuADGihCt4yOAdjI2c2FJZRMJsE0fynmHqc0OQ3f0uXbV3C95ejXy4YPm8pdULZhh_lnTxyNovlwGRExGzRck0fr--dxnNmMWJHVeuDAyq-CU6lMta-K6LHUcv2F31XClOXD3b4mKNZVf2mPfVbBBCa7j1yuu5zKt5Wx0mNA"/>
+<span class="absolute -bottom-2 left-1/2 -translate-x-1/2 px-2.5 py-0.5 rounded-full bg-slate-700 text-white font-label-sm text-label-sm font-bold shadow">
+                #2 Perak
+              </span>
+</div>
+<p class="font-title-md text-title-md font-bold text-on-surface text-center">Naufal (Kamu)</p>
+<p class="font-label-sm text-label-sm text-primary font-semibold">Archmage of Grammar</p>
+<div class="mt-2 mb-3 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-50 border border-indigo-200 text-electric-violet font-stat-counter text-[17px]">
+<span class="material-symbols-outlined text-[18px]" data-icon="bolt" data-weight="fill" style="font-variation-settings: 'FILL' 1;">bolt</span>
+              3,950 XP
+            </div>
+<!-- Elevated Step 2 -->
+<div class="w-full h-32 rounded-t-2xl bg-gradient-to-b from-slate-200 to-slate-300 border-t-4 border-slate-400 p-4 flex flex-col items-center justify-center shadow-inner">
+<span class="font-display-hero text-[38px] font-black text-slate-500/70">2</span>
+<span class="font-label-sm text-label-sm font-bold text-slate-600 uppercase tracking-widest">Master Silver</span>
+</div>
+</div>
+<!-- RANK 1 (Gold - Center & Elevated) -->
+<div class="order-1 md:order-2 flex flex-col items-center">
+<!-- Pulsing Halo Effect -->
+<div class="relative group cursor-pointer mb-3">
+<!-- Golden Crown floating above -->
+<div class="absolute -top-9 left-1/2 -translate-x-1/2 w-14 h-14 rounded-full bg-sunburst-amber border-2 border-white shadow-xl flex items-center justify-center text-white z-10 animate-bounce">
+<span class="material-symbols-outlined text-[32px]" data-icon="crown" data-weight="fill" style="font-variation-settings: 'FILL' 1;">crown</span>
+</div>
+<img alt="Portrait avatar of Clarissa champion student in golden paladin armor with radiant laurels" class="w-28 h-28 rounded-2xl object-cover border-4 border-sunburst-amber shadow-2xl group-hover:scale-105 transition-transform duration-200 ring-4 ring-sunburst-amber/30" data-alt="Spectacular 3D character art of a champion female university student wearing radiant golden paladin armor and a shimmering halo, cheerful triumphant expression, colorful gaming light setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBK_oNWdofjob2enh37kjUtBRcB720JO4i02dcr-35LWe1BuoTgQuKH0UPfSKfczCFLnaqxB_kr7i9VtjcXEZpei-XRsSCuwY_6nhEsGLapSymWlk2bIUSYt3BBL0oG4TwtoGeN0UfMZML3apY24w27iGyZbpg-kuGJo9HfM8uUBIRadOcNb36CZpqJ2X8ZIfVL_afXq_TjE6lQkg584qadtfp2Vlf_ur_m0z2LV6sjyOh4P4trDSwujA"/>
+<span class="absolute -bottom-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-sunburst-amber-shadow text-white font-label-md text-label-md font-black shadow-md flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+                #1 JUARA
+              </span>
+</div>
+<p class="font-headline-sm text-headline-sm font-black text-on-surface text-center">Clarissa S.</p>
+<p class="font-label-sm text-label-sm text-sunburst-amber-shadow font-bold">Grandmaster TOEFL 650</p>
+<div class="mt-2 mb-3 inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-amber-50 border border-sunburst-amber text-sunburst-amber-shadow font-stat-counter text-stat-counter shadow-sm">
+<span class="material-symbols-outlined text-[20px] text-sunburst-amber" data-icon="emoji_events" data-weight="fill" style="font-variation-settings: 'FILL' 1;">emoji_events</span>
+              4,890 XP
+            </div>
+<!-- Elevated Step 1 (Tallest) -->
+<div class="w-full h-44 rounded-t-2xl bg-gradient-to-b from-amber-200 via-amber-300 to-amber-400 border-t-4 border-sunburst-amber-shadow p-4 flex flex-col items-center justify-center shadow-lg relative">
+<span class="material-symbols-outlined text-white/50 text-[32px] absolute top-2" data-icon="stars">stars</span>
+<span class="font-display-hero text-[46px] font-black text-sunburst-amber-shadow">1</span>
+<span class="font-label-md text-label-md font-black text-amber-900 uppercase tracking-widest">Obsidian MVP</span>
+</div>
+</div>
+<!-- RANK 3 (Bronze) -->
+<div class="order-3 flex flex-col items-center">
+<div class="relative group cursor-pointer mb-3">
+<div class="absolute -top-6 left-1/2 -translate-x-1/2 w-10 h-10 rounded-full bg-amber-700 border-2 border-white shadow-md flex items-center justify-center text-amber-100 z-10">
+<span class="material-symbols-outlined text-[22px]" data-icon="military_tech" data-weight="fill" style="font-variation-settings: 'FILL' 1;">military_tech</span>
+</div>
+<img alt="Portrait avatar of Dimas third place scholar in ranger leather armor" class="w-24 h-24 rounded-2xl object-cover border-4 border-amber-600/70 shadow-lg group-hover:scale-105 transition-transform duration-200" data-alt="Charming 3D rendered avatar character of a male student wearing stylish adventurer leather tunic with brass goggles and academic pins, bright warm daylight setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBfvPC5oc1tJCL-IukLUmTn5ZVDWodtWfUuRZXlyU2H_vQLvRH4OUjabNH_S7YR397jeVYtl4T9ks0jsT_pDHjkXlasPo6-PMQyoykA0fznAbvWeTyeIw_WSo9sF3PYVsO6pLVuk1kM-O41X3b7HpODrhVdmAE_6hOqWDLbk3dL7R0REhoWf3wr2u57LVJNTWdw8oCyVIILsjjaJ5wOOKmUnoz0LtRQEgRFctLcHVDzbX2EziMvo1SAVw"/>
+<span class="absolute -bottom-2 left-1/2 -translate-x-1/2 px-2.5 py-0.5 rounded-full bg-amber-800 text-white font-label-sm text-label-sm font-bold shadow">
+                #3 Perunggu
+              </span>
+</div>
+<p class="font-title-md text-title-md font-bold text-on-surface text-center">Dimas Rizky</p>
+<p class="font-label-sm text-label-sm text-secondary font-semibold">Essay Speedster</p>
+<div class="mt-2 mb-3 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 border border-amber-300 text-amber-800 font-stat-counter text-[17px]">
+<span class="material-symbols-outlined text-[18px]" data-icon="bolt" data-weight="fill" style="font-variation-settings: 'FILL' 1;">bolt</span>
+              3,420 XP
+            </div>
+<!-- Elevated Step 3 -->
+<div class="w-full h-24 rounded-t-2xl bg-gradient-to-b from-amber-600/40 to-amber-700/50 border-t-4 border-amber-800 p-4 flex flex-col items-center justify-center shadow-inner">
+<span class="font-display-hero text-[34px] font-black text-amber-900/60">3</span>
+<span class="font-label-sm text-label-sm font-bold text-amber-950 uppercase tracking-widest">Master Bronze</span>
+</div>
+</div>
+</div>
+</section>
+<!-- TWO COLUMN WORKSPACE: LEADERBOARD TABLE & GUILD QUEST SIDEBAR -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+<!-- LEFT/CENTER: INTERACTIVE RANKING LIST (8 Cols) -->
+<div class="lg:col-span-8 space-y-4">
+<!-- Legend Bar for League Zones -->
+<div class="flex flex-wrap items-center justify-between gap-3 px-4 py-3 bg-surface-card rounded-2xl border border-outline-variant/60 shadow-sm text-sm">
+<div class="flex items-center gap-4">
+<span class="flex items-center gap-1.5 font-label-sm text-label-sm text-emerald-mint-shadow font-bold">
+<span class="w-3 h-3 rounded-full bg-emerald-mint inline-block"></span>
+                Top 5: Zona Promosi Master
+              </span>
+<span class="flex items-center gap-1.5 font-label-sm text-label-sm text-on-surface-variant font-medium">
+<span class="w-3 h-3 rounded-full bg-slate-300 inline-block"></span>
+                Rank 6-20: Zona Aman
+              </span>
+<span class="flex items-center gap-1.5 font-label-sm text-label-sm text-coral-pulse font-bold">
+<span class="w-3 h-3 rounded-full bg-coral-pulse inline-block"></span>
+                Rank 21-30: Degradasi Perak
+              </span>
+</div>
+<div class="font-label-sm text-label-sm text-outline">
+              Total 32 Mahasiswa Terdaftar
+            </div>
+</div>
+<!-- THE CURRENT USER HIGHLIGHT BAR (STICKY/CALLOUT) -->
+<div class="p-4 rounded-2xl bg-primary/10 border-2 border-electric-violet shadow-md flex items-center justify-between gap-4 transition-all">
+<div class="flex items-center gap-3.5">
+<div class="w-9 h-9 rounded-xl bg-electric-violet text-white font-stat-counter text-[17px] flex items-center justify-center font-black shadow-sm">
+                2
+              </div>
+<img alt="Student avatar Naufal current user" class="w-11 h-11 rounded-xl object-cover border-2 border-electric-violet" data-alt="Close up face of an energetic college student smiling with a digital gaming headset and purple magic sparks in the background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDyutebTWQcMVKgZAVw0NXM5kZqINj44cguiP5QyKf5VhLuM-yT7GmYbLn-Tzau0M2xdNxDPPUG-OnWB_WMl9FLA-EY3JDC5-96i5MZgIE3xjVg99zCjQIW21Tjctz73UyAdjNiTJBsr9mjYYcAzoycjVT8tHSp07HHtSMApHB8N1z0F-8flgzwzTkVucdXQzVoqEPUSFPDCYbvVxrrsDtRp84ctW4NE8cHgdkVZlrIuNn0utL2tckgRQ"/>
+<div>
+<div class="flex items-center gap-2">
+<span class="font-body-strong text-body-strong font-black text-on-surface">Kamu (Naufal)</span>
+<span class="px-2 py-0.5 rounded-full bg-electric-violet text-white font-label-sm text-[10px] font-bold">POSISI KAMU</span>
+</div>
+<p class="font-label-sm text-label-sm text-emerald-mint-shadow font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]" data-icon="north">north</span>
+                  Bersiap Promosi ke Liga Master! Selisih +1,150 XP dari batas aman.
+                </p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-stat-counter text-stat-counter text-electric-violet">3,950 XP</p>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Streak 18x 🔥</span>
+</div>
+</div>
+<!-- LEADERBOARD TABLE ROWS -->
+<div class="bg-surface-card rounded-2xl border border-outline-variant/60 shadow-sm overflow-hidden">
+<div class="divide-y divide-outline-variant/40">
+<!-- ZONA PROMOSI HEADER -->
+<div class="bg-emerald-50/70 px-4 py-2 flex items-center justify-between border-l-4 border-emerald-mint">
+<span class="font-label-sm text-label-sm font-extrabold text-emerald-mint-shadow uppercase flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[18px]" data-icon="keyboard_double_arrow_up" data-weight="fill" style="font-variation-settings: 'FILL' 1;">keyboard_double_arrow_up</span>
+                  Zona Promosi ke Liga Master (Tiket Beasiswa Modul)
+                </span>
+<span class="font-label-sm text-[11px] text-emerald-800 font-semibold">Tier Hadiah: 200 Gems + Badge Obsidian</span>
+</div>
+<!-- Row 1: Clarissa (Rank 1) -->
+<div class="px-4 py-3 flex items-center justify-between hover:bg-emerald-50/40 transition-colors">
+<div class="flex items-center gap-3">
+<span class="w-8 font-stat-counter text-stat-counter text-sunburst-amber text-center">1</span>
+<span class="material-symbols-outlined text-sunburst-amber text-[22px]" data-icon="crown" data-weight="fill" style="font-variation-settings: 'FILL' 1;">crown</span>
+<img alt="Clarissa avatar thumbnail" class="w-9 h-9 rounded-lg object-cover" data-alt="Mini avatar thumbnail of Clarissa student with laurel wreath" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCnCOo1rjIGt1Sr62gGbGYkABHQpV6pk_Ur_hef3dKzK6JgalDxISk7RdhQe4DwNclgdoqvCXWlTqFxUSxekfAdJVojcxeWTemK0-91Ex7NQBBCyhNNbV7m7v-MTYS4j0BjdZUIeODS3db4lf089vRg0XkEfVeDKFOHexLt8nrklycN4yd8cU4vKJRnX_vwTUM3PQUOR7AERE3y9pvrLA3tG1F0YYeBvmlHBczAMlNTVq8nrk6jc3puPA"/>
+<div>
+<p class="font-body-strong text-body-strong font-bold text-on-surface">Clarissa S.</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Vocab Master Level 19 • 5 esai sempurna</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<span class="hidden sm:inline-block px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 font-label-sm text-label-sm font-bold">+520 XP hari ini</span>
+<span class="font-stat-counter text-[18px] text-on-surface font-extrabold">4,890 XP</span>
+</div>
+</div>
+<!-- Row 2: Naufal (Rank 2) -->
+<div class="px-4 py-3 flex items-center justify-between bg-primary-container/20 border-l-4 border-electric-violet">
+<div class="flex items-center gap-3">
+<span class="w-8 font-stat-counter text-stat-counter text-electric-violet text-center">2</span>
+<span class="material-symbols-outlined text-slate-400 text-[22px]" data-icon="workspace_premium" data-weight="fill" style="font-variation-settings: 'FILL' 1;">workspace_premium</span>
+<img alt="Naufal avatar thumbnail" class="w-9 h-9 rounded-lg object-cover" data-alt="Mini avatar thumbnail of Naufal student with blue jacket" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAwGtjs_8OgR1B3w3Yg4QfPiiH68K-H8cKW5TobMG1HTA1LkJJyZXJisAO1gaxLCiIgoKyjmyO_s8BoHiOo0KdMa5V5Bg_K4ERtOlxqjRFvuEpquZrUjkZdQrJakdm3dgDUWxzYzRCQ85h_C0oI_BlxHB8WCIGHqiYV7rABHyIoSASS6cBxPgT5Ejdmsy5GwM4pP6mYv5ZwETWpEGhQjwDmhcOTMQBmTATgMTxBv5sSQPX0LSmEbjqLfw"/>
+<div>
+<p class="font-body-strong text-body-strong font-bold text-primary">Kamu (Naufal)</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Writing Specialist Level 14 • 18 Hari Streak</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<span class="hidden sm:inline-block px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 font-label-sm text-label-sm font-bold">+380 XP hari ini</span>
+<span class="font-stat-counter text-[18px] text-electric-violet font-extrabold">3,950 XP</span>
+</div>
+</div>
+<!-- Row 3: Dimas (Rank 3) -->
+<div class="px-4 py-3 flex items-center justify-between hover:bg-emerald-50/40 transition-colors">
+<div class="flex items-center gap-3">
+<span class="w-8 font-stat-counter text-stat-counter text-amber-700 text-center">3</span>
+<span class="material-symbols-outlined text-amber-700 text-[22px]" data-icon="military_tech" data-weight="fill" style="font-variation-settings: 'FILL' 1;">military_tech</span>
+<img alt="Dimas avatar thumbnail" class="w-9 h-9 rounded-lg object-cover" data-alt="Mini avatar thumbnail of Dimas student with glasses" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAdVG4byQDVC_aDSCKo9Bg7E_hCitc_922Ch068U32yleINtXMlh5Vb4aZalaRWl6KtUQWu7COJhwEzunhNG6dUCdeKCt1_zrYp1E-tm-PSkHO8oUVW_8mQN-jC3wvsy80Au2kLSKQNYpEHtK_r81s65TJTZ3vv_SGV-UG3ev3zNb7NmSO3BdI3pm4lgLemdCCMmaRdgO3vVIkGNEJmne9j-5EpQQaI87hzeTSUnfdDsU8oIKT4jAc21g"/>
+<div>
+<p class="font-body-strong text-body-strong font-bold text-on-surface">Dimas Rizky</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Grammar Duelist Level 16</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<span class="hidden sm:inline-block px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 font-label-sm text-label-sm font-bold">+290 XP hari ini</span>
+<span class="font-stat-counter text-[18px] text-on-surface font-extrabold">3,420 XP</span>
+</div>
+</div>
+<!-- Row 4: Amanda -->
+<div class="px-4 py-3 flex items-center justify-between hover:bg-emerald-50/40 transition-colors">
+<div class="flex items-center gap-3">
+<span class="w-8 font-stat-counter text-[18px] text-on-surface-variant text-center">4</span>
+<span class="material-symbols-outlined text-emerald-mint text-[20px]" data-icon="arrow_upward">arrow_upward</span>
+<img alt="Amanda avatar thumbnail" class="w-9 h-9 rounded-lg object-cover" data-alt="Cute 3D scholar girl avatar with red beret and notebook" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA0cXhgdJqDE6E6NeifmvxzKIaE7A-v9ThKMssvC81oontQ_PqZdU0uCZMAKmLvgdUesfmxcDD-jiIi_TLxep9U4Zj62-KIj_oL2GeWeBK-Reza0yiIIIwn2f8OxGu57n5zU7CN9wMxpUQHCoVbONKF1a3aTo27SlZn9wDa8hl1gkk2lEZ1KA8a-AiUuTAtgmDAGA9vUUWnhXEbTZOegjt94wj98TnPZL35EeXI_EtTPGNzpWm31N2_cg"/>
+<div>
+<p class="font-body-strong text-body-strong font-bold text-on-surface">Amanda Putri</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Listening Ace • 14 Hari Streak</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<span class="hidden sm:inline-block px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 font-label-sm text-label-sm font-bold">+240 XP</span>
+<span class="font-stat-counter text-[18px] text-on-surface font-extrabold">3,110 XP</span>
+</div>
+</div>
+<!-- Row 5: Bagas (Batas Promosi Terakhir) -->
+<div class="px-4 py-3 flex items-center justify-between hover:bg-emerald-50/40 transition-colors bg-emerald-50/20">
+<div class="flex items-center gap-3">
+<span class="w-8 font-stat-counter text-[18px] text-on-surface-variant text-center">5</span>
+<span class="material-symbols-outlined text-emerald-mint text-[20px]" data-icon="check">check</span>
+<img alt="Bagas avatar thumbnail" class="w-9 h-9 rounded-lg object-cover" data-alt="3D avatar of young collegiate boy with headset and cheerful smile" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAL2S-yqIHoZOOFQx1UallQE03ulBCW2eHaePMRZ_Wr8orfRDfJyyrhnbhtHDSdbY8BZK_93u_dE9rTdm0_O4q2KS68YWex3vvVgUGs-AePLSYIquusUzko7V8kd_ijRWX9OYZugrbyd27RvXiyZPJMUUWE_rvoaJaXCQ7UuFYxaNbF3D2uzouy-nNMfcOvhe_sxetuOOggNJtCN6Eax5kNbDcmPyin0tvhQ0bHGZKhqoZqA6fhz-Kwng"/>
+<div>
+<div class="flex items-center gap-2">
+<p class="font-body-strong text-body-strong font-bold text-on-surface">Bagas Pratama</p>
+<span class="px-1.5 py-0.2 bg-emerald-200 text-emerald-900 rounded font-label-sm text-[10px] font-bold">Ambang Lolos</span>
+</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Reading Strategist Level 13</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<span class="hidden sm:inline-block px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 font-label-sm text-label-sm font-bold">+180 XP</span>
+<span class="font-stat-counter text-[18px] text-on-surface font-extrabold">2,800 XP</span>
+</div>
+</div>
+<!-- ZONA AMAN HEADER -->
+<div class="bg-slate-100/80 px-4 py-2 flex items-center justify-between border-l-4 border-slate-400">
+<span class="font-label-sm text-label-sm font-bold text-slate-700 uppercase flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[18px]" data-icon="drag_handle">drag_handle</span>
+                  Zona Aman (Bertahan di Divisi Obsidian)
+                </span>
+<span class="font-label-sm text-[11px] text-slate-600">Rank 6 - 20 Tetap di Divisi ini</span>
+</div>
+<!-- Row 6: Farhan -->
+<div class="px-4 py-3 flex items-center justify-between hover:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-3">
+<span class="w-8 font-stat-counter text-[18px] text-outline text-center">6</span>
+<span class="material-symbols-outlined text-outline text-[18px]" data-icon="horizontal_rule">horizontal_rule</span>
+<img alt="Farhan avatar thumbnail" class="w-9 h-9 rounded-lg object-cover" data-alt="Young student avatar with glasses and purple wizard cap" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAVerbRqdPu9vslBkPZoTS-bfPU6Jfxqdy-ye9hJw3wN4q8gLv7nmOUcNhevun8NSgdOVA3GqcaNw5q-K06rqufEdmQdwJ81KyNZQLrNUxCHDPyOMAKfqlsURjeIZeemus6r0oID4YyeV471aEnvenby1zPwhnbd84UQUb3tir_8Bd2YhVK31QmInLXQ5L5oVJ8E-3MghoYOmN_U4P1KaMUgVq_go2_40jPECM8SzwrfPcrokXm7Ecz_A"/>
+<div>
+<p class="font-body-strong text-body-strong font-bold text-on-surface">Farhan Al-Ghifari</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Speed Reader Level 12</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<span class="font-stat-counter text-[18px] text-on-surface-variant font-bold">2,760 XP</span>
+</div>
+</div>
+<!-- Row 7: Tiara -->
+<div class="px-4 py-3 flex items-center justify-between hover:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-3">
+<span class="w-8 font-stat-counter text-[18px] text-outline text-center">7</span>
+<span class="material-symbols-outlined text-outline text-[18px]" data-icon="horizontal_rule">horizontal_rule</span>
+<img alt="Tiara avatar thumbnail" class="w-9 h-9 rounded-lg object-cover" data-alt="Student female 3D avatar with emerald hairpin" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDkO-MBmSRt22LQ8qdvHj-tOmYi-280pvauwaAEGisyRVzWpMSurrcb2zAXhZWQf_pSB50hlWhDftFJc_B_Rxpo7EB9A7BkNIN0goThF78jBKEN_ZPM32DGK1K1E5_xzgG4k8dLegdFqhz8NX6HRqtML4uT2qDsm2RT2cgZXehuDm6OcY_m4npiAMwGWFd74iMvwfRVgfY90bKW5J32lWRTZrJgVx-fuwqFqWA3ClGQZzS1-AxccqQaGw"/>
+<div>
+<p class="font-body-strong text-body-strong font-bold text-on-surface">Tiara Anindya</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Essayist Level 11</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<span class="font-stat-counter text-[18px] text-on-surface-variant font-bold">2,610 XP</span>
+</div>
+</div>
+<!-- Row 8: Kevin -->
+<div class="px-4 py-3 flex items-center justify-between hover:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-3">
+<span class="w-8 font-stat-counter text-[18px] text-outline text-center">8</span>
+<span class="material-symbols-outlined text-outline text-[18px]" data-icon="horizontal_rule">horizontal_rule</span>
+<img alt="Kevin avatar thumbnail" class="w-9 h-9 rounded-lg object-cover" data-alt="Student avatar with yellow hoodie and headphones" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBzLd1n3etEeYiryYIQdJJqi9uiw5ZWHtniJKWPFfOHJ9g5mOPI-n5GIZHU3vp94Vwy1xBdhpsSgquYzsM2aS_ALKOE3TIU_enUQGVqpENqUClQBdXG9DvZ_rFijVIiANH-m8nX7PL_M9qSUWtWbSs1AiDcqAsOlyiCxrxFhDzOOp7PZ3TAqdUoSJG9jwlOwpJ2vLHh1FH-LEeSN2fZvo2Y9QB8SWiUrqPGbPkc51s4gPWnEqK9eqdgWg"/>
+<div>
+<p class="font-body-strong text-body-strong font-bold text-on-surface">Kevin Sanjaya</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Vocab Scout Level 10</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<span class="font-stat-counter text-[18px] text-on-surface-variant font-bold">2,490 XP</span>
+</div>
+</div>
+<!-- ZONA DEGRADASI HEADER -->
+<div class="bg-rose-50 px-4 py-2 flex items-center justify-between border-l-4 border-coral-pulse">
+<span class="font-label-sm text-label-sm font-extrabold text-coral-pulse uppercase flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[18px]" data-icon="warning" data-weight="fill" style="font-variation-settings: 'FILL' 1;">warning</span>
+                  Zona Bahaya Degradasi (Turun ke Liga Perak)
+                </span>
+<span class="font-label-sm text-[11px] text-rose-700 font-bold">Rank 21 - 30 Kehilangan Multiplier XP</span>
+</div>
+<!-- Row 21: Rizky (Danger Zone Example) -->
+<div class="px-4 py-3 flex items-center justify-between bg-rose-50/40 hover:bg-rose-100/50 transition-colors">
+<div class="flex items-center gap-3">
+<span class="w-8 font-stat-counter text-[18px] text-coral-pulse text-center">21</span>
+<span class="material-symbols-outlined text-coral-pulse text-[20px]" data-icon="arrow_downward">arrow_downward</span>
+<img alt="Rizky avatar thumbnail" class="w-9 h-9 rounded-lg object-cover opacity-75" data-alt="Student avatar with sleeping cap looking tired" src="https://lh3.googleusercontent.com/aida-public/AB6AXuALzJOmgzsmsSZUCvxioxsX4iQUBxacCtcXManFLJQjMBxQncRhHKzq64bfM1LoDGgNrcjD6F742OgWpDDDWvOJ0vna0hki_6dFFML_TgBiyclbGh4HOotcRyILjrs_dOC_Gl_YxA_eUHHuFe3Y8WgPYmRyEFze6po4lEqi2gsThiFncp-O-FA3yi2AWy7dViIQmm5CIa3XpBxNHOnN87nri29vY2SGxhESJDYmcpHbfNcDI3ZrpSzoyQ"/>
+<div>
+<div class="flex items-center gap-2">
+<p class="font-body-strong text-body-strong font-bold text-coral-pulse">Rendy Mahendra</p>
+<span class="px-1.5 py-0.2 bg-rose-200 text-rose-800 rounded font-label-sm text-[10px] font-bold">Terancam Degradasi</span>
+</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Tidak aktif 3 hari berturut-turut</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<span class="font-stat-counter text-[18px] text-coral-pulse font-extrabold">980 XP</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Action: Load More Rankers -->
+<div class="text-center pt-2">
+<button class="py-2.5 px-6 rounded-xl bg-white border border-outline-variant hover:bg-surface-container text-on-surface font-label-lg text-label-lg font-bold border-b-[3px] border-outline-variant/80 active:translate-y-[2px] transition-all">
+              Lihat Seluruh 32 Peserta Kelas 3B
+            </button>
+</div>
+</div>
+<!-- RIGHT SIDE: GUILD / CLASS COLLABORATIVE QUEST PANEL (4 Cols) -->
+<div class="lg:col-span-4 space-y-6">
+<!-- Card: Class 3B Co-op Quest (Gamified Bento Card) -->
+<div class="p-6 rounded-3xl bg-surface-card border-2 border-emerald-mint/40 shadow-sm relative overflow-hidden">
+<div class="absolute -right-6 -top-6 w-24 h-24 bg-emerald-mint/10 rounded-full blur-xl pointer-events-none"></div>
+<div class="flex items-center justify-between mb-4">
+<span class="px-3 py-1 rounded-full bg-emerald-50 text-emerald-mint font-label-sm text-label-sm font-bold uppercase tracking-wider border border-emerald-mint/30 flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]" data-icon="groups" data-weight="fill" style="font-variation-settings: 'FILL' 1;">groups</span>
+                Tantangan Guild Kelas 3B
+              </span>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-semibold">Tersisa 3 Hari</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm font-extrabold text-on-surface leading-snug">
+              Operasi Bersama: "2x XP Weekend Unlock"
+            </h3>
+<p class="font-body-md text-body-md text-on-surface-variant mt-2">
+              Kumpulkan total <strong class="text-on-surface">20.000 XP</strong> secara kumulatif bersama seluruh anggota Kelas 3B untuk membuka Double XP &amp; Golden Chest di akhir pekan!
+            </p>
+<!-- Progress Meter -->
+<div class="mt-6 space-y-2">
+<div class="flex justify-between items-center text-sm font-bold">
+<span class="text-on-surface">Progres Tim Kelas:</span>
+<span class="font-stat-counter text-[17px] text-emerald-mint">14,850 / 20,000 XP</span>
+</div>
+<!-- Custom Gamified Pill Progress Bar -->
+<div class="w-full h-4 rounded-full bg-slate-200 p-0.5 shadow-inner">
+<div class="h-full rounded-full bg-gradient-to-r from-electric-violet to-emerald-mint relative shadow-sm" style="width: 74.25%;">
+<div class="absolute right-0 top-0 bottom-0 w-2 bg-white/60 rounded-full animate-pulse"></div>
+</div>
+</div>
+<p class="font-label-sm text-label-sm text-right text-emerald-700 font-bold">74.2% Tercapai (Butuh 5,150 XP lagi)</p>
+</div>
+<!-- Reward Preview Box -->
+<div class="mt-6 p-4 rounded-2xl bg-amber-50 border border-sunburst-amber/30 flex items-center gap-3">
+<div class="w-12 h-12 rounded-xl bg-sunburst-amber text-white flex items-center justify-center border-b-[3px] border-sunburst-amber-shadow shadow-sm shrink-0">
+<span class="material-symbols-outlined text-[28px]" data-icon="redeem" data-weight="fill" style="font-variation-settings: 'FILL' 1;">redeem</span>
+</div>
+<div>
+<p class="font-body-strong text-body-strong font-extrabold text-amber-950">Hadiah Kelas Terbuka:</p>
+<p class="font-label-sm text-label-sm text-amber-900">Weekend 2x XP Boost + 50 Obsidian Coins per mahasiswa!</p>
+</div>
+</div>
+<!-- Quick Action to Contribute -->
+<button class="w-full mt-6 py-3 px-4 rounded-xl bg-emerald-mint hover:bg-emerald-mint-shadow text-white font-label-lg text-label-lg font-bold border-b-[4px] border-[#047857] active:translate-y-[2px] active:border-b-[2px] transition-all flex items-center justify-center gap-2 shadow-md">
+<span class="material-symbols-outlined" data-icon="play_circle">play_circle</span>
+              Mainkan Match Grammar Sekarang (+60 XP)
+            </button>
+</div>
+<!-- Card: Next League Tier Preview (Master League Perks) -->
+<div class="p-6 rounded-3xl bg-surface-glass backdrop-blur-md border border-outline-variant/60 shadow-sm space-y-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-indigo-100 text-electric-violet flex items-center justify-center font-bold">
+<span class="material-symbols-outlined text-[24px]" data-icon="shield_with_heart" data-weight="fill" style="font-variation-settings: 'FILL' 1;">shield_with_heart</span>
+</div>
+<div>
+<h4 class="font-title-md text-title-md font-bold text-on-surface">Target: Liga Master</h4>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Tier Kompetisi Tertinggi Kampus</p>
+</div>
+</div>
+<ul class="space-y-2.5 pt-1">
+<li class="flex items-start gap-2.5 text-sm text-on-surface">
+<span class="material-symbols-outlined text-emerald-mint text-[18px] shrink-0" data-icon="check_circle">check_circle</span>
+<span>Akses ujian simulasi <strong>TOEFL iBT Resmi</strong> tanpa biaya koin.</span>
+</li>
+<li class="flex items-start gap-2.5 text-sm text-on-surface">
+<span class="material-symbols-outlined text-emerald-mint text-[18px] shrink-0" data-icon="check_circle">check_circle</span>
+<span>Aura badge profil bercahaya ungu neon di forum diskusi.</span>
+</li>
+<li class="flex items-start gap-2.5 text-sm text-on-surface">
+<span class="material-symbols-outlined text-emerald-mint text-[18px] shrink-0" data-icon="check_circle">check_circle</span>
+<span>Multiplier reward harian naik dari 1.2x menjadi <strong>1.5x XP</strong>.</span>
+</li>
+</ul>
+<div class="pt-2">
+<a class="inline-flex items-center gap-1.5 text-electric-violet hover:text-electric-violet-deep font-label-md text-label-md font-bold transition-colors" href="#">
+                Pelajari Detail Sistem Liga &amp; ELO
+                <span class="material-symbols-outlined text-[16px]" data-icon="arrow_forward">arrow_forward</span>
+</a>
+</div>
+</div>
+<!-- Guild Battle Banner Widget -->
+<div class="p-5 rounded-2xl bg-gradient-to-br from-indigo-900 to-slate-900 text-white shadow-md relative overflow-hidden">
+<div class="flex items-center justify-between mb-2">
+<span class="text-xs font-black tracking-wider uppercase text-sunburst-amber flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]" data-icon="swords">swords</span>
+                Guild Clash Berikutnya
+              </span>
+<span class="text-[11px] bg-white/20 px-2 py-0.5 rounded-full font-bold">Sabtu, 19:00 WIB</span>
+</div>
+<p class="font-title-md text-title-md font-bold">Kelas 3B vs Kelas 3A</p>
+<p class="font-label-sm text-label-sm text-white/70 mt-1">Perebutan Piala Rektor Vocab Sprint 50 Soal!</p>
+<button class="mt-4 w-full py-2 bg-white/10 hover:bg-white/20 rounded-xl text-white font-label-md text-label-md font-bold border border-white/20 transition-all text-center">
+              Daftar Roster Tim Kelas (3/5 Terisi)
+            </button>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- Interactive JavaScript for micro-interactions -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Simple countdown ticker simulation
+      let hours = 14;
+      let minutes = 48;
+      const hoursEl = document.getElementById('countdown-hours');
+      
+      setInterval(() => {
+        minutes--;
+        if (minutes < 0) {
+          minutes = 59;
+          hours--;
+        }
+        if (hoursEl) {
+          hoursEl.textContent = `${hours} Jam ${minutes} M`;
+        }
+      }, 60000);
+
+      // Tactile sound click visual feedback
+      const buttons = document.querySelectorAll('button');
+      buttons.forEach(btn => {
+        btn.addEventListener('click', function() {
+          this.classList.add('scale-[0.98]');
+          setTimeout(() => this.classList.remove('scale-[0.98]'), 100);
+        });
+      });
+    });
+  </script>
+</body></html>

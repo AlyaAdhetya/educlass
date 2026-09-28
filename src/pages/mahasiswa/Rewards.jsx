@@ -1,100 +1,185 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDataStore } from '../../store/dataStore';
-import { Gift, Award, Lock, Sparkles } from 'lucide-react';
+import HootieMascot from '../../components/mascot/HootieMascot';
+import { motion, AnimatePresence } from 'framer-motion';
+import confetti from 'canvas-confetti';
 
-export default function Rewards() {
-  const { userStats, achievements, rewards, unlocked } = useDataStore();
+export default function ScholarShop() {
+  const { userStats, shopItems, inventory, buyItem, addGems } = useDataStore();
+  const [activeCategory, setActiveCategory] = useState('all');
+  const [chestClaimed, setChestClaimed] = useState(false);
+  const [purchaseSuccess, setPurchaseSuccess] = useState('');
+
+  const filteredItems =
+    activeCategory === 'all'
+      ? shopItems
+      : shopItems.filter((i) => i.category === activeCategory);
+
+  const handleClaimChest = () => {
+    if (chestClaimed) return;
+    setChestClaimed(true);
+    addGems(100);
+    confetti({
+      particleCount: 80,
+      spread: 70,
+      origin: { y: 0.5 },
+    });
+  };
+
+  const handleBuy = (item) => {
+    if (userStats.gems < item.priceGems) {
+      alert('Permata tidak cukup! Selesaikan kuis atau misi harian untuk menambah permata.');
+      return;
+    }
+    buyItem(item.id);
+    setPurchaseSuccess(`Berhasil membeli ${item.name}!`);
+    confetti({
+      particleCount: 40,
+      spread: 50,
+      origin: { y: 0.8 },
+    });
+    setTimeout(() => setPurchaseSuccess(''), 3000);
+  };
 
   return (
-    <div className="min-h-screen bg-slate-50 p-6 md:p-8">
-      <div className="max-w-5xl mx-auto space-y-8">
-        <div>
-          <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">Rewards & Achievements</h1>
-          <p className="text-slate-500 mt-2">Kumpulkan XP untuk membuka tema dan konten eksklusif.</p>
-        </div>
+    <div className="max-w-[1400px] mx-auto px-4 md:px-8 py-6 space-y-8">
+      {/* ================= HERO BANNER: DAILY FREE MYSTERY CHEST ================= */}
+      <section className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-indigo-600 via-purple-600 to-sky-600 p-6 md:p-8 text-white shadow-lg border-b-[6px] border-indigo-950">
+        <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="space-y-2 max-w-xl text-center md:text-left">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-[10px] font-extrabold tracking-wide uppercase">
+              <span className="material-symbols-outlined text-sm text-amber-300 fill-icon">stars</span>
+              Bonus Harian Mahasiswa
+            </div>
+            <h1 className="text-xl md:text-3xl font-black tracking-tight leading-tight">
+              Toko Game & Kustomisasi Avatar
+            </h1>
+            <p className="text-xs md:text-sm text-white/90 leading-relaxed">
+              Tukarkan Permata hasil kuis akademis dengan booster ujian, perlindungan streak, serta ornamen avatar wisuda legendaris.
+            </p>
+          </div>
 
-        {/* Current XP Status */}
-        <div className="bg-gradient-to-r from-amber-500 to-orange-500 rounded-2xl p-6 text-white shadow-lg flex flex-col md:flex-row items-center justify-between gap-4 relative overflow-hidden">
-          <div className="absolute top-0 right-0 p-8 opacity-10">
-            <Sparkles className="w-32 h-32" />
-          </div>
-          <div className="relative z-10 text-center md:text-left">
-            <p className="text-amber-100 font-bold uppercase tracking-wider text-sm mb-1">Total XP Kamu</p>
-            <h2 className="text-4xl md:text-5xl font-extrabold">{userStats.total_xp} XP</h2>
-          </div>
-          <div className="relative z-10 bg-white/20 backdrop-blur-sm rounded-xl p-4 text-center">
-            <p className="text-sm font-semibold text-amber-50 mb-1">Level Saat Ini</p>
-            <p className="text-xl font-bold">{userStats.levelName}</p>
+          {/* Interactive Daily Chest Box */}
+          <div className="shrink-0 flex flex-col items-center p-4 bg-white/10 backdrop-blur-md rounded-3xl border-2 border-white/30 shadow-inner text-center">
+            <motion.div
+              whileHover={{ scale: 1.1, rotate: -3 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={handleClaimChest}
+              className="w-16 h-16 rounded-2xl bg-gradient-to-b from-amber-300 to-amber-500 border-b-4 border-amber-800 flex items-center justify-center shadow-lg cursor-pointer"
+            >
+              <span className="material-symbols-outlined text-3xl text-amber-950 fill-icon">
+                inventory_2
+              </span>
+            </motion.div>
+            <span className="text-xs font-black mt-2 text-white">Daily Mystery Chest</span>
+            <span className="text-[10px] text-amber-200 font-semibold mb-2">
+              {chestClaimed ? 'Sudah Diklaim Hari Ini' : 'Berisi +100 Permata Gratis'}
+            </span>
+            <button
+              onClick={handleClaimChest}
+              disabled={chestClaimed}
+              className={`tactile-btn px-4 py-2 font-black rounded-xl border-b-[4px] text-xs shadow-md cursor-pointer ${
+                chestClaimed
+                  ? 'bg-slate-400 border-slate-600 text-white cursor-not-allowed'
+                  : 'bg-emerald-500 hover:bg-emerald-600 border-emerald-700 text-white'
+              }`}
+            >
+              {chestClaimed ? 'Telah Diklaim' : 'Klaim Gratis Sekarang!'}
+            </button>
           </div>
         </div>
+      </section>
 
-        {/* Unlocks / Rewards */}
-        <div className="space-y-4">
-          <h2 className="text-xl font-bold text-slate-800 flex items-center gap-2 border-b border-slate-200 pb-2">
-            <Gift className="w-5 h-5 text-blue-600" />
-            Unlockable Rewards
-          </h2>
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {rewards.map(reward => {
-              const isUnlocked = userStats.total_xp >= reward.requirement_xp;
-              return (
-                <div key={reward.id} className={`p-5 rounded-2xl border flex items-center gap-4 transition-all ${
-                  isUnlocked ? 'bg-white border-emerald-200 shadow-sm' : 'bg-slate-100 border-slate-200 opacity-80'
-                }`}>
-                  <div className={`w-14 h-14 rounded-full flex items-center justify-center text-2xl shrink-0 ${
-                    isUnlocked ? 'bg-emerald-100' : 'bg-slate-200 grayscale'
-                  }`}>
-                    {reward.icon}
+      {/* Success alert */}
+      {purchaseSuccess && (
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="p-3.5 bg-emerald-50 border border-emerald-300 text-emerald-900 rounded-2xl text-xs font-black flex items-center gap-2"
+        >
+          <span className="material-symbols-outlined text-emerald-600 fill-icon text-base">check_circle</span>
+          {purchaseSuccess}
+        </motion.div>
+      )}
+
+      {/* ================= CATEGORY TABS ================= */}
+      <div className="flex items-center gap-2 border-b border-indigo-100 pb-3">
+        <button
+          onClick={() => setActiveCategory('all')}
+          className={`px-4 py-2 rounded-xl text-xs font-black transition-all cursor-pointer ${
+            activeCategory === 'all'
+              ? 'bg-indigo-600 text-white border-b-2 border-indigo-900 shadow-xs'
+              : 'text-slate-600 hover:bg-slate-100'
+          }`}
+        >
+          Semua Item
+        </button>
+        <button
+          onClick={() => setActiveCategory('perks')}
+          className={`px-4 py-2 rounded-xl text-xs font-black transition-all cursor-pointer ${
+            activeCategory === 'perks'
+              ? 'bg-indigo-600 text-white border-b-2 border-indigo-900 shadow-xs'
+              : 'text-slate-600 hover:bg-slate-100'
+          }`}
+        >
+          Academic Perks & Boosters
+        </button>
+        <button
+          onClick={() => setActiveCategory('avatar')}
+          className={`px-4 py-2 rounded-xl text-xs font-black transition-all cursor-pointer ${
+            activeCategory === 'avatar'
+              ? 'bg-indigo-600 text-white border-b-2 border-indigo-900 shadow-xs'
+              : 'text-slate-600 hover:bg-slate-100'
+          }`}
+        >
+          Perlengkapan Avatar & Wisuda
+        </button>
+      </div>
+
+      {/* ================= CATALOG GRID ================= */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {filteredItems.map((item) => {
+          const isOwned = inventory.includes(item.id);
+          return (
+            <motion.div
+              key={item.id}
+              whileHover={{ y: -4 }}
+              className="bg-white rounded-3xl p-5 border border-indigo-100 shadow-xs hover:shadow-md transition-all flex flex-col justify-between"
+            >
+              <div>
+                <div className="flex items-start justify-between mb-4">
+                  <div className="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center border border-indigo-100 shadow-2xs">
+                    <span className="material-symbols-outlined text-2xl fill-icon">{item.icon}</span>
                   </div>
-                  <div className="flex-1">
-                    <h3 className={`font-bold text-sm ${isUnlocked ? 'text-slate-900' : 'text-slate-500'}`}>{reward.name}</h3>
-                    <p className="text-xs text-slate-500">{reward.type === 'theme' ? 'Tema Tampilan' : 'Konten Ekstra'}</p>
-                    
-                    <div className="mt-2 text-[11px] font-bold">
-                      {isUnlocked ? (
-                        <span className="text-emerald-600 flex items-center gap-1">
-                          Terbuka 🎉
-                        </span>
-                      ) : (
-                        <span className="text-slate-500 flex items-center gap-1">
-                          <Lock className="w-3 h-3" /> Butuh {reward.requirement_xp} XP
-                        </span>
-                      )}
-                    </div>
-                  </div>
+                  <span className="flex items-center gap-1 px-3 py-1 rounded-full bg-sky-50 text-sky-700 font-black text-xs border border-sky-200">
+                    <span className="material-symbols-outlined text-sm fill-icon text-sky-500">
+                      diamond
+                    </span>
+                    {item.priceGems}
+                  </span>
                 </div>
-              );
-            })}
-          </div>
-        </div>
 
-        {/* Badges / Achievements */}
-        <div className="space-y-4 pt-4">
-          <h2 className="text-xl font-bold text-slate-800 flex items-center gap-2 border-b border-slate-200 pb-2">
-            <Award className="w-5 h-5 text-purple-600" />
-            Badges & Achievements
-          </h2>
-          <div className="grid gap-4 md:grid-cols-2">
-            {achievements.map(achieve => {
-              const hasBadge = unlocked.achievements.includes(achieve.id);
-              return (
-                <div key={achieve.id} className={`p-4 rounded-2xl border flex items-center gap-4 ${
-                  hasBadge ? 'bg-white border-purple-200 shadow-sm' : 'bg-slate-50 border-slate-200'
-                }`}>
-                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-xl shrink-0 ${
-                    hasBadge ? 'bg-purple-100 shadow-inner' : 'bg-slate-200 grayscale opacity-40'
-                  }`}>
-                    {achieve.icon}
-                  </div>
-                  <div>
-                    <h3 className={`font-bold text-sm ${hasBadge ? 'text-slate-900' : 'text-slate-500'}`}>{achieve.name}</h3>
-                    <p className="text-xs text-slate-500">{achieve.description}</p>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
+                <h3 className="text-sm font-black text-slate-900 mb-1">{item.name}</h3>
+                <p className="text-xs text-slate-500 leading-relaxed mb-4">{item.description}</p>
+              </div>
+
+              <button
+                onClick={() => handleBuy(item)}
+                disabled={isOwned}
+                className={`tactile-btn w-full py-2.5 px-4 rounded-xl font-black text-xs border-b-[4px] flex items-center justify-center gap-2 cursor-pointer ${
+                  isOwned
+                    ? 'bg-slate-100 text-slate-400 border-slate-300 cursor-not-allowed'
+                    : 'bg-indigo-600 hover:bg-indigo-700 text-white border-indigo-900 shadow-xs'
+                }`}
+              >
+                <span className="material-symbols-outlined text-sm">
+                  {isOwned ? 'check' : 'shopping_bag'}
+                </span>
+                {isOwned ? 'Sudah Dimiliki' : `Beli Sekarang (${item.priceGems} Gems)`}
+              </button>
+            </motion.div>
+          );
+        })}
       </div>
     </div>
   );

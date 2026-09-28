@@ -2,67 +2,52 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuthStore } from '../../store/authStore';
 import { 
-  BookOpen, 
   GraduationCap, 
   ShieldCheck, 
-  Flame, 
-  Sparkles, 
-  Award, 
-  CheckCircle2, 
-  ArrowRight, 
   Eye, 
   EyeOff, 
   Mail, 
   Lock, 
-  Zap, 
-  School,
-  FileCheck,
-  TrendingUp
+  ArrowRight,
+  HelpCircle,
+  CheckCircle2,
+  BookOpen,
+  Flame,
+  Users,
+  Shield,
+  Building2,
+  Sparkles
 } from 'lucide-react';
+import EduLogo from '../../components/mascot/EduLogo';
 
 export default function Login() {
-  const [email, setEmail] = useState('budi.santoso@student.kampus.ac.id');
+  const [email, setEmail] = useState('budi.santoso@mahasiswa.ac.id');
   const [password, setPassword] = useState('••••••••');
   const [role, setRole] = useState('mahasiswa');
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(true);
-  const [isNewStudent, setIsNewStudent] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
   const setAuth = useAuthStore((state) => state.setAuth);
 
-  const roleConfigs = {
-    mahasiswa: {
-      title: 'Mahasiswa',
-      subtitle: 'Belajar, latihan soal, & kumpulkan XP',
-      icon: GraduationCap,
-      color: 'blue',
-      defaultEmail: 'budi.santoso@student.kampus.ac.id',
-      badgeText: 'Portal Pelajar',
-      placeholder: 'nim@student.kampus.ac.id'
-    },
-    admin: {
-      title: 'Administrator',
-      subtitle: 'Kelola sistem, materi, kuis & pengguna',
-      icon: ShieldCheck,
-      color: 'amber',
-      defaultEmail: 'admin@educlass.ac.id',
-      badgeText: 'Admin Panel',
-      placeholder: 'admin@educlass.ac.id'
+  const handleRoleChange = (newRole) => {
+    setRole(newRole);
+    if (newRole === 'mahasiswa') {
+      setEmail('budi.santoso@mahasiswa.ac.id');
+    } else {
+      setEmail('admin@educlass.ac.id');
     }
   };
 
-  const handleRoleChange = (newRole) => {
-    setRole(newRole);
-    setEmail(roleConfigs[newRole].defaultEmail);
-  };
-
-  const handleQuickDemo = (demoRole, isNew = false) => {
+  const handleQuickDemo = (demoRole) => {
     setRole(demoRole);
-    setEmail(roleConfigs[demoRole].defaultEmail);
+    if (demoRole === 'mahasiswa') {
+      setEmail('budi.santoso@mahasiswa.ac.id');
+    } else {
+      setEmail('admin@educlass.ac.id');
+    }
     setPassword('demo12345');
-    setIsNewStudent(isNew);
   };
 
   const handleLogin = (e) => {
@@ -77,331 +62,319 @@ export default function Login() {
       } else {
         navigate('/admin');
       }
-    }, 450);
+    }, 400);
   };
 
   return (
-    <div className="min-h-screen w-full flex flex-col lg:flex-row bg-slate-50 text-slate-900 font-sans selection:bg-blue-600 selection:text-white">
+    <div className="min-h-screen w-full flex flex-col lg:flex-row bg-white text-slate-900 font-sans selection:bg-blue-600 selection:text-white">
       
-      {/* SISI KIRI: Branding Akademik & Showcase Gamifikasi (Desktop Showcase) */}
-      <div className="relative hidden lg:flex lg:w-1/2 xl:w-[52%] flex-col justify-between p-12 overflow-hidden bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 text-white">
+      {/* SISI KIRI: Showcase Maskot & Branding Akademik (Sesuai Desain Image 3) */}
+      <div className="relative hidden lg:flex lg:w-1/2 xl:w-[50%] flex-col justify-between p-10 xl:p-14 overflow-hidden bg-gradient-to-br from-blue-50/90 via-indigo-50/60 to-sky-100/50 border-r border-slate-200/80">
         
-        {/* Background Ambient Glow & Grid Lines */}
-        <div className="absolute -top-32 -left-32 w-96 h-96 bg-blue-600/20 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute -bottom-32 -right-32 w-96 h-96 bg-indigo-500/20 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute inset-0 bg-[radial-gradient(#3b82f6_1px,transparent_1px)] [background-size:28px_28px] opacity-10 pointer-events-none" />
+        {/* Soft Ambient Glows */}
+        <div className="absolute -top-24 -left-24 w-80 h-80 bg-blue-400/20 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-24 -right-24 w-80 h-80 bg-indigo-400/20 rounded-full blur-3xl pointer-events-none" />
 
-        {/* Top Section: Logo & Badge */}
+        {/* Top Header: Logo & Official Badge */}
         <div className="relative z-10 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="h-11 w-11 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center shadow-lg shadow-blue-500/30 ring-1 ring-white/20">
-              <BookOpen className="h-6 w-6 text-white" />
-            </div>
-            <div>
-              <span className="text-2xl font-bold tracking-tight bg-gradient-to-r from-white via-slate-100 to-slate-300 bg-clip-text text-transparent">
-                EduClass<span className="text-blue-400">.</span>
-              </span>
-              <p className="text-xs text-slate-400 font-medium tracking-wider uppercase">Academic English Hub</p>
-            </div>
-          </div>
-
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-white/10 backdrop-blur-md border border-white/10 text-blue-200">
-            <Sparkles className="w-3.5 h-3.5 text-blue-400" />
-            Standar CEFR & Gamifikasi
+          <EduLogo size="md" />
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/90 border border-blue-200 text-blue-700 text-xs font-bold shadow-xs">
+            <CheckCircle2 className="w-3.5 h-3.5 text-blue-600" />
+            Official TOEFL Prep
           </div>
         </div>
 
-        {/* Middle Section: Hero Value Proposition & Interactive Gamification Showcase */}
-        <div className="relative z-10 my-auto py-8 space-y-8 max-w-xl">
-          <div className="space-y-3">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg text-xs font-semibold bg-blue-500/10 border border-blue-500/30 text-blue-300">
-              <Award className="w-4 h-4 text-amber-400" />
-              Pembelajaran Berbasis Kemampuan Nyata
-            </div>
-            <h1 className="text-3xl xl:text-4xl font-extrabold leading-tight tracking-tight text-white">
-              Kuasai Bahasa Inggris Akademik dengan Alur yang Menyenangkan.
-            </h1>
-            <p className="text-slate-300 text-sm xl:text-base leading-relaxed">
-              Platform blended learning terintegrasi kampus yang memadukan kurikulum berjenjang CEFR, persiapan TOEFL/IELTS, serta motivasi gamifikasi harian.
+        {/* Center: Speech Bubble, Mascot Image, & Headlines */}
+        <div className="relative z-10 my-auto py-6 flex flex-col items-center text-center max-w-lg mx-auto">
+          {/* Floating Speech Bubble */}
+          <div className="relative mb-5 bg-white px-5 py-3 rounded-2xl border border-blue-100 shadow-md max-w-md animate-fade-in">
+            <p className="text-xs font-bold text-slate-700 flex items-center justify-center gap-1.5">
+              <span>👋</span>
+              Halo Calon Scholar! Siap taklukkan target skor TOEFL ITP hari ini?
             </p>
+            {/* Bubble arrow */}
+            <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-white border-b border-r border-blue-100 transform rotate-45" />
           </div>
 
-          {/* Gamification Live Preview Cards (Asik & Interaktif) */}
-          <div className="grid grid-cols-2 gap-4">
-            {/* Card 1: Streak */}
-            <div className="p-4 rounded-2xl bg-white/5 backdrop-blur-md border border-white/10 hover:border-white/20 transition-all hover:bg-white/[0.07] group">
-              <div className="flex items-center justify-between mb-3">
-                <div className="w-10 h-10 rounded-xl bg-orange-500/20 text-orange-400 flex items-center justify-center ring-1 ring-orange-500/30">
-                  <Flame className="w-5 h-5 text-orange-400 fill-orange-400/30 animate-pulse" />
-                </div>
-                <span className="text-xs font-bold text-orange-300 bg-orange-500/10 px-2 py-0.5 rounded-full border border-orange-500/20">
-                  Aktif
-                </span>
-              </div>
-              <div className="text-2xl font-extrabold text-white tracking-tight group-hover:text-orange-300 transition-colors">
-                14 Hari
-              </div>
-              <div className="text-xs text-slate-400 mt-0.5">Daily Study Streak! 🔥</div>
-            </div>
-
-            {/* Card 2: CEFR Level */}
-            <div className="p-4 rounded-2xl bg-white/5 backdrop-blur-md border border-white/10 hover:border-white/20 transition-all hover:bg-white/[0.07] group">
-              <div className="flex items-center justify-between mb-3">
-                <div className="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center ring-1 ring-emerald-500/30">
-                  <TrendingUp className="w-5 h-5 text-emerald-400" />
-                </div>
-                <span className="text-xs font-bold text-emerald-300 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
-                  CEFR B2
-                </span>
-              </div>
-              <div className="text-2xl font-extrabold text-white tracking-tight group-hover:text-emerald-300 transition-colors">
-                2,450 XP
-              </div>
-              <div className="text-xs text-slate-400 mt-0.5">Level Upper-Intermediate</div>
-            </div>
+          {/* 3D Mascot Image with subtle floating shadow */}
+          <div className="relative w-64 h-64 xl:w-72 xl:h-72 my-2 flex items-center justify-center">
+            <div className="absolute inset-0 bg-blue-400/20 rounded-full blur-2xl -z-10" />
+            <img
+              src="/mascot.jpg"
+              alt="Hootie the Scholar Owl"
+              className="w-full h-full object-contain drop-shadow-xl hover:scale-105 transition-transform duration-500 rounded-3xl"
+            />
           </div>
 
-          {/* Academic Features checklist */}
-          <div className="space-y-2.5 pt-2 text-sm text-slate-300">
-            <div className="flex items-center gap-2.5">
-              <CheckCircle2 className="w-4 h-4 text-blue-400 shrink-0" />
-              <span><strong>Placement Test Adaptif</strong> untuk penentuan level yang tepat dan objektif.</span>
-            </div>
-            <div className="flex items-center gap-2.5">
-              <CheckCircle2 className="w-4 h-4 text-blue-400 shrink-0" />
-              <span><strong>Terkoneksi Ruang Kelas Dosen</strong> dengan sistem rekap tugas & penilaian otomatis.</span>
-            </div>
-            <div className="flex items-center gap-2.5">
-              <CheckCircle2 className="w-4 h-4 text-blue-400 shrink-0" />
-              <span><strong>Simulasi TOEFL/IELTS</strong> terukur untuk kesiapan kelulusan dan karir global.</span>
-            </div>
-          </div>
+          {/* Headlines */}
+          <h2 className="text-lg xl:text-xl font-extrabold text-blue-900 mt-4">
+            Belajar Cerdas, Raih Beasiswa Impian
+          </h2>
+          <p className="text-xs text-slate-600 mt-2 leading-relaxed max-w-md">
+            Platform latihan adaptif CEFR & simulasi resmi TOEFL ITP berstandar kurikulum universitas.
+          </p>
         </div>
 
-        {/* Bottom Section: Formal Footer Note */}
-        <div className="relative z-10 pt-4 border-t border-white/10 flex items-center justify-between text-xs text-slate-400">
-          <div className="flex items-center gap-2">
-            <FileCheck className="w-4 h-4 text-slate-400" />
-            <span>EduClass Academic LMS Engine • Terhubung SIAD</span>
+        {/* Bottom Feature Badges (3 Pill Cards in a Row) */}
+        <div className="relative z-10 grid grid-cols-3 gap-3 pt-4 border-t border-blue-100/80">
+          <div className="bg-white/80 backdrop-blur-sm p-3 rounded-2xl border border-blue-100 shadow-xs flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+              <BookOpen className="w-4 h-4" />
+            </div>
+            <div className="text-left">
+              <p className="text-[9px] font-black uppercase text-slate-400">SILABUS</p>
+              <p className="text-xs font-extrabold text-slate-800 leading-tight">TOEFL ITP Prep</p>
+            </div>
           </div>
-          <span className="text-slate-500">v1.2 Standard</span>
+
+          <div className="bg-white/80 backdrop-blur-sm p-3 rounded-2xl border border-blue-100 shadow-xs flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
+              <Flame className="w-4 h-4 fill-amber-500" />
+            </div>
+            <div className="text-left">
+              <p className="text-[9px] font-black uppercase text-slate-400">SISTEM</p>
+              <p className="text-xs font-extrabold text-slate-800 leading-tight">Gamified XP</p>
+            </div>
+          </div>
+
+          <div className="bg-white/80 backdrop-blur-sm p-3 rounded-2xl border border-blue-100 shadow-xs flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+              <Users className="w-4 h-4" />
+            </div>
+            <div className="text-left">
+              <p className="text-[9px] font-black uppercase text-slate-400">KOMUNITAS</p>
+              <p className="text-xs font-extrabold text-slate-800 leading-tight">10.000+ Aktif</p>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* SISI KANAN: Formulir Login Modern & Interaktif */}
-      <div className="w-full lg:w-1/2 xl:w-[48%] flex flex-col justify-center items-center p-6 sm:p-10 lg:p-12 xl:p-16 relative">
-        
-        {/* Subtle decorative background for right pane */}
-        <div className="absolute top-0 right-0 w-80 h-80 bg-blue-500/5 rounded-full blur-3xl pointer-events-none" />
+      {/* SISI KANAN: Formulir Login Akademik (Sesuai Desain Image 3) */}
+      <div className="flex-1 flex flex-col justify-between p-6 sm:p-10 lg:p-12 xl:p-14 overflow-y-auto">
+        {/* Top Utility Links */}
+        <div className="flex items-center justify-end gap-3 text-xs text-slate-500">
+          <button className="hover:text-blue-600 flex items-center gap-1 transition-colors">
+            <HelpCircle className="w-3.5 h-3.5" />
+            Pusat Bantuan
+          </button>
+          <span>•</span>
+          <span className="flex items-center gap-1.5 text-emerald-600 font-bold">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+            Sistem Normal
+          </span>
+        </div>
 
-        <div className="w-full max-w-md space-y-6 relative z-10">
-          
-          {/* Mobile Header (Shown on mobile only) */}
-          <div className="lg:hidden flex items-center justify-between pb-2 border-b border-slate-200 mb-2">
-            <div className="flex items-center gap-2.5">
-              <div className="h-9 w-9 rounded-lg bg-blue-600 flex items-center justify-center text-white shadow-md">
-                <BookOpen className="h-5 w-5" />
-              </div>
-              <span className="text-xl font-bold tracking-tight text-slate-900">
-                EduClass<span className="text-blue-600">.</span>
-              </span>
+        {/* Main Login Form Container */}
+        <div className="max-w-md w-full mx-auto my-auto py-6 space-y-6">
+          {/* Header Title & Portal Badge */}
+          <div className="space-y-2">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-[10px] font-black tracking-wider uppercase border border-blue-100">
+              <Lock className="w-3 h-3 text-blue-600" />
+              Portal Login Akademik
             </div>
-            <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 border border-blue-200">
-              Kampus Portal
-            </span>
-          </div>
-
-          {/* Form Header */}
-          <div className="space-y-1.5">
-            <div className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-blue-600">
-              <Zap className="w-3.5 h-3.5" />
-              Akses Portal Akademik
-            </div>
-            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">
-              Selamat Datang Kembali 👋
-            </h2>
-            <p className="text-sm text-slate-500">
-              Pilih peran Anda dan masuk untuk melanjutkan aktivitas perkuliahan.
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+              Masuk ke EduClass
+            </h1>
+            <p className="text-xs sm:text-sm text-slate-500 leading-relaxed">
+              Lanjutkan perjalanan persiapan TOEFL & sertifikasi akademikmu hari ini.
             </p>
           </div>
 
-          {/* Role Selector Tabs (Modern Segmented Picker) */}
-          <div className="space-y-2">
-            <label className="text-xs font-semibold text-slate-700 uppercase tracking-wider block">
-              Masuk Sebagai Peran:
-            </label>
-            <div className="grid grid-cols-2 gap-2 p-1 bg-slate-100/90 rounded-xl border border-slate-200/80">
-              {Object.entries(roleConfigs).map(([key, config]) => {
-                const IconComponent = config.icon;
-                const isSelected = role === key;
-                return (
-                  <button
-                    key={key}
-                    type="button"
-                    onClick={() => handleRoleChange(key)}
-                    className={`flex flex-col items-center justify-center py-2.5 px-2 rounded-lg text-xs font-medium transition-all duration-200 cursor-pointer ${
-                      isSelected
-                        ? 'bg-white text-blue-600 shadow-sm border border-slate-200 font-bold scale-[1.02]'
-                        : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/50'
-                    }`}
-                  >
-                    <IconComponent className={`w-4 h-4 mb-1 ${isSelected ? 'text-blue-600' : 'text-slate-500'}`} />
-                    <span className="truncate">{config.title.split(' ')[0]}</span>
-                  </button>
-                );
-              })}
-            </div>
+          {/* Segmented Role Selector */}
+          <div className="grid grid-cols-2 p-1.5 bg-slate-100 rounded-2xl border border-slate-200">
+            <button
+              type="button"
+              onClick={() => handleRoleChange('mahasiswa')}
+              className={`py-2.5 px-3 rounded-xl text-xs font-extrabold transition-all flex items-center justify-center gap-2 cursor-pointer ${
+                role === 'mahasiswa'
+                  ? 'bg-blue-600 text-white shadow-sm'
+                  : 'text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              <GraduationCap className="w-4 h-4" />
+              Mahasiswa
+            </button>
+            <button
+              type="button"
+              onClick={() => handleRoleChange('admin')}
+              className={`py-2.5 px-3 rounded-xl text-xs font-extrabold transition-all flex items-center justify-center gap-2 cursor-pointer ${
+                role === 'admin'
+                  ? 'bg-blue-600 text-white shadow-sm'
+                  : 'text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              <ShieldCheck className="w-4 h-4" />
+              Administrator
+            </button>
           </div>
 
-          {/* Quick Demo Switcher (Sangat Membantu Sidang & Presentasi!) */}
-          <div className="p-3 bg-gradient-to-r from-blue-50/70 to-indigo-50/70 rounded-xl border border-blue-100 space-y-2">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-1.5 text-xs font-semibold text-blue-900">
-                <Zap className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
-                <span>Isi Cepat Akun Demo (1-Klik):</span>
-              </div>
-              <span className="text-[10px] text-blue-600 bg-blue-100/60 font-medium px-1.5 py-0.5 rounded">
-                Untuk Presentasi
-              </span>
-            </div>
-            
-            <div className="flex flex-wrap gap-1.5">
-              <button
-                type="button"
-                onClick={() => handleQuickDemo('mahasiswa', false)}
-                className="text-[11px] px-2.5 py-1 bg-white hover:bg-blue-600 hover:text-white text-slate-700 font-medium rounded-lg border border-slate-200 shadow-xs transition-colors cursor-pointer"
-              >
-                🎓 Mahasiswa
-              </button>
-              <button
-                type="button"
-                onClick={() => handleQuickDemo('admin', false)}
-                className="text-[11px] px-2.5 py-1 bg-white hover:bg-amber-600 hover:text-white text-slate-700 font-medium rounded-lg border border-slate-200 shadow-xs transition-colors cursor-pointer"
-              >
-                🛡️ Admin
-              </button>
-            </div>
-          </div>
-
-          {/* Main Login Form */}
+          {/* Form */}
           <form onSubmit={handleLogin} className="space-y-4">
-            
-            {/* Email Input */}
-            <div className="space-y-1.5">
-              <label htmlFor="email" className="text-xs font-semibold text-slate-700">
-                Alamat Email Kampus / Akun
+            {/* Email Field */}
+            <div className="space-y-1.5 text-left">
+              <label className="block text-xs font-bold text-slate-700">
+                Email Kampus / Akun EduClass
               </label>
-              <div className="relative rounded-xl shadow-2xs">
+              <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
-                  <Mail className="h-4 w-4" />
+                  <Mail className="w-4 h-4" />
                 </div>
                 <input
-                  id="email"
-                  name="email"
                   type="email"
-                  autoComplete="username"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder={roleConfigs[role].placeholder}
-                  className="block w-full rounded-xl border border-slate-200 bg-white pl-10 pr-3.5 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-500/10 transition-all"
+                  placeholder={role === 'mahasiswa' ? 'budi.santoso@mahasiswa.ac.id' : 'admin@educlass.ac.id'}
+                  className="w-full pl-10 pr-4 py-2.5 sm:py-3 bg-white border border-slate-200 rounded-xl text-xs sm:text-sm font-medium focus:outline-hidden focus:border-blue-600 focus:ring-2 focus:ring-blue-100 transition-all text-slate-800"
                 />
               </div>
             </div>
 
-            {/* Password Input with Show/Hide Toggle */}
-            <div className="space-y-1.5">
+            {/* Password Field */}
+            <div className="space-y-1.5 text-left">
               <div className="flex items-center justify-between">
-                <label htmlFor="password" className="text-xs font-semibold text-slate-700">
+                <label className="block text-xs font-bold text-slate-700">
                   Kata Sandi
                 </label>
                 <button
                   type="button"
-                  onClick={() => alert('Fitur reset kata sandi: Silakan hubungi Unit Akademik Kampus atau gunakan fasilitas SSO.')}
-                  className="text-xs text-blue-600 hover:text-blue-700 hover:underline font-medium cursor-pointer"
+                  className="text-[11px] font-bold text-blue-600 hover:underline cursor-pointer"
                 >
-                  Lupa sandi?
+                  Lupa kata sandi?
                 </button>
               </div>
-              <div className="relative rounded-xl shadow-2xs">
+              <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
-                  <Lock className="h-4 w-4" />
+                  <Lock className="w-4 h-4" />
                 </div>
                 <input
-                  id="password"
-                  name="password"
                   type={showPassword ? 'text' : 'password'}
-                  autoComplete="current-password"
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Masukkan kata sandi Anda"
-                  className="block w-full rounded-xl border border-slate-200 bg-white pl-10 pr-10 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-500/10 transition-all"
+                  placeholder="••••••••"
+                  className="w-full pl-10 pr-10 py-2.5 sm:py-3 bg-white border border-slate-200 rounded-xl text-xs sm:text-sm font-medium focus:outline-hidden focus:border-blue-600 focus:ring-2 focus:ring-blue-100 transition-all text-slate-800 tracking-wider"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600 transition-colors cursor-pointer"
-                  aria-label={showPassword ? 'Sembunyikan password' : 'Tampilkan password'}
+                  className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600"
                 >
-                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
             </div>
 
-            {/* Remember Me & Student Placement Toggle */}
-            <div className="flex flex-col gap-2 pt-1 text-xs">
-              <div className="flex items-center justify-between">
-                <label className="flex items-center gap-2 cursor-pointer select-none text-slate-600 hover:text-slate-900">
-                  <input
-                    type="checkbox"
-                    checked={rememberMe}
-                    onChange={(e) => setRememberMe(e.target.checked)}
-                    className="w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500 focus:ring-offset-0 transition-colors cursor-pointer"
-                  />
-                  <span>Ingat sesi di perangkat ini</span>
-                </label>
-              </div>
+            {/* Remember & Safe Connection Badges */}
+            <div className="flex items-center justify-between pt-1">
+              <label className="flex items-center gap-2 cursor-pointer select-none">
+                <input
+                  type="checkbox"
+                  checked={rememberMe}
+                  onChange={(e) => setRememberMe(e.target.checked)}
+                  className="w-4 h-4 rounded text-blue-600 border-slate-300 focus:ring-blue-500"
+                />
+                <span className="text-xs text-slate-600">Ingat saya di perangkat ini</span>
+              </label>
+
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-[10px] font-bold border border-emerald-200">
+                <ShieldCheck className="w-3 h-3 text-emerald-600" />
+                Koneksi Aman
+              </span>
             </div>
 
             {/* Primary Submit Button */}
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full py-3 px-4 rounded-xl font-semibold text-sm text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 shadow-md shadow-blue-500/20 hover:shadow-lg hover:shadow-blue-500/30 transition-all duration-200 flex items-center justify-center gap-2 group cursor-pointer disabled:opacity-60 disabled:pointer-events-none active:scale-[0.99]"
+              className="w-full py-3 sm:py-3.5 px-4 bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs sm:text-sm rounded-xl border-b-2 border-blue-800 shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer"
             >
               {isLoading ? (
-                <>
-                  <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                  <span>Memverifikasi Kredensial...</span>
-                </>
+                <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
               ) : (
                 <>
-                  <span>Masuk sebagai {roleConfigs[role].title}</span>
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  <span>Masuk Sekarang</span>
+                  <ArrowRight className="w-4 h-4" />
                 </>
               )}
             </button>
           </form>
 
-          {/* Footer & Registration Link */}
-          <div className="pt-2 text-center text-xs text-slate-500 space-y-3">
-            <p>
-              Belum memiliki akun mahasiswa?{' '}
-              <Link to="/register" className="text-blue-600 font-semibold hover:underline">
-                Daftar akun baru di sini
-              </Link>
-            </p>
-
-            <div className="flex items-center justify-center gap-1 text-[11px] text-slate-400">
-              <Lock className="w-3 h-3 text-emerald-500" />
-              <span>Koneksi terenkripsi SSL 256-bit standar akademik</span>
+          {/* Quick Demo Access Divider */}
+          <div className="relative py-2">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-slate-200" />
+            </div>
+            <div className="relative flex justify-center text-xs">
+              <span className="px-3 bg-white text-slate-400 font-bold">
+                atau masuk cepat (Akses Demo)
+              </span>
             </div>
           </div>
 
+          {/* 2 Demo Cards (Matches Image 3) */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <button
+              type="button"
+              onClick={() => handleQuickDemo('mahasiswa')}
+              className={`p-3 rounded-2xl border text-left transition-all flex items-center gap-3 cursor-pointer ${
+                role === 'mahasiswa'
+                  ? 'border-blue-300 bg-blue-50/60 shadow-xs ring-1 ring-blue-300'
+                  : 'border-slate-200 hover:bg-slate-50'
+              }`}
+            >
+              <div className="w-9 h-9 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center shrink-0">
+                <GraduationCap className="w-5 h-5" />
+              </div>
+              <div>
+                <p className="text-xs font-black text-slate-900 leading-tight">Mahasiswa - Budi</p>
+                <p className="text-[10px] text-slate-500 mt-0.5">TOEFL Target 550</p>
+              </div>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => handleQuickDemo('admin')}
+              className={`p-3 rounded-2xl border text-left transition-all flex items-center gap-3 cursor-pointer ${
+                role === 'admin'
+                  ? 'border-blue-300 bg-blue-50/60 shadow-xs ring-1 ring-blue-300'
+                  : 'border-slate-200 hover:bg-slate-50'
+              }`}
+            >
+              <div className="w-9 h-9 rounded-xl bg-slate-100 text-slate-700 flex items-center justify-center shrink-0">
+                <ShieldCheck className="w-5 h-5" />
+              </div>
+              <div>
+                <p className="text-xs font-black text-slate-900 leading-tight">Admin - Super Admin</p>
+                <p className="text-[10px] text-slate-500 mt-0.5">Kelola Kurikulum</p>
+              </div>
+            </button>
+          </div>
+
+          {/* SSO Dikti Button */}
+          <button
+            type="button"
+            className="w-full py-2.5 px-4 bg-white hover:bg-slate-50 text-slate-700 font-bold text-xs rounded-xl border border-slate-200 flex items-center justify-center gap-2 transition-colors cursor-pointer"
+          >
+            <Building2 className="w-4 h-4 text-blue-600" />
+            <span>Masuk dengan Akun Kampus (SSO Dikti)</span>
+          </button>
+        </div>
+
+        {/* Footer info */}
+        <div className="pt-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 gap-2">
+          <div>
+            Belum punya akun?{' '}
+            <Link to="/register" className="text-blue-600 font-bold hover:underline">
+              Daftar gratis sekarang
+            </Link>
+          </div>
+          <div className="flex items-center gap-1.5 text-[11px]">
+            <Shield className="w-3.5 h-3.5 text-slate-400" />
+            Enkripsi Standar Dikti & Kemendikbud
+          </div>
         </div>
       </div>
-
     </div>
   );
 }

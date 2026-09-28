@@ -5,7 +5,7 @@ import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/input';
 import { Label } from '../../components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../../components/ui/card';
-import { BookOpen } from 'lucide-react';
+import EduMascot from '../../components/mascot/EduMascot';
 
 export default function Register() {
   const [name, setName] = useState('');
@@ -24,18 +24,16 @@ export default function Register() {
     
     if (role === 'mahasiswa') {
       navigate('/placement-test');
+    } else {
+      navigate('/admin');
     }
-    else if (role === 'dosen') navigate('/dosen');
-    else navigate('/admin');
   };
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-muted/40 p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1 items-center">
-          <div className="bg-primary/10 p-3 rounded-full mb-2">
-            <BookOpen className="h-6 w-6 text-primary" />
-          </div>
+          <EduMascot size="sm" showTail={false} mood="cheer" className="mb-2" />
           <CardTitle className="text-2xl font-bold">Daftar Akun Baru</CardTitle>
           <CardDescription>Buat akun untuk mulai menggunakan EduClass</CardDescription>
         </CardHeader>
@@ -82,8 +80,7 @@ export default function Register() {
                 onChange={(e) => setRole(e.target.value)}
               >
                 <option value="mahasiswa">Mahasiswa</option>
-                <option value="dosen">Dosen</option>
-                <option value="admin">Super Admin</option>
+                <option value="admin">Administrator</option>
               </select>
             </div>
             <Button type="submit" className="w-full">

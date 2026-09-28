@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>EduClass RPG - Marketplace & Avatar Customizer</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@100..900&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "surface-container-highest": "#dae2fd",
+            "sky-focus": "#0EA5E9",
+            "on-surface-variant": "#464554",
+            "on-primary-fixed-variant": "#2f2ebe",
+            "on-secondary-fixed": "#002113",
+            "primary": "#4648d4",
+            "electric-violet": "#6366F1",
+            "outline": "#767586",
+            "surface-card": "#FFFFFF",
+            "surface-bright": "#faf8ff",
+            "electric-violet-deep": "#4F46E5",
+            "surface": "#faf8ff",
+            "secondary": "#006c49",
+            "inverse-primary": "#c0c1ff",
+            "emerald-mint-shadow": "#047857",
+            "on-surface": "#131b2e",
+            "tertiary-container": "#a36700",
+            "error-container": "#ffdad6",
+            "on-tertiary-fixed-variant": "#653e00",
+            "on-primary": "#ffffff",
+            "inverse-on-surface": "#eef0ff",
+            "surface-variant": "#dae2fd",
+            "surface-tint": "#494bd6",
+            "on-tertiary": "#ffffff",
+            "coral-pulse": "#F43F5E",
+            "primary-fixed": "#e1e0ff",
+            "surface-container-low": "#f2f3ff",
+            "on-primary-fixed": "#07006c",
+            "sunburst-amber-shadow": "#B45309",
+            "primary-fixed-dim": "#c0c1ff",
+            "sunburst-amber": "#F59E0B",
+            "surface-container-lowest": "#ffffff",
+            "coral-pulse-shadow": "#BE123C",
+            "secondary-container": "#6cf8bb",
+            "on-error-container": "#93000a",
+            "secondary-fixed-dim": "#4edea3",
+            "on-tertiary-fixed": "#2a1700",
+            "on-secondary-fixed-variant": "#005236",
+            "on-secondary": "#ffffff",
+            "on-primary-container": "#fffbff",
+            "surface-glass": "rgba(255, 255, 255, 0.82)",
+            "on-secondary-container": "#00714d",
+            "outline-variant": "#c7c4d7",
+            "secondary-fixed": "#6ffbbe",
+            "background": "#faf8ff",
+            "on-background": "#131b2e",
+            "tertiary": "#825100",
+            "tertiary-fixed-dim": "#ffb95f",
+            "electric-violet-shadow": "#3730A3",
+            "surface-dim": "#d2d9f4",
+            "surface-container": "#eaedff",
+            "on-tertiary-container": "#fffbff",
+            "surface-container-high": "#e2e7ff",
+            "emerald-mint": "#10B981",
+            "inverse-surface": "#283044",
+            "tertiary-fixed": "#ffddb8",
+            "error": "#ba1a1a",
+            "primary-container": "#6063ee",
+            "on-error": "#ffffff",
+            "surface-canvas": "#F8FAFC"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-md": "1rem",
+            "space-xl": "2rem",
+            "gutter-sm": "1rem",
+            "margin-mobile": "1rem",
+            "gutter": "1.5rem",
+            "space-lg": "1.5rem",
+            "space-2xl": "3rem",
+            "space-sm": "0.5rem",
+            "margin": "2rem",
+            "space-xs": "0.25rem"
+          },
+          "fontFamily": {
+            "display-hero": ["Plus Jakarta Sans"],
+            "title-md": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "label-md": ["Plus Jakarta Sans"],
+            "headline-lg-mobile": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "stat-counter": ["Plus Jakarta Sans"],
+            "body-lg": ["Plus Jakarta Sans"],
+            "label-lg": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"],
+            "body-strong": ["Plus Jakarta Sans"],
+            "label-sm": ["Plus Jakarta Sans"],
+            "display-hero-mobile": ["Plus Jakarta Sans"],
+            "headline-sm": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "display-hero": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.03em", "fontWeight": "800" }],
+            "title-md": ["18px", { "lineHeight": "26px", "fontWeight": "600" }],
+            "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.015em", "fontWeight": "700" }],
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "700" }],
+            "headline-lg-mobile": ["26px", { "lineHeight": "34px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "stat-counter": ["22px", { "lineHeight": "26px", "fontWeight": "800" }],
+            "body-lg": ["16px", { "lineHeight": "26px", "fontWeight": "400" }],
+            "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "700" }],
+            "body-md": ["14px", { "lineHeight": "22px", "fontWeight": "400" }],
+            "body-strong": ["14px", { "lineHeight": "22px", "fontWeight": "600" }],
+            "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.03em", "fontWeight": "600" }],
+            "display-hero-mobile": ["34px", { "lineHeight": "42px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+            "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "600" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 600, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .tactile-btn {
+      transition: transform 0.1s ease, border-bottom-width 0.1s ease;
+    }
+    .tactile-btn:active {
+      transform: translateY(2px);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface min-h-screen flex flex-col font-body-md antialiased selection:bg-electric-violet selection:text-white">
+<!-- TOP GAMIFIED APP BAR (Shared Components JSON Anchor) -->
+<header class="bg-surface-glass backdrop-blur-md text-primary font-headline-sm text-headline-sm docked full-width top-0 sticky z-50 shadow-sm border-b border-outline-variant/60">
+<div class="flex justify-between items-center w-full px-6 py-3">
+<!-- Brand & Status -->
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2">
+<div class="w-10 h-10 rounded-xl bg-electric-violet flex items-center justify-center text-white border-b-4 border-electric-violet-shadow shadow-md">
+<span class="material-symbols-outlined" data-weight="fill" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+</div>
+<span class="font-headline-md text-headline-md font-black text-electric-violet tracking-tight">EduClass RPG</span>
+</div>
+<span class="hidden md:inline-block px-3 py-1 bg-surface-container rounded-full text-on-surface-variant font-label-md text-label-md">
+          Kampus Pasar Pengetahuan • Musim 4
+        </span>
+</div>
+<!-- Currency & Resource Badges Bar -->
+<div class="flex items-center gap-3">
+<!-- Diamonds Pill -->
+<div class="flex items-center gap-1.5 px-3 py-1.5 bg-surface-card rounded-xl border border-sky-focus/30 shadow-sm">
+<span class="material-symbols-outlined text-sky-focus" data-weight="fill" style="font-variation-settings: 'FILL' 1;">diamond</span>
+<div class="flex flex-col">
+<span class="font-stat-counter text-stat-counter text-on-surface leading-none">850</span>
+<span class="font-label-sm text-[9px] text-on-surface-variant uppercase tracking-wider">Permata</span>
+</div>
+</div>
+<!-- Gold Coins Pill -->
+<div class="flex items-center gap-1.5 px-3 py-1.5 bg-amber-50 rounded-xl border border-sunburst-amber/40 shadow-sm">
+<span class="material-symbols-outlined text-sunburst-amber" data-weight="fill" style="font-variation-settings: 'FILL' 1;">monetization_on</span>
+<div class="flex flex-col">
+<span class="font-stat-counter text-stat-counter text-sunburst-amber-shadow leading-none">3,420</span>
+<span class="font-label-sm text-[9px] text-tertiary uppercase tracking-wider">Koin Emas</span>
+</div>
+</div>
+<!-- League Rank Chip -->
+<div class="hidden lg:flex items-center gap-2 px-3 py-1.5 bg-surface-card rounded-xl border border-outline-variant/60 shadow-sm">
+<span class="material-symbols-outlined text-sunburst-amber" data-weight="fill" style="font-variation-settings: 'FILL' 1;">military_tech</span>
+<div class="text-left">
+<span class="font-body-strong text-xs block text-on-surface">Gold League</span>
+<span class="font-label-sm text-[10px] text-secondary font-bold">Tier 2 • Top 8%</span>
+</div>
+</div>
+<!-- Trailing Action Icons (Shared Components JSON) -->
+<div class="flex items-center gap-1 border-l border-outline-variant/50 pl-3">
+<button class="w-9 h-9 rounded-xl bg-rose-50 text-coral-pulse flex items-center justify-center hover:scale-105 active:scale-95 transition-transform" title="Kesehatan Hati (5/5)">
+<span class="material-symbols-outlined" data-weight="fill" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</button>
+<button class="w-9 h-9 rounded-xl bg-surface-container text-on-surface-variant flex items-center justify-center hover:scale-105 active:scale-95 transition-transform" title="Suara Musik">
+<span class="material-symbols-outlined">volume_up</span>
+</button>
+<button class="relative w-9 h-9 rounded-xl bg-electric-violet/10 text-electric-violet flex items-center justify-center hover:scale-105 active:scale-95 transition-transform" title="Inventaris Tas">
+<span class="material-symbols-outlined" data-weight="fill" style="font-variation-settings: 'FILL' 1;">backpack</span>
+<span class="absolute -top-1 -right-1 w-4 h-4 bg-coral-pulse text-white text-[10px] font-bold rounded-full flex items-center justify-center">3</span>
+</button>
+</div>
+<!-- Student Profile Avatar Badge -->
+<div class="flex items-center gap-2 pl-2">
+<div class="w-10 h-10 rounded-full border-2 border-electric-violet overflow-hidden ring-2 ring-electric-violet/20 bg-surface-container-high relative">
+<img class="w-full h-full object-cover" data-alt="Close up cheerful 3D rendered student avatar wearing a sleek graduation wizard hat and glowing silver laurel badge against a soft indigo classroom background, high fidelity game character portrait." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD5kcPRwyJ47OXgtb3MAolOC5DrM7DPvhfIrVy7a2qdGc0HyD5ijX81RW3o5GMnetok3Se_5fJMDQdHlzs9hz05DD2Nan7CfUDOoaxzddL-S3rBUJzCCz4bfkDll3HFr_kV3xyW91RwK5Yx2QdWUgQl8JHq7nOmpPNcMv1Z_y0iIP8FgaRycK4VNTx7wJl_eO0qJYb-sHoLytNgM9SVRewjzFKFjWVyp7_pxI7Ed-7sziM5hxjbHIocfg"/>
+</div>
+</div>
+</div>
+</div>
+</header>
+<!-- MAIN APP CONTAINER (SIDEBAR RAIL + STORE CONTENT + AVATAR INSPECTOR) -->
+<div class="flex-1 flex w-full max-w-[1440px] mx-auto overflow-hidden">
+<!-- SIDEBAR RAIL (Shared Components JSON Anchor) -->
+<aside class="docked left h-[calc(100vh-61px)] w-64 flex flex-col justify-between shrink-0 bg-surface border-r border-outline-variant p-4">
+<div class="flex flex-col gap-4">
+<!-- Scholar Avatar Header -->
+<div class="p-3 bg-surface-card rounded-2xl border border-outline-variant/60 shadow-sm flex items-center gap-3">
+<div class="w-12 h-12 rounded-xl bg-surface-container-highest flex items-center justify-center text-electric-violet border-b-2 border-outline-variant overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Knight academic profile avatar with golden laurels and bright purple cape rendered in high quality isometric 3D styling, expressive stylized face with smart eyeglasses." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4pQRzX4zH2L6sszy6OIdmT2FKj0c4Rqta0GIXvUQyLtmKtotx4ZDNdv63xgCvziYPq4sZ5csk2XPOBVWNn7HjM0H2VhAnMKcqgGTVvvUR5Vh1X8Hv6MiiW9kNQOyTpnXUmQfbGpgB4kqsw_QSLNSvdyLTV9qViZlPiSFeW1QCWY2hkaaEpboAoERaZhutqCUENhI8S5iQqHKapBND6YzFsUER0-M4YP3CzEzffhh6M1f-RODKu6OEGw"/>
+</div>
+<div>
+<div class="font-title-md text-title-md font-bold text-on-surface">Level 14 Scholar</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant font-medium">CEFR B2 • TOEFL Prep</div>
+</div>
+</div>
+<!-- Navigation Tabs (5 Tabs with Marketplace Active) -->
+<nav aria-label="Menu Utama" class="flex flex-col gap-1.5">
+<!-- 1. Quest Map -->
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant font-medium rounded-xl hover:bg-surface-container transition-colors" href="#">
+<span class="material-symbols-outlined text-outline">map</span>
+<span class="font-body-strong text-body-strong">Quest Map</span>
+</a>
+<!-- 2. Guild League -->
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant font-medium rounded-xl hover:bg-surface-container transition-colors" href="#">
+<span class="material-symbols-outlined text-outline">emoji_events</span>
+<span class="font-body-strong text-body-strong">Guild League</span>
+</a>
+<!-- 3. Boss Arena -->
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant font-medium rounded-xl hover:bg-surface-container transition-colors" href="#">
+<span class="material-symbols-outlined text-outline">swords</span>
+<span class="font-body-strong text-body-strong">Boss Arena</span>
+</a>
+<!-- 4. Marketplace (ACTIVE ACCORDING TO USER PROMPT INTENT) -->
+<a class="flex items-center gap-3 px-4 py-3 bg-primary-container text-on-primary rounded-xl font-bold border-b-4 border-electric-violet-deep active:translate-y-[2px] active:border-b-2 shadow-sm" href="#">
+<span class="material-symbols-outlined" data-weight="fill" style="font-variation-settings: 'FILL' 1;">storefront</span>
+<span class="font-body-strong text-body-strong">Marketplace</span>
+</a>
+<!-- 5. Academic Rubric -->
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant font-medium rounded-xl hover:bg-surface-container transition-colors" href="#">
+<span class="material-symbols-outlined text-outline">menu_book</span>
+<span class="font-body-strong text-body-strong">Academic Rubric</span>
+</a>
+</nav>
+<!-- CTA Widget (Shared Component JSON: "Daily Quest Log") -->
+<div class="mt-2 p-3.5 bg-gradient-to-br from-indigo-50 to-purple-50 rounded-2xl border border-electric-violet/20 flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-electric-violet uppercase tracking-wider font-extrabold flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-weight="fill" style="font-variation-settings: 'FILL' 1;">task_alt</span>
+              Daily Quest Log
+            </span>
+<span class="font-label-sm text-xs font-bold text-on-surface-variant">2/3 Selesai</span>
+</div>
+<!-- XP Bar Track -->
+<div class="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden p-0.5">
+<div class="bg-gradient-to-r from-electric-violet to-emerald-mint h-full rounded-full w-[66%]"></div>
+</div>
+<span class="text-[11px] text-on-surface-variant leading-tight">Selesaikan 1 kuis grammar lagi untuk klaim 50 XP & 1 Peti Perunggu!</span>
+</div>
+</div>
+<!-- Footer Rail Tabs (Shared Components JSON) -->
+<div class="flex flex-col gap-1 border-t border-outline-variant/60 pt-3">
+<a class="flex items-center gap-3 px-4 py-2.5 text-on-surface-variant hover:text-on-surface font-medium rounded-xl hover:bg-surface-container transition-colors text-sm" href="#">
+<span class="material-symbols-outlined text-outline">settings</span>
+<span>Settings</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2.5 text-on-surface-variant hover:text-on-surface font-medium rounded-xl hover:bg-surface-container transition-colors text-sm" href="#">
+<span class="material-symbols-outlined text-outline">inventory_2</span>
+<span>Class Archive</span>
+</a>
+</div>
+</aside>
+<!-- CENTER CANVAS: STORE FRONT & CATALOG -->
+<main class="flex-1 overflow-y-auto px-6 py-6 space-y-6">
+<!-- HERO BANNER: DAILY FREE MYSTERY CHEST CELEBRATION -->
+<section class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-indigo-600 via-purple-600 to-sky-600 p-6 text-white shadow-lg border-b-[6px] border-indigo-950">
+<!-- Floating decorative coin & gem sparks -->
+<div class="absolute right-0 top-0 bottom-0 w-1/3 opacity-15 pointer-events-none flex items-center justify-center">
+<span class="material-symbols-outlined text-[180px]">auto_awesome</span>
+</div>
+<div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
+<div class="space-y-2 max-w-xl text-center md:text-left">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-xs font-bold tracking-wide uppercase">
+<span class="material-symbols-outlined text-sm text-yellow-300" data-weight="fill" style="font-variation-settings: 'FILL' 1;">stars</span>
+              Bonus Harian Mahasiswa
+            </div>
+<h1 class="font-headline-lg text-headline-lg font-extrabold tracking-tight text-white leading-tight">
+              Toko Game & Kustomisasi Avatar
+            </h1>
+<p class="font-body-md text-white/90 text-sm">
+              Tukarkan XP dan Permata hasil kuis akademis dengan booster ujian, perlindungan streak, serta set perlengkapan avatar wisuda legendaris.
+            </p>
+</div>
+<!-- Interactive Daily Chest Box -->
+<div class="shrink-0 flex flex-col items-center p-4 bg-white/10 backdrop-blur-md rounded-2xl border-2 border-white/30 shadow-inner text-center">
+<div class="w-16 h-16 rounded-2xl bg-gradient-to-b from-amber-300 to-amber-500 border-b-4 border-amber-800 flex items-center justify-center shadow-lg transform hover:scale-110 hover:-rotate-3 transition-transform cursor-pointer">
+<span class="material-symbols-outlined text-4xl text-amber-950" data-weight="fill" style="font-variation-settings: 'FILL' 1;">inventory_2</span>
+</div>
+<span class="font-title-md text-sm font-bold mt-2 text-white">Daily Mystery Chest</span>
+<span class="text-[11px] text-amber-200 font-semibold mb-2">Reset dalam 04:32:15</span>
+<button class="tactile-btn px-4 py-2 bg-emerald-mint text-white font-bold rounded-xl border-b-[4px] border-emerald-mint-shadow active:translate-y-[2px] active:border-b-[2px] hover:bg-emerald-500 text-xs shadow-md">
+              Klaim Gratis Sekarang!
+            </button>
+</div>
+</div>
+</section>
+<!-- STORE NAVIGATION TABS (Category Pills) -->
+<div class="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
+<button class="shrink-0 flex items-center gap-2 px-4 py-2.5 bg-electric-violet text-white font-bold rounded-xl border-b-4 border-electric-violet-shadow active:translate-y-[2px] active:border-b-2 text-xs shadow-sm">
+<span class="material-symbols-outlined text-base" data-weight="fill" style="font-variation-settings: 'FILL' 1;">bolt</span>
+          Academic Perks & Boosters
+        </button>
+<button class="shrink-0 flex items-center gap-2 px-4 py-2.5 bg-surface-card text-on-surface-variant font-bold rounded-xl border-2 border-outline-variant/60 border-b-4 hover:bg-surface-container-low text-xs transition-colors">
+<span class="material-symbols-outlined text-base">apparel</span>
+          Avatar Gear & Outfits
+        </button>
+<button class="shrink-0 flex items-center gap-2 px-4 py-2.5 bg-surface-card text-on-surface-variant font-bold rounded-xl border-2 border-outline-variant/60 border-b-4 hover:bg-surface-container-low text-xs transition-colors">
+<span class="material-symbols-outlined text-base">workspace_premium</span>
+          Classroom Titles & Banners
+        </button>
+<button class="shrink-0 flex items-center gap-2 px-4 py-2.5 bg-surface-card text-on-surface-variant font-bold rounded-xl border-2 border-outline-variant/60 border-b-4 hover:bg-surface-container-low text-xs transition-colors">
+<span class="material-symbols-outlined text-base text-coral-pulse">casino</span>
+          Mystery Gacha Box
+        </button>
+</div>
+<!-- CATALOG ITEMS GRID (Chunky 3D Tactile Cards) -->
+<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+<!-- ITEM 1: STREAK FREEZE POTION -->
+<article class="bg-surface-card rounded-2xl border-2 border-outline-variant/80 border-b-[5px] border-b-slate-300 p-5 flex flex-col justify-between hover:border-electric-violet transition-all group shadow-sm hover:shadow-md">
+<div class="space-y-3">
+<div class="flex items-start justify-between">
+<span class="px-2.5 py-1 bg-cyan-100 text-cyan-800 font-label-sm text-[11px] rounded-lg font-extrabold uppercase">
+                Perlindungan Aktif
+              </span>
+<span class="w-8 h-8 rounded-full bg-cyan-50 text-cyan-600 flex items-center justify-center font-bold text-xs border border-cyan-200">
+                1x
+              </span>
+</div>
+<!-- Item Artwork Icon Container -->
+<div class="w-full h-32 rounded-xl bg-gradient-to-b from-sky-50 to-blue-100 flex items-center justify-center border border-sky-200 relative overflow-hidden group-hover:scale-[1.02] transition-transform">
+<div class="w-20 h-20 rounded-2xl bg-white shadow-md border-b-4 border-sky-300 flex items-center justify-center text-sky-500">
+<span class="material-symbols-outlined text-5xl" data-weight="fill" style="font-variation-settings: 'FILL' 1;">severe_cold</span>
+</div>
+<div class="absolute bottom-2 left-2 text-[10px] font-bold text-sky-700 bg-white/80 px-2 py-0.5 rounded backdrop-blur-sm">
+                Item Consumable
+              </div>
+</div>
+<div>
+<h2 class="font-headline-sm text-base font-extrabold text-on-surface group-hover:text-electric-violet transition-colors">
+                Streak Freeze Potion
+              </h2>
+<p class="font-body-md text-xs text-on-surface-variant mt-1 line-clamp-2">
+                Lindungi streak belajar 1 hari penuh tanpa perlu login saat jadwal kuliah padat atau ujian semester.
+              </p>
+</div>
+</div>
+<div class="mt-5 pt-3 border-t border-slate-100 flex items-center justify-between">
+<div class="flex items-center gap-1.5 text-sky-600 font-stat-counter text-lg">
+<span class="material-symbols-outlined text-lg" data-weight="fill" style="font-variation-settings: 'FILL' 1;">diamond</span>
+<span>200</span>
+</div>
+<button class="tactile-btn px-4 py-2 bg-electric-violet text-white font-bold rounded-xl border-b-[4px] border-electric-violet-shadow active:translate-y-[2px] active:border-b-[2px] hover:bg-indigo-600 text-xs flex items-center gap-1.5">
+<span>Beli Item</span>
+<span class="material-symbols-outlined text-sm">shopping_bag</span>
+</button>
+</div>
+</article>
+<!-- ITEM 2: DOUBLE XP SCROLL -->
+<article class="bg-surface-card rounded-2xl border-2 border-outline-variant/80 border-b-[5px] border-b-slate-300 p-5 flex flex-col justify-between hover:border-electric-violet transition-all group shadow-sm hover:shadow-md">
+<div class="space-y-3">
+<div class="flex items-start justify-between">
+<span class="px-2.5 py-1 bg-amber-100 text-amber-900 font-label-sm text-[11px] rounded-lg font-extrabold uppercase">
+                Booster Ujian
+              </span>
+<span class="w-8 h-8 rounded-full bg-amber-50 text-amber-600 flex items-center justify-center font-bold text-xs border border-amber-200">
+                1 Jam
+              </span>
+</div>
+<div class="w-full h-32 rounded-xl bg-gradient-to-b from-amber-50 to-orange-100 flex items-center justify-center border border-amber-200 relative overflow-hidden group-hover:scale-[1.02] transition-transform">
+<div class="w-20 h-20 rounded-2xl bg-white shadow-md border-b-4 border-amber-300 flex items-center justify-center text-amber-500">
+<span class="material-symbols-outlined text-5xl" data-weight="fill" style="font-variation-settings: 'FILL' 1;">history_edu</span>
+</div>
+<div class="absolute bottom-2 left-2 text-[10px] font-bold text-amber-800 bg-white/80 px-2 py-0.5 rounded backdrop-blur-sm">
+                +100% XP Rate
+              </div>
+</div>
+<div>
+<h2 class="font-headline-sm text-base font-extrabold text-on-surface group-hover:text-electric-violet transition-colors">
+                Double XP Scroll (1 Jam)
+              </h2>
+<p class="font-body-md text-xs text-on-surface-variant mt-1 line-clamp-2">
+                Pengganda XP untuk latihan kilat dan drill grammar TOEFL sebelum turnamen kelas dimulai.
+              </p>
+</div>
+</div>
+<div class="mt-5 pt-3 border-t border-slate-100 flex items-center justify-between">
+<div class="flex items-center gap-1.5 text-sky-600 font-stat-counter text-lg">
+<span class="material-symbols-outlined text-lg" data-weight="fill" style="font-variation-settings: 'FILL' 1;">diamond</span>
+<span>150</span>
+</div>
+<button class="tactile-btn px-4 py-2 bg-electric-violet text-white font-bold rounded-xl border-b-[4px] border-electric-violet-shadow active:translate-y-[2px] active:border-b-[2px] hover:bg-indigo-600 text-xs flex items-center gap-1.5">
+<span>Beli Item</span>
+<span class="material-symbols-outlined text-sm">shopping_bag</span>
+</button>
+</div>
+</article>
+<!-- ITEM 3: LECTURER HINT SCROLL -->
+<article class="bg-surface-card rounded-2xl border-2 border-outline-variant/80 border-b-[5px] border-b-slate-300 p-5 flex flex-col justify-between hover:border-electric-violet transition-all group shadow-sm hover:shadow-md">
+<div class="space-y-3">
+<div class="flex items-start justify-between">
+<span class="px-2.5 py-1 bg-purple-100 text-purple-900 font-label-sm text-[11px] rounded-lg font-extrabold uppercase">
+                Bantuan Dosen
+              </span>
+<span class="w-8 h-8 rounded-full bg-purple-50 text-purple-600 flex items-center justify-center font-bold text-xs border border-purple-200">
+                Langka
+              </span>
+</div>
+<div class="w-full h-32 rounded-xl bg-gradient-to-b from-purple-50 to-indigo-100 flex items-center justify-center border border-purple-200 relative overflow-hidden group-hover:scale-[1.02] transition-transform">
+<div class="w-20 h-20 rounded-2xl bg-white shadow-md border-b-4 border-purple-300 flex items-center justify-center text-purple-600">
+<span class="material-symbols-outlined text-5xl" data-weight="fill" style="font-variation-settings: 'FILL' 1;">lightbulb</span>
+</div>
+<div class="absolute bottom-2 left-2 text-[10px] font-bold text-purple-800 bg-white/80 px-2 py-0.5 rounded backdrop-blur-sm">
+                Academic Assist
+              </div>
+</div>
+<div>
+<h2 class="font-headline-sm text-base font-extrabold text-on-surface group-hover:text-electric-violet transition-colors">
+                Lecturer Hint Scroll
+              </h2>
+<p class="font-body-md text-xs text-on-surface-variant mt-1 line-clamp-2">
+                Buka petunjuk eksklusif dari dosen pada soal esai akademik yang memiliki tingkat kesulitan CEFR C1.
+              </p>
+</div>
+</div>
+<div class="mt-5 pt-3 border-t border-slate-100 flex items-center justify-between">
+<div class="flex items-center gap-1.5 text-sky-600 font-stat-counter text-lg">
+<span class="material-symbols-outlined text-lg" data-weight="fill" style="font-variation-settings: 'FILL' 1;">diamond</span>
+<span>300</span>
+</div>
+<button class="tactile-btn px-4 py-2 bg-electric-violet text-white font-bold rounded-xl border-b-[4px] border-electric-violet-shadow active:translate-y-[2px] active:border-b-[2px] hover:bg-indigo-600 text-xs flex items-center gap-1.5">
+<span>Beli Item</span>
+<span class="material-symbols-outlined text-sm">shopping_bag</span>
+</button>
+</div>
+</article>
+<!-- ITEM 4: SCHOLAR WIZARD ROBE & CAP (AVATAR SKIN) -->
+<article class="bg-surface-card rounded-2xl border-2 border-outline-variant/80 border-b-[5px] border-b-slate-300 p-5 flex flex-col justify-between hover:border-electric-violet transition-all group shadow-sm hover:shadow-md">
+<div class="space-y-3">
+<div class="flex items-start justify-between">
+<span class="px-2.5 py-1 bg-emerald-100 text-emerald-900 font-label-sm text-[11px] rounded-lg font-extrabold uppercase">
+                Kostum Epik
+              </span>
+<span class="px-2 py-0.5 bg-yellow-100 text-yellow-800 rounded font-bold text-[10px]">
+                Skin 3D
+              </span>
+</div>
+<div class="w-full h-32 rounded-xl bg-gradient-to-b from-indigo-100 to-purple-200 flex items-center justify-center border border-indigo-200 relative overflow-hidden group-hover:scale-[1.02] transition-transform">
+<div class="w-20 h-20 rounded-2xl bg-white shadow-md border-b-4 border-indigo-400 flex items-center justify-center text-electric-violet">
+<span class="material-symbols-outlined text-5xl" data-weight="fill" style="font-variation-settings: 'FILL' 1;">school</span>
+</div>
+<div class="absolute bottom-2 left-2 text-[10px] font-bold text-indigo-900 bg-white/80 px-2 py-0.5 rounded backdrop-blur-sm">
+                Set Wisuda RPG
+              </div>
+</div>
+<div>
+<h2 class="font-headline-sm text-base font-extrabold text-on-surface group-hover:text-electric-violet transition-colors">
+                Scholar Wizard Robe & Cap
+              </h2>
+<p class="font-body-md text-xs text-on-surface-variant mt-1 line-clamp-2">
+                Skin avatar wisuda bergaya wizard RPG mewah dengan sulaman emas dan aura kilat intelektual.
+              </p>
+</div>
+</div>
+<div class="mt-5 pt-3 border-t border-slate-100 flex items-center justify-between">
+<div class="flex items-center gap-1.5 text-sky-600 font-stat-counter text-lg">
+<span class="material-symbols-outlined text-lg" data-weight="fill" style="font-variation-settings: 'FILL' 1;">diamond</span>
+<span>600</span>
+</div>
+<button class="tactile-btn px-4 py-2 bg-electric-violet text-white font-bold rounded-xl border-b-[4px] border-electric-violet-shadow active:translate-y-[2px] active:border-b-[2px] hover:bg-indigo-600 text-xs flex items-center gap-1.5">
+<span>Beli & Pasang</span>
+<span class="material-symbols-outlined text-sm">checkroom</span>
+</button>
+</div>
+</article>
+<!-- ITEM 5: GOLDEN QUILL PEN BADGE -->
+<article class="bg-surface-card rounded-2xl border-2 border-outline-variant/80 border-b-[5px] border-b-slate-300 p-5 flex flex-col justify-between hover:border-electric-violet transition-all group shadow-sm hover:shadow-md">
+<div class="space-y-3">
+<div class="flex items-start justify-between">
+<span class="px-2.5 py-1 bg-yellow-100 text-yellow-900 font-label-sm text-[11px] rounded-lg font-extrabold uppercase">
+                Lencana Profil
+              </span>
+<span class="material-symbols-outlined text-sunburst-amber text-lg" data-weight="fill" style="font-variation-settings: 'FILL' 1;">military_tech</span>
+</div>
+<div class="w-full h-32 rounded-xl bg-gradient-to-b from-yellow-50 to-amber-100 flex items-center justify-center border border-amber-200 relative overflow-hidden group-hover:scale-[1.02] transition-transform">
+<div class="w-20 h-20 rounded-2xl bg-white shadow-md border-b-4 border-yellow-400 flex items-center justify-center text-sunburst-amber">
+<span class="material-symbols-outlined text-5xl" data-weight="fill" style="font-variation-settings: 'FILL' 1;">draw</span>
+</div>
+<div class="absolute bottom-2 left-2 text-[10px] font-bold text-amber-900 bg-white/80 px-2 py-0.5 rounded backdrop-blur-sm">
+                Status Gelar Khusus
+              </div>
+</div>
+<div>
+<h2 class="font-headline-sm text-base font-extrabold text-on-surface group-hover:text-electric-violet transition-colors">
+                Golden Quill Pen Badge
+              </h2>
+<p class="font-body-md text-xs text-on-surface-variant mt-1 line-clamp-2">
+                Lencana profil status di leaderboard angkatan yang membuktikan keahlian Academic Essay tingkat dewa.
+              </p>
+</div>
+</div>
+<div class="mt-5 pt-3 border-t border-slate-100 flex items-center justify-between">
+<div class="flex items-center gap-1.5 text-sky-600 font-stat-counter text-lg">
+<span class="material-symbols-outlined text-lg" data-weight="fill" style="font-variation-settings: 'FILL' 1;">diamond</span>
+<span>450</span>
+</div>
+<button class="tactile-btn px-4 py-2 bg-electric-violet text-white font-bold rounded-xl border-b-[4px] border-electric-violet-shadow active:translate-y-[2px] active:border-b-[2px] hover:bg-indigo-600 text-xs flex items-center gap-1.5">
+<span>Beli Lencana</span>
+<span class="material-symbols-outlined text-sm">verified</span>
+</button>
+</div>
+</article>
+<!-- ITEM 6: GACHA MYSTERY CRATE (Bonus Interactive Tile) -->
+<article class="bg-gradient-to-br from-indigo-50 to-purple-100 rounded-2xl border-2 border-electric-violet/50 border-b-[5px] border-b-electric-violet-deep p-5 flex flex-col justify-between shadow-sm relative overflow-hidden">
+<div class="absolute -right-4 -top-4 w-20 h-20 bg-electric-violet/10 rounded-full blur-xl pointer-events-none"></div>
+<div class="space-y-3">
+<div class="flex items-start justify-between">
+<span class="px-2.5 py-1 bg-coral-pulse text-white font-label-sm text-[11px] rounded-lg font-extrabold uppercase">
+                Gacha Berhadiah
+              </span>
+<span class="animate-pulse text-coral-pulse font-bold text-xs">Peluang SSR 5%</span>
+</div>
+<div class="w-full h-32 rounded-xl bg-white/70 backdrop-blur-sm flex items-center justify-center border border-electric-violet/30 relative">
+<div class="w-20 h-20 rounded-2xl bg-gradient-to-tr from-coral-pulse to-amber-400 shadow-lg border-b-4 border-coral-pulse-shadow flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-5xl" data-weight="fill" style="font-variation-settings: 'FILL' 1;">card_giftcard</span>
+</div>
+</div>
+<div>
+<h2 class="font-headline-sm text-base font-extrabold text-on-surface">
+                Kotak Gacha Academic Rare
+              </h2>
+<p class="font-body-md text-xs text-on-surface-variant mt-1">
+                Dapatkan kesempatan memenangkan skin legendaris, boost 500 XP, atau tiket bebas kuis kilat!
+              </p>
+</div>
+</div>
+<div class="mt-5 pt-3 border-t border-indigo-200 flex items-center justify-between">
+<div class="flex items-center gap-1.5 text-sunburst-amber-shadow font-stat-counter text-lg">
+<span class="material-symbols-outlined text-lg" data-weight="fill" style="font-variation-settings: 'FILL' 1;">monetization_on</span>
+<span>1,200</span>
+</div>
+<button class="tactile-btn px-4 py-2 bg-coral-pulse text-white font-bold rounded-xl border-b-[4px] border-coral-pulse-shadow active:translate-y-[2px] active:border-b-[2px] hover:bg-rose-600 text-xs flex items-center gap-1.5 shadow-md">
+<span>Buka Peti (1x)</span>
+<span class="material-symbols-outlined text-sm">lock_open</span>
+</button>
+</div>
+</article>
+</section>
+<!-- ACADEMIC CURRENCY CONVERSION / REWARD TRACK BANNER -->
+<section class="p-5 rounded-2xl bg-surface-card border-2 border-outline-variant/60 shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-2xl bg-emerald-mint/15 text-emerald-mint flex items-center justify-center font-bold text-2xl border-b-2 border-emerald-mint-shadow">
+<span class="material-symbols-outlined text-3xl">auto_stories</span>
+</div>
+<div>
+<h3 class="font-title-md text-sm font-bold text-on-surface">Cara Mendapatkan Lebih Banyak Permata & Koin?</h3>
+<p class="font-body-md text-xs text-on-surface-variant">Selesaikan latihan reading TOEFL, tonton materi kuliah tepat waktu, dan pertahankan 7-Day Streak.</p>
+</div>
+</div>
+<button class="tactile-btn shrink-0 px-4 py-2.5 bg-surface-container text-on-surface font-bold rounded-xl border-2 border-outline-variant border-b-4 hover:bg-surface-container-high text-xs">
+          Lihat Tugas Akademik Hari Ini
+        </button>
+</section>
+</main>
+<!-- RIGHT PANEL: LIVE 3D AVATAR PREVIEW & BACKPACK INVENTORY (320px) -->
+<aside class="w-80 h-[calc(100vh-61px)] overflow-y-auto shrink-0 bg-surface-card border-l border-outline-variant p-5 flex flex-col justify-between hidden xl:flex">
+<div class="space-y-5">
+<!-- Panel Header -->
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-electric-violet" data-weight="fill" style="font-variation-settings: 'FILL' 1;">person_play</span>
+<span class="font-headline-sm text-sm font-extrabold text-on-surface">Avatar Studio</span>
+</div>
+<span class="px-2 py-0.5 bg-emerald-100 text-emerald-800 text-[10px] font-extrabold rounded-md uppercase">
+            Live Preview
+          </span>
+</div>
+<!-- 3D Avatar Stage Box -->
+<div class="relative w-full h-64 rounded-2xl bg-gradient-to-b from-indigo-100 via-purple-50 to-slate-100 border-2 border-indigo-200 overflow-hidden flex flex-col items-center justify-end p-3 shadow-inner">
+<!-- Avatar Stage Spotlight Circle -->
+<div class="absolute bottom-2 w-48 h-10 bg-indigo-300/40 rounded-full blur-md"></div>
+<!-- Character Render Image -->
+<div class="relative z-10 w-44 h-52 flex items-center justify-center">
+<img class="w-full h-full object-contain filter drop-shadow-xl" data-alt="Full body vibrant 3D stylized game avatar of a male scholar student wearing a magical academic robe with gold trims, scholar wizard cap with tassel, holding a glowing golden fountain pen, joyful dynamic gaming pose, bright studio lighting on clean pastel purple background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBVJ8C7BbvjFVmfI6Smsd6ybMR3QR3Yi60wHkpnAHMW793bIptMamY68b9HGlYFeCbjP1jI4TgW3qbd5vvjGsJgB7wdIOekQbab4mqjkrIUKfKXCVzmUnXmaezqimNvMLchvxyPj_kKE_RKsHiNk5JV2LGZ-fVq0cVVANg7xq7SA3wdY-6f4rbOiE5TL9TvrAleOQMi-RLuG7s86dojc_x6WoWdfH-OLCQce_YOmfPkph2kyrngjYZwmA"/>
+</div>
+<!-- Level Badge Floating Pill -->
+<div class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-2.5 py-1 rounded-xl border border-electric-violet/30 shadow-sm flex items-center gap-1.5">
+<span class="w-5 h-5 rounded-lg bg-electric-violet text-white text-[10px] font-bold flex items-center justify-center">14</span>
+<span class="font-label-sm text-[11px] font-bold text-on-surface">Sarjana Muda</span>
+</div>
+<!-- Quick Wardrobe Rotate Button -->
+<button class="absolute top-3 right-3 w-8 h-8 rounded-xl bg-white/90 backdrop-blur-sm border border-slate-200 text-on-surface-variant flex items-center justify-center hover:bg-white shadow-sm" title="Putar Avatar">
+<span class="material-symbols-outlined text-sm">360</span>
+</button>
+</div>
+<!-- Character Stat Attributes Matrix (Academic Powers) -->
+<div class="bg-surface-container-low rounded-2xl p-3.5 border border-outline-variant/60 space-y-2.5">
+<div class="flex items-center justify-between text-xs font-bold text-on-surface">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-electric-violet text-sm">trending_up</span>
+              Stat Atribut Akademik
+            </span>
+<span class="text-electric-violet font-extrabold">+55 Total Bonus</span>
+</div>
+<!-- Stat 1: Vocabulary -->
+<div class="space-y-1">
+<div class="flex justify-between text-[11px] font-semibold text-on-surface-variant">
+<span>Vocabulary Boost</span>
+<span class="text-emerald-mint font-bold">+18 Poin</span>
+</div>
+<div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
+<div class="bg-emerald-mint h-full rounded-full w-[72%]"></div>
+</div>
+</div>
+<!-- Stat 2: Grammar Defense -->
+<div class="space-y-1">
+<div class="flex justify-between text-[11px] font-semibold text-on-surface-variant">
+<span>Grammar Defense (Anti-Error)</span>
+<span class="text-electric-violet font-bold">+25 Poin</span>
+</div>
+<div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
+<div class="bg-electric-violet h-full rounded-full w-[85%]"></div>
+</div>
+</div>
+<!-- Stat 3: Listening Agility -->
+<div class="space-y-1">
+<div class="flex justify-between text-[11px] font-semibold text-on-surface-variant">
+<span>Listening Agility (Speed)</span>
+<span class="text-sky-500 font-bold">+12 Poin</span>
+</div>
+<div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
+<div class="bg-sky-500 h-full rounded-full w-[50%]"></div>
+</div>
+</div>
+</div>
+<!-- Backpack Inventory Quick Locker -->
+<div class="space-y-2.5">
+<div class="flex items-center justify-between">
+<span class="font-headline-sm text-xs font-bold text-on-surface flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-weight="fill" style="font-variation-settings: 'FILL' 1;">backpack</span>
+              Tas Punggung Mahasiswa (3/8)
+            </span>
+<button class="text-electric-violet text-xs font-bold hover:underline">Semua</button>
+</div>
+<!-- 4-Grid Locker Slots -->
+<div class="grid grid-cols-4 gap-2">
+<!-- Slot 1: Equipped Robe -->
+<div class="aspect-square rounded-xl bg-indigo-50 border-2 border-electric-violet flex items-center justify-center relative cursor-pointer group shadow-sm" title="Wizard Robe (Digunakan)">
+<span class="material-symbols-outlined text-electric-violet text-xl" data-weight="fill" style="font-variation-settings: 'FILL' 1;">school</span>
+<span class="absolute -bottom-1 -right-1 w-3.5 h-3.5 bg-emerald-mint text-white rounded-full flex items-center justify-center text-[8px] font-bold">✓</span>
+</div>
+<!-- Slot 2: Potion -->
+<div class="aspect-square rounded-xl bg-slate-100 border-2 border-slate-200 flex items-center justify-center relative cursor-pointer hover:border-electric-violet transition-colors" title="1x Streak Freeze">
+<span class="material-symbols-outlined text-sky-500 text-xl">severe_cold</span>
+<span class="absolute top-0.5 right-1 text-[9px] font-extrabold text-slate-600">x1</span>
+</div>
+<!-- Slot 3: Quill Badge -->
+<div class="aspect-square rounded-xl bg-amber-50 border-2 border-amber-300 flex items-center justify-center relative cursor-pointer" title="Lencana Pena Emas">
+<span class="material-symbols-outlined text-sunburst-amber text-xl">draw</span>
+</div>
+<!-- Slot 4: Empty Slot -->
+<div class="aspect-square rounded-xl border-2 border-dashed border-slate-300 flex items-center justify-center text-slate-400">
+<span class="material-symbols-outlined text-sm">add</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Action Save Outfit Button -->
+<div class="pt-4 border-t border-outline-variant/60">
+<button class="tactile-btn w-full py-3 bg-emerald-mint text-white font-bold rounded-xl border-b-[4px] border-emerald-mint-shadow active:translate-y-[2px] active:border-b-[2px] flex items-center justify-center gap-2 text-sm shadow-md">
+<span class="material-symbols-outlined text-lg">check_circle</span>
+<span>Simpan Tampilan Avatar</span>
+</button>
+</div>
+</aside>
+</div>
+</body></html>

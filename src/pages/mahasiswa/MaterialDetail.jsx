@@ -1,25 +1,32 @@
 import React, { useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useDataStore } from '../../store/dataStore';
-import { ChevronLeft, ChevronRight, CheckCircle, BookOpen, Trophy } from 'lucide-react';
+import HootieMascot from '../../components/mascot/HootieMascot';
+import { motion, AnimatePresence } from 'framer-motion';
+import confetti from 'canvas-confetti';
 
 export default function MaterialDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { materials } = useDataStore();
+  const { materials, addXP, addGems } = useDataStore();
 
-  const material = materials.find(m => m.id === parseInt(id));
+  const material = materials.find((m) => m.id === parseInt(id));
   const [currentPage, setCurrentPage] = useState(0);
   const [showCompletion, setShowCompletion] = useState(false);
+  const [activeTab, setActiveTab] = useState('materi'); // 'materi' | 'glosarium'
+  const [revealedCards, setRevealedCards] = useState({});
 
   if (!material) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-slate-50">
-        <div className="text-center">
-          <p className="text-slate-500 text-lg">Materi tidak ditemukan.</p>
-          <button onClick={() => navigate('/dashboard/modules')} className="mt-4 text-blue-600 font-bold">
-            ← Kembali
-          </button>
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <div className="text-center p-8 bg-white rounded-3xl border border-indigo-100 shadow-sm">
+          <p className="text-slate-600 text-sm font-bold mb-4">Modul materi tidak ditemukan.</p>
+          <Link
+            to="/dashboard"
+            className="tactile-btn px-5 py-2.5 bg-indigo-600 text-white rounded-xl font-bold text-xs"
+          >
+            ← Kembali ke Dashboard
+          </Link>
         </div>
       </div>
     );
@@ -28,195 +35,306 @@ export default function MaterialDetail() {
   const pages = material.pages || [];
   const totalPages = pages.length;
   const isLastPage = currentPage === totalPages - 1;
-  const page = pages[currentPage];
+  const page = pages[currentPage] || { title: material.title, content: '' };
   const progress = Math.round(((currentPage + 1) / totalPages) * 100);
+
+  // Mascot advice based on page index
+  const mascotPrompts = [
+    `Pelajari konsep ${material.category} ini baik-baik untuk persiapan kuis!`,
+    'Tabel perbandingan ini adalah kunci membedakan ragam formal vs santai.',
+    'Satu langkah lagi sebelum evaluasi kuis! Pastikan kamu memahami polanya.',
+    'Luar biasa! Kamu sudah siap membuktikan kemampuanmu di kuis evaluasi!',
+  ];
+  const mascotSpeech = mascotPrompts[currentPage] || 'Terus semangat belajar!';
 
   const handleNext = () => {
     if (isLastPage) {
       setShowCompletion(true);
+      confetti({
+        particleCount: 80,
+        spread: 70,
+        origin: { y: 0.6 },
+      });
     } else {
-      setCurrentPage(p => p + 1);
-      window.scrollTo(0, 0);
+      setCurrentPage((p) => p + 1);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
   const handleBack = () => {
     if (currentPage > 0) {
-      setCurrentPage(p => p - 1);
-      window.scrollTo(0, 0);
+      setCurrentPage((p) => p - 1);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
-      navigate('/dashboard/modules');
+      navigate('/dashboard');
     }
   };
 
-  // Render markdown-like text
-  const renderContent = (text) => {
-    const lines = text.split('\n');
-    return lines.map((line, i) => {
-      if (!line.trim()) return <div key={i} className="h-3" />;
-      if (line.startsWith('| ')) {
-        // Simple table row detection
-        const cells = line.split('|').filter(c => c.trim() && c.trim() !== '---');
-        if (cells.length > 0) {
-          return (
-            <div key={i} className="flex border-b border-slate-100 last:border-0">
-              {cells.map((cell, j) => (
-                <div key={j} className={`flex-1 px-3 py-2 text-sm ${j === 0 ? 'font-semibold text-slate-700' : 'text-slate-600'}`}>
-                  {cell.trim()}
-                </div>
-              ))}
-            </div>
-          );
-        }
-        return null;
-      }
-      if (line.startsWith('**') && line.endsWith('**')) {
-        return <h3 key={i} className="font-bold text-slate-800 text-base mt-4 mb-2">{line.replace(/\*\*/g, '')}</h3>;
-      }
-      if (line.startsWith('- ') || line.startsWith('✅') || line.startsWith('1.') || line.startsWith('2.') || line.startsWith('3.')) {
-        return <li key={i} className="text-slate-700 text-[15px] leading-7 ml-4 list-disc">{line.replace(/^[-✅\d.]\s*/, '')}</li>;
-      }
-      if (line.startsWith('#')) {
-        const text = line.replace(/^#+\s/, '');
-        return <h2 key={i} className="text-xl font-extrabold text-slate-900 mt-6 mb-3">{text}</h2>;
-      }
-      if (line.startsWith('> ')) {
-        return <blockquote key={i} className="border-l-4 border-blue-300 pl-4 italic text-slate-600 my-2">{line.replace('> ', '')}</blockquote>;
-      }
-      if (line.startsWith('---')) {
-        return <hr key={i} className="border-slate-200 my-4" />;
-      }
-      return (
-        <p key={i} className="text-slate-700 text-[15px] leading-7"
-          dangerouslySetInnerHTML={{
-            __html: line
-              .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-              .replace(/\*(.*?)\*/g, '<em>$1</em>')
-          }}
-        />
-      );
-    });
+  const toggleCardReveal = (cardId) => {
+    setRevealedCards((prev) => ({ ...prev, [cardId]: !prev[cardId] }));
   };
 
-  if (showCompletion) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center p-6">
-        <div className="max-w-md w-full bg-white rounded-3xl shadow-xl p-8 text-center border border-blue-100">
-          <div className="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6 ring-4 ring-emerald-50">
-            <CheckCircle className="w-10 h-10 text-emerald-600" />
-          </div>
-          <h1 className="text-2xl font-extrabold text-slate-900 mb-2">Materi Selesai! 🎉</h1>
-          <p className="text-slate-500 mb-2">Kamu telah menyelesaikan seluruh halaman materi</p>
-          <div className="bg-blue-50 rounded-2xl px-4 py-3 mb-8 border border-blue-100">
-            <p className="font-bold text-blue-800 text-sm">{material.title}</p>
-            <p className="text-blue-600 text-xs">{totalPages} halaman · {material.category}</p>
+  // Render stylized gamified content blocks
+  const renderFormattedContent = (content) => {
+    const lines = content.split('\n');
+
+    // Parse table if exists
+    const isTableContent = lines.some((l) => l.startsWith('|'));
+
+    if (isTableContent) {
+      const tableLines = lines.filter((l) => l.startsWith('|') && !l.includes('---'));
+      const rows = tableLines.map((row) =>
+        row
+          .split('|')
+          .filter((c) => c.trim())
+          .map((c) => c.trim())
+      );
+
+      const headerRow = rows[0] || [];
+      const bodyRows = rows.slice(1);
+
+      return (
+        <div className="space-y-4 my-4">
+          <div className="flex items-center justify-between text-xs font-black text-indigo-900 bg-indigo-50/80 p-3 rounded-2xl border border-indigo-100">
+            <span className="flex items-center gap-1.5">
+              <span className="material-symbols-outlined text-sm text-indigo-600">compare_arrows</span>
+              Matriks Kosakata Akademik (Klik kartu untuk melihat konteks)
+            </span>
+            <span className="text-[10px] bg-indigo-200/70 text-indigo-800 px-2 py-0.5 rounded-md">
+              {bodyRows.length} Kosakata
+            </span>
           </div>
 
-          <div className="bg-amber-50 border border-amber-200 rounded-2xl p-4 mb-6 text-left">
-            <div className="flex items-center gap-2 mb-2">
-              <Trophy className="w-5 h-5 text-amber-600" />
-              <p className="font-bold text-amber-800 text-sm">Selesaikan Evaluasi untuk mendapatkan XP!</p>
-            </div>
-            <p className="text-amber-700 text-xs">
-              Kerjakan kuis evaluasi dan dapatkan hingga <strong>+{material.xp_reward} XP</strong>. Skor minimum {material.min_score} untuk membuka level berikutnya.
-            </p>
-          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
+            {bodyRows.map((row, i) => {
+              const informal = row[0];
+              const academic = row[1];
+              const meaning = row[2] || '';
+              const isRevealed = revealedCards[i];
 
-          <div className="space-y-3">
-            <button
-              onClick={() => navigate(`/dashboard/modules/${material.id}/quiz`)}
-              className="w-full py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-2xl shadow-md shadow-blue-200 transition-all text-sm flex items-center justify-center gap-2"
-            >
-              <Trophy className="w-5 h-5" />
-              Mulai Evaluasi Materi
-            </button>
-            <button
-              onClick={() => navigate('/dashboard/modules')}
-              className="w-full py-3 text-slate-500 hover:text-slate-700 text-sm font-medium"
-            >
-              Kembali ke Daftar Materi
-            </button>
+              return (
+                <motion.div
+                  key={i}
+                  whileHover={{ y: -2 }}
+                  onClick={() => toggleCardReveal(i)}
+                  className="p-4 rounded-2xl bg-white border-2 border-indigo-100/90 shadow-2xs hover:border-indigo-400 hover:shadow-xs transition-all cursor-pointer flex flex-col justify-between"
+                >
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <span className="text-[10px] font-extrabold uppercase text-slate-400">
+                        Bahasa Santai
+                      </span>
+                      <p className="text-sm font-bold text-slate-500 line-through decoration-rose-400 decoration-2">
+                        {informal}
+                      </p>
+                    </div>
+                    <span className="material-symbols-outlined text-indigo-500 text-sm">
+                      arrow_forward
+                    </span>
+                    <div className="text-right">
+                      <span className="text-[10px] font-extrabold uppercase text-indigo-600">
+                        Standar Akademik
+                      </span>
+                      <p className="text-sm font-black text-indigo-700">{academic}</p>
+                    </div>
+                  </div>
+
+                  <div className="mt-3 pt-2 border-t border-slate-100 flex items-center justify-between text-[11px]">
+                    <span className="text-slate-500 font-medium">Arti: <strong className="text-slate-800">{meaning}</strong></span>
+                    <span className="text-[10px] text-indigo-600 font-extrabold flex items-center gap-0.5">
+                      <span className="material-symbols-outlined text-xs">volume_up</span> Dengarkan
+                    </span>
+                  </div>
+                </motion.div>
+              );
+            })}
           </div>
         </div>
+      );
+    }
+
+    // Default clean markdown parser
+    return (
+      <div className="space-y-4 text-slate-700 leading-relaxed text-sm md:text-base">
+        {lines.map((line, idx) => {
+          if (!line.trim()) return <div key={idx} className="h-2" />;
+
+          // Header
+          if (line.startsWith('**') && line.endsWith('**')) {
+            return (
+              <div
+                key={idx}
+                className="flex items-center gap-2 text-indigo-950 font-black text-base md:text-lg mt-5 mb-2 pb-1 border-b border-indigo-100"
+              >
+                <span className="w-2 h-2 rounded-full bg-indigo-600" />
+                <h3>{line.replace(/\*\*/g, '')}</h3>
+              </div>
+            );
+          }
+
+          // Bullet points
+          if (
+            line.startsWith('- ') ||
+            line.startsWith('✅') ||
+            line.startsWith('1.') ||
+            line.startsWith('2.')
+          ) {
+            return (
+              <div
+                key={idx}
+                className="flex items-start gap-2.5 p-3 rounded-xl bg-slate-50/80 border border-slate-100 text-xs md:text-sm"
+              >
+                <span className="material-symbols-outlined text-emerald-600 text-sm mt-0.5 fill-icon">
+                  check_circle
+                </span>
+                <span className="font-semibold text-slate-800 leading-snug">
+                  {line.replace(/^[-✅\d.]\s*/, '')}
+                </span>
+              </div>
+            );
+          }
+
+          // Blockquote or Callout
+          if (line.startsWith('> ')) {
+            return (
+              <div
+                key={idx}
+                className="p-4 rounded-2xl bg-amber-50/80 border-l-4 border-amber-500 text-amber-950 text-xs md:text-sm my-3 shadow-2xs"
+              >
+                <p className="font-bold flex items-center gap-1.5 mb-1">
+                  <span className="material-symbols-outlined text-amber-600 text-base fill-icon">
+                    lightbulb
+                  </span>
+                  Tips Akademis
+                </p>
+                <p className="italic text-slate-700">{line.replace('> ', '')}</p>
+              </div>
+            );
+          }
+
+          return (
+            <p
+              key={idx}
+              className="text-slate-700 leading-relaxed"
+              dangerouslySetInnerHTML={{
+                __html: line
+                  .replace(/\*\*(.*?)\*\*/g, '<strong class="font-extrabold text-slate-900">$1</strong>')
+                  .replace(/\*(.*?)\*/g, '<em class="text-indigo-600 font-semibold">$1</em>')
+                  .replace(/`([^`]+)`/g, '<code class="bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded-md font-mono text-xs font-bold border border-indigo-200/80">$1</code>'),
+              }}
+            />
+          );
+        })}
       </div>
     );
-  }
+  };
 
   return (
-    <div className="min-h-screen bg-slate-50" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-      {/* Top Bar */}
-      <div className="sticky top-0 z-40 bg-white border-b border-slate-200 shadow-sm">
-        <div className="max-w-3xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
-          <button onClick={handleBack} className="flex items-center gap-1.5 text-slate-500 hover:text-slate-800 text-sm font-medium transition-colors">
-            <ChevronLeft className="w-4 h-4" />
-            {currentPage === 0 ? 'Kembali' : 'Halaman Sebelumnya'}
+    <div className="max-w-5xl mx-auto px-4 md:px-6 py-6 space-y-6">
+      {/* ================= BREADCRUMB & HEADER INFO ================= */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white/90 backdrop-blur-md p-4 rounded-3xl border border-indigo-100 shadow-xs">
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => navigate('/dashboard')}
+            className="w-9 h-9 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition-colors cursor-pointer"
+            title="Kembali ke Dashboard"
+          >
+            <span className="material-symbols-outlined text-lg">arrow_back</span>
           </button>
-
-          <div className="flex-1 flex flex-col items-center gap-1 max-w-xs">
-            <div className="flex items-center gap-1.5">
-              <BookOpen className="w-3.5 h-3.5 text-blue-600" />
-              <span className="text-xs font-bold text-blue-700 truncate max-w-[140px]">{material.title}</span>
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="text-[10px] font-black uppercase text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-md">
+                {material.cefr || 'CEFR B1'}
+              </span>
+              <span className="text-xs text-slate-400 font-semibold">• {material.category}</span>
             </div>
-            <div className="w-full bg-slate-100 rounded-full h-1.5">
-              <div
-                className="bg-blue-600 h-1.5 rounded-full transition-all duration-500"
-                style={{ width: `${progress}%` }}
-              />
-            </div>
+            <h1 className="text-sm md:text-base font-black text-slate-900 mt-0.5">
+              {material.unit}: {material.title}
+            </h1>
           </div>
+        </div>
 
-          <span className="text-xs font-bold text-slate-500 shrink-0">
-            {currentPage + 1} / {totalPages}
-          </span>
+        {/* Progress & XP Reward Pill */}
+        <div className="flex items-center gap-3">
+          <div className="text-right hidden sm:block">
+            <span className="text-[10px] font-bold text-slate-400 uppercase block">Progres Baca</span>
+            <span className="text-xs font-black text-indigo-600">
+              Halaman {currentPage + 1} / {totalPages}
+            </span>
+          </div>
+          <div className="w-24 sm:w-28 h-2.5 bg-slate-100 rounded-full overflow-hidden p-0.5 border border-slate-200">
+            <motion.div
+              className="h-full bg-gradient-to-r from-indigo-500 to-emerald-400 rounded-full"
+              initial={{ width: 0 }}
+              animate={{ width: `${progress}%` }}
+              transition={{ duration: 0.3 }}
+            />
+          </div>
+          <div className="flex items-center gap-1 px-3 py-1 bg-amber-50 rounded-xl border border-amber-200 text-amber-800 text-xs font-black">
+            <span className="material-symbols-outlined text-sm text-amber-500 fill-icon">bolt</span>
+            +{material.xp_reward} XP
+          </div>
         </div>
       </div>
 
-      {/* Content */}
-      <div className="max-w-3xl mx-auto px-4 py-8">
-        <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-          {/* Page Header */}
-          <div className="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-5">
-            <div className="flex items-center gap-2 mb-1">
-              <span className="text-blue-200 text-xs font-bold uppercase tracking-wider">
-                Halaman {currentPage + 1} dari {totalPages}
+      {/* ================= FULL-WIDTH LESSON CONTENT DECK ================= */}
+      <div className="w-full bg-white rounded-3xl p-6 md:p-8 border border-indigo-100 shadow-sm flex flex-col justify-between min-h-[500px]">
+        <div>
+          {/* Slide Title Banner */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 mb-5 border-b border-slate-100 gap-2">
+            <div className="flex items-center gap-3">
+              <span className="w-9 h-9 rounded-2xl bg-indigo-100 text-indigo-700 flex items-center justify-center text-sm font-black shrink-0">
+                {currentPage + 1}
               </span>
+              <h2 className="text-lg md:text-xl font-black text-slate-900">{page.title}</h2>
             </div>
-            <h1 className="text-xl font-extrabold text-white">{page?.title}</h1>
+            <span className="text-[11px] font-extrabold text-slate-500 bg-slate-50 px-3 py-1 rounded-full border border-slate-200 shrink-0 self-start sm:self-auto">
+              Langkah {currentPage + 1} dari {totalPages}
+            </span>
           </div>
 
-          {/* Page Body */}
-          <div className="p-6 md:p-8 space-y-2">
-            {/* Table header if needed */}
-            {pages[currentPage]?.content?.includes('| Bahasa Inggris') && (
-              <div className="bg-slate-50 rounded-xl overflow-hidden border border-slate-200 mb-4">
-                <div className="flex bg-slate-100 border-b border-slate-200">
-                  <div className="flex-1 px-3 py-2 text-xs font-bold text-slate-600 uppercase">Bahasa Inggris</div>
-                  <div className="flex-1 px-3 py-2 text-xs font-bold text-slate-600 uppercase">Bahasa Indonesia</div>
-                </div>
-              </div>
-            )}
-            {renderContent(page?.content || '')}
+          {/* Compact Mascot Guidance Ribbon */}
+          <div className="flex items-center gap-3.5 p-3.5 bg-indigo-50/80 rounded-2xl border border-indigo-100 mb-6">
+            <HootieMascot mood={isLastPage ? 'cheer' : 'happy'} size="sm" />
+            <div className="flex-1">
+              <span className="text-[10px] font-black uppercase text-indigo-600 tracking-wider flex items-center gap-1">
+                <span className="material-symbols-outlined text-xs fill-icon">school</span>
+                Tips Prof. Hootie
+              </span>
+              <p className="text-xs font-bold text-slate-700 mt-0.5">{mascotSpeech}</p>
+            </div>
           </div>
 
-          {/* Navigation */}
-          <div className="border-t border-slate-100 px-6 py-4 flex items-center justify-between gap-4">
+          {/* Dynamic Lesson Body */}
+          {renderFormattedContent(page.content)}
+        </div>
+
+          {/* Navigation Dock */}
+          <div className="pt-6 mt-6 border-t border-slate-100 flex items-center justify-between gap-4">
             <button
               onClick={handleBack}
               disabled={currentPage === 0}
-              className="flex items-center gap-2 px-5 py-2.5 border border-slate-200 text-slate-700 font-semibold text-sm rounded-xl hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+              className={`tactile-btn px-4 py-2.5 rounded-xl font-bold text-xs border-b-[3px] flex items-center gap-1.5 transition-all cursor-pointer ${
+                currentPage > 0
+                  ? 'bg-slate-100 hover:bg-slate-200 text-slate-700 border-slate-300'
+                  : 'bg-slate-50 text-slate-300 border-slate-200 cursor-not-allowed'
+              }`}
             >
-              <ChevronLeft className="w-4 h-4" />
+              <span className="material-symbols-outlined text-base">arrow_back</span>
               Sebelumnya
             </button>
 
-            <div className="flex gap-1.5">
+            {/* Dots */}
+            <div className="flex items-center gap-1.5">
               {pages.map((_, i) => (
                 <div
                   key={i}
-                  className={`rounded-full transition-all ${
-                    i === currentPage ? 'w-6 h-2 bg-blue-600' :
-                    i < currentPage ? 'w-2 h-2 bg-blue-300' :
-                    'w-2 h-2 bg-slate-200'
+                  className={`h-2 rounded-full transition-all ${
+                    i === currentPage
+                      ? 'w-6 bg-indigo-600'
+                      : i < currentPage
+                      ? 'w-2 bg-emerald-400'
+                      : 'w-2 bg-slate-200'
                   }`}
                 />
               ))}
@@ -224,27 +342,76 @@ export default function MaterialDetail() {
 
             <button
               onClick={handleNext}
-              className={`flex items-center gap-2 px-5 py-2.5 font-bold text-sm rounded-xl transition-all shadow-sm ${
+              className={`tactile-btn px-6 py-2.5 text-white font-black text-xs rounded-xl border-b-[4px] flex items-center gap-2 shadow-xs cursor-pointer ${
                 isLastPage
-                  ? 'bg-emerald-600 hover:bg-emerald-700 text-white shadow-emerald-200'
-                  : 'bg-blue-600 hover:bg-blue-700 text-white shadow-blue-200'
+                  ? 'bg-emerald-500 hover:bg-emerald-600 border-emerald-700'
+                  : 'bg-indigo-600 hover:bg-indigo-700 border-indigo-900'
               }`}
             >
               {isLastPage ? (
                 <>
-                  <CheckCircle className="w-4 h-4" />
-                  Selesai Membaca
+                  <span className="material-symbols-outlined text-base fill-icon">trophy</span>
+                  Selesai & Evaluasi Kuis 🎯
                 </>
               ) : (
                 <>
-                  Selanjutnya
-                  <ChevronRight className="w-4 h-4" />
+                  Halaman Berikutnya
+                  <span className="material-symbols-outlined text-base">arrow_forward</span>
                 </>
               )}
             </button>
           </div>
         </div>
-      </div>
+
+      {/* ================= LESSON COMPLETION MODAL ================= */}
+      <AnimatePresence>
+        {showCompletion && (
+          <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+            <motion.div
+              initial={{ scale: 0.85, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.85, opacity: 0 }}
+              className="bg-white rounded-3xl p-8 max-w-md w-full text-center border-4 border-indigo-500 shadow-2xl relative"
+            >
+              <HootieMascot mood="celebrate" speech="Semua Halaman Selesai!" size="hero" />
+
+              <h2 className="text-xl md:text-2xl font-black text-slate-900 mt-4">
+                Siap Evaluasi Kuis! 🎉
+              </h2>
+              <p className="text-xs text-slate-500 mt-1 max-w-xs mx-auto leading-relaxed">
+                Kamu telah menyelesaikan seluruh bacaan materi <strong className="text-slate-800">{material.title}</strong>. Buktikan pemahamanmu untuk meraih <strong className="text-amber-600">+{material.xp_reward} XP</strong>!
+              </p>
+
+              <div className="p-3.5 my-5 bg-indigo-50 rounded-2xl border border-indigo-200 text-left text-xs space-y-1">
+                <div className="flex justify-between font-black text-indigo-950">
+                  <span>Target Skor Kelulusan:</span>
+                  <span className="text-indigo-600">{material.min_score}%</span>
+                </div>
+                <div className="flex justify-between text-slate-500 text-[11px]">
+                  <span>Jumlah Pertanyaan:</span>
+                  <span>{material.quiz?.length || 3} Soal</span>
+                </div>
+              </div>
+
+              <div className="space-y-2.5">
+                <button
+                  onClick={() => navigate(`/dashboard/modules/${material.id}/quiz`)}
+                  className="tactile-btn w-full py-3.5 px-6 bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs rounded-xl border-b-[5px] border-indigo-900 shadow-md flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  <span className="material-symbols-outlined text-base fill-icon">play_arrow</span>
+                  Mulai Kuis Evaluasi Sekarang! 🚀
+                </button>
+                <button
+                  onClick={() => navigate('/dashboard')}
+                  className="w-full py-2.5 text-xs font-bold text-slate-500 hover:text-slate-800 cursor-pointer"
+                >
+                  Kembali ke Dashboard
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

@@ -13,12 +13,16 @@ import Progress from './pages/mahasiswa/Progress';
 import Rewards from './pages/mahasiswa/Rewards';
 import MaterialDetail from './pages/mahasiswa/MaterialDetail';
 import LessonQuiz from './pages/mahasiswa/LessonQuiz';
+import BossBattle from './pages/mahasiswa/BossBattle';
+import Leaderboard from './pages/mahasiswa/Leaderboard';
+import QuestSession from './pages/mahasiswa/QuestSession';
 
 // Admin Pages
 import AdminDashboard from './pages/admin/Dashboard';
 import AdminUsers from './pages/admin/Users';
 import AdminMaterials from './pages/admin/Materials';
 import AdminQuizzes from './pages/admin/Quizzes';
+import AdminGrading from './pages/admin/Grading';
 import AdminReports from './pages/admin/Reports';
 
 export default function App() {
@@ -32,6 +36,9 @@ export default function App() {
         <Route path="/register" element={<Register />} />
       </Route>
 
+      {/* Full-screen Duolingo-style Quest Session */}
+      <Route path="/dashboard/quest/:id" element={<QuestSession />} />
+
       {/* Shared Protected Route (Profile - accessible by any logged-in user) */}
       <Route element={<DashboardLayout />}>
         <Route path="/profile" element={<Profile />} />
@@ -40,6 +47,8 @@ export default function App() {
       {/* Mahasiswa Routes */}
       <Route element={<DashboardLayout allowedRoles={['mahasiswa']} />}>
         <Route path="/dashboard" element={<MahasiswaDashboard />} />
+        <Route path="/dashboard/boss" element={<BossBattle />} />
+        <Route path="/dashboard/leaderboard" element={<Leaderboard />} />
         <Route path="/dashboard/modules" element={<Modules />} />
         <Route path="/dashboard/modules/:id" element={<MaterialDetail />} />
         <Route path="/dashboard/modules/:id/quiz" element={<LessonQuiz />} />
@@ -50,9 +59,10 @@ export default function App() {
       {/* Admin Routes */}
       <Route element={<DashboardLayout allowedRoles={['admin']} />}>
         <Route path="/admin" element={<AdminDashboard />} />
-        <Route path="/admin/users" element={<AdminUsers />} />
-        <Route path="/admin/materials" element={<AdminMaterials />} />
         <Route path="/admin/quizzes" element={<AdminQuizzes />} />
+        <Route path="/admin/grading" element={<AdminGrading />} />
+        <Route path="/admin/materials" element={<AdminMaterials />} />
+        <Route path="/admin/users" element={<AdminUsers />} />
         <Route path="/admin/reports" element={<AdminReports />} />
       </Route>
     </Routes>

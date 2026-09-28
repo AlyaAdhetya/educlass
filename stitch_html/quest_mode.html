@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>EduClass RPG - Quest Belajar Interaktif</title>
+<!-- Tailwind CSS CDN with forms and container queries -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config -->
+<script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            quest: {
+              bg: '#0a0e1a',
+              card: '#131b2e',
+              cardHover: '#1a243d',
+              border: '#233054',
+              accent: '#6366f1',
+              accentGlow: '#4f46e5',
+              success: '#10b981',
+              heart: '#ef4444',
+              gem: '#06b6d4',
+              fire: '#f59e0b'
+            }
+          },
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'Inter', 'system-ui', 'sans-serif']
+          },
+          boxShadow: {
+            'game-tile': '0 4px 0 #1b2640',
+            'game-tile-active': '0 1px 0 #1b2640',
+            'game-btn-green': '0 5px 0 #059669',
+            'game-btn-active': '0 2px 0 #059669',
+            'glow-accent': '0 0 20px -3px rgba(99, 102, 241, 0.4)',
+            'glow-emerald': '0 0 25px -4px rgba(16, 185, 129, 0.45)',
+          }
+        }
+      }
+    }
+  </script>
+<!-- Google Fonts: Plus Jakarta Sans -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<!-- Core Theme & Visual Depth Styling -->
+<style data-purpose="theme-styles">
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #090d16;
+      color: #f1f5f9;
+      user-select: none;
+    }
+    
+    /* Tactile 3D button press micro-interaction */
+    .tactile-button {
+      transition: all 0.1s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .tactile-button:active {
+      transform: translateY(3px);
+    }
+
+    /* Sound wave animation bar */
+    @keyframes soundWave {
+      0%, 100% { height: 6px; }
+      50% { height: 26px; }
+    }
+    .wave-bar-1 { display: inline-block; height: 10px; min-height: 6px; animation: soundWave 0.9s ease-in-out infinite; }
+    .wave-bar-2 { display: inline-block; height: 18px; min-height: 6px; animation: soundWave 1.2s ease-in-out 0.2s infinite; }
+    .wave-bar-3 { display: inline-block; height: 24px; min-height: 6px; animation: soundWave 0.8s ease-in-out 0.4s infinite; }
+    .wave-bar-4 { display: inline-block; height: 18px; min-height: 6px; animation: soundWave 1.1s ease-in-out 0.1s infinite; }
+    .wave-bar-5 { display: inline-block; height: 10px; min-height: 6px; animation: soundWave 1.4s ease-in-out 0.3s infinite; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between overflow-x-hidden antialiased bg-[#090d16]">
+<!-- BEGIN: QuestHeader -->
+<header class="w-full max-w-5xl mx-auto px-4 pt-4 sm:pt-6 pb-2" data-purpose="quest-header">
+<div class="flex items-center justify-between gap-3 sm:gap-6">
+<!-- Close Quest Button -->
+<button class="w-10 h-10 rounded-xl bg-[#141c2e] hover:bg-[#1f2b47] border border-[#243354] flex items-center justify-center text-slate-400 hover:text-white transition-all shadow-sm group" data-purpose="exit-quest-btn" title="Keluar dari Quest" type="button">
+<svg class="w-5 h-5 transition-transform group-hover:scale-110" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></path>
+</svg>
+</button>
+<!-- Center Progress Track -->
+<div class="flex-1 flex flex-col gap-1.5" data-purpose="quest-progress">
+<div class="flex items-center justify-between text-xs font-bold text-slate-400">
+<span class="flex items-center gap-1.5 text-indigo-400">
+<span class="w-2 h-2 rounded-full bg-indigo-500 animate-ping"></span>
+            Tahap 5 / 10 Soal
+          </span>
+<span class="text-emerald-400 font-extrabold tracking-wide">50% SELESAI</span>
+</div>
+<!-- Glowing XP Progress Bar -->
+<div class="h-3.5 w-full bg-[#131b2e] border border-[#233152] rounded-full overflow-hidden p-0.5 relative">
+<div class="h-full bg-gradient-to-r from-emerald-500 via-teal-400 to-emerald-400 rounded-full transition-all duration-500 relative shadow-[0_0_12px_rgba(16,185,129,0.7)]" style="width: 50%">
+<!-- Highlight shine inside bar -->
+<div class="absolute inset-0 bg-white/20 rounded-full h-1/2"></div>
+</div>
+</div>
+</div>
+<!-- Gamified Player Status Bar -->
+<div class="flex items-center gap-2 sm:gap-3" data-purpose="player-stats">
+<!-- Daily Streak Counter -->
+<div class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#141c2e] border border-[#243354] text-amber-400 font-black text-xs shadow-inner">
+<svg class="w-4 h-4 fill-amber-500 animate-bounce" fill="currentColor" viewbox="0 0 20 20">
+<path clip-rule="evenodd" d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.527.82-1.12 2.16-1.583 3.65C7.94 8.784 7.5 11.028 7.5 12a4.5 4.5 0 109 0c0-1.173-.418-2.673-1.077-4.148-.567-1.267-1.3-2.483-2.028-3.499a9.66 9.66 0 00-.999-1.2A1 1 0 0012.395 2.553z" fill-rule="evenodd"></path>
+</svg>
+<span>14</span>
+</div>
+<!-- Diamond/Gem Count -->
+<div class="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl bg-[#141c2e] border border-[#243354] text-cyan-400 font-extrabold text-xs shadow-inner">
+<svg class="w-4 h-4 text-cyan-400" fill="currentColor" viewbox="0 0 24 24">
+<path d="M12 2L2 9.5L5.5 22H18.5L22 9.5L12 2Z" fill-opacity="0.9" stroke="#38bdf8" stroke-width="1.5"></path>
+</svg>
+<span>480</span>
+</div>
+<!-- Player Health / Nyawa -->
+<div class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-red-950/40 border border-red-800/50 text-red-400 font-black text-xs shadow-[0_0_12px_rgba(239,68,68,0.2)]">
+<svg class="w-4 h-4 fill-red-500 text-red-500 animate-pulse" fill="currentColor" viewbox="0 0 20 20">
+<path clip-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" fill-rule="evenodd"></path>
+</svg>
+<span>5</span>
+</div>
+</div>
+</div>
+</header>
+<!-- END: QuestHeader -->
+<!-- BEGIN: MainContent -->
+<main class="flex-1 w-full max-w-4xl mx-auto px-4 py-4 sm:py-6 flex flex-col justify-center">
+<!-- Challenge Mode Selector & Level Badges -->
+<section class="flex flex-wrap items-center justify-between gap-2.5 mb-5" data-purpose="quest-meta-bar">
+<div class="flex items-center gap-2">
+<!-- Mode Tag Badge -->
+<div class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-indigo-950/80 border border-indigo-700/60 text-indigo-300 text-xs font-black uppercase tracking-wider shadow-[0_0_14px_rgba(99,102,241,0.3)]">
+<svg class="w-3.5 h-3.5 text-indigo-400" fill="currentColor" viewbox="0 0 20 20">
+<path clip-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" fill-rule="evenodd"></path>
+</svg>
+          Dengarkan &amp; Terjemahkan
+        </div>
+<!-- Academic Tier -->
+<div class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-[#131b2e] border border-slate-700/70 text-slate-400 text-xs font-semibold">
+<span>CEFR B1</span>
+<span class="w-1 h-1 rounded-full bg-slate-500"></span>
+<span>Modul Riset Kampus</span>
+</div>
+</div>
+<!-- Quick View Mode Toggle (Interactive Showcase Helper) -->
+<div class="flex items-center bg-[#101726] border border-[#212c44] rounded-xl p-1 text-xs">
+<button class="px-2.5 py-1 rounded-lg font-bold transition-all bg-indigo-600 text-white shadow-sm" id="btn-mode-audio" onclick="toggleChallengeMode('audio')" title="Tampilkan Model Soal Audio &amp; Susun Kata">
+          Model 1: Audio Susun Kalimat
+        </button>
+<button class="px-2.5 py-1 rounded-lg font-medium text-slate-400 hover:text-slate-200 transition-all" id="btn-mode-cards" onclick="toggleChallengeMode('cards')" title="Tampilkan Model Soal Pilihan Gambar">
+          Model 2: Pilihan Kartu Gambar
+        </button>
+</div>
+</section>
+<!-- Question Primary Prompt Title -->
+<h1 class="text-xl sm:text-2xl lg:text-3xl font-extrabold text-white mb-6 leading-tight tracking-tight" id="quest-prompt-title">
+      Tuliskan dalam bahasa Indonesia apa yang diucapkan Prof. Hootie:
+    </h1>
+<!-- ============================================== -->
+<!-- VIEW CONTAINER 1: AUDIO & SENTENCE BUILDER -->
+<!-- ============================================== -->
+<div class="space-y-6" data-purpose="mode-audio-sentence" id="mode-sentence-builder">
+<!-- Prof. Hootie Audio Card Widget -->
+<div class="bg-[#11192b] border-2 border-[#202e4d] rounded-2xl p-4 sm:p-5 relative shadow-xl">
+<div class="flex flex-col sm:flex-row items-center sm:items-center gap-4 sm:gap-5">
+<!-- Avatar Prof Hootie with Mortarboard -->
+<div class="relative flex-shrink-0">
+<div class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-br from-indigo-500 via-blue-600 to-indigo-800 p-1 shadow-lg shadow-indigo-950 flex items-center justify-center border-2 border-indigo-400/40">
+<!-- Illustrated Owl Mascot Face -->
+<div class="w-full h-full bg-[#1b2640] rounded-xl flex items-center justify-center relative overflow-hidden">
+<!-- Owl Eyes & Beak in SVG -->
+<svg class="w-12 h-12" fill="none" viewbox="0 0 48 48">
+<!-- Cap -->
+<polygon fill="#f59e0b" points="24,6 40,12 24,18 8,12"></polygon>
+<rect fill="#fbbf24" height="7" width="2" x="23" y="16"></rect>
+<!-- Face circles -->
+<circle cx="17" cy="26" fill="#e0e7ff" r="9"></circle>
+<circle cx="31" cy="26" fill="#e0e7ff" r="9"></circle>
+<circle cx="17" cy="26" fill="#1e1b4b" r="4.5"></circle>
+<circle cx="31" cy="26" fill="#1e1b4b" r="4.5"></circle>
+<circle cx="15.5" cy="24.5" fill="#ffffff" r="1.5"></circle>
+<circle cx="29.5" cy="24.5" fill="#ffffff" r="1.5"></circle>
+<!-- Beak -->
+<polygon fill="#f97316" points="24,28 20,33 28,33"></polygon>
+</svg>
+</div>
+</div>
+<!-- Online Voice Indicator -->
+<span class="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-emerald-500 border-2 border-[#11192b] flex items-center justify-center text-[10px] text-white">✓</span>
+</div>
+<!-- Audio Play Control & Waveform -->
+<div class="flex-1 flex flex-col justify-center text-center sm:text-left">
+<div class="flex flex-wrap items-center justify-center sm:justify-start gap-3 mb-2">
+<!-- Large Interactive Sound Trigger Button -->
+<button class="tactile-button px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold flex items-center gap-2.5 shadow-[0_4px_0_#3730a3] hover:shadow-[0_2px_0_#3730a3] transition-all" onclick="playAudioFeedback()" title="Dengarkan Suara" type="button">
+<svg class="w-5 h-5 text-white" fill="currentColor" viewbox="0 0 20 20">
+<path clip-rule="evenodd" d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.617.776L4.54 13.5H2a1 1 0 01-1-1v-5a1 1 0 011-1h2.54l3.843-3.276a1 1 0 011-.148zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.984 5.984 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.828 1 1 0 010-1.415z" fill-rule="evenodd"></path>
+</svg>
+<span>Putar Audio</span>
+</button>
+<!-- Slow Audio Button (Turtle) -->
+<button class="w-10 h-10 rounded-xl bg-[#1a253e] hover:bg-[#253457] border border-[#2d3f66] flex items-center justify-center text-slate-300 hover:text-white transition-all font-bold text-xs" title="Putar Lebih Lambat (0.8x)" type="button">
+                🐢
+              </button>
+<!-- Dynamic Audio Wave Visualizer -->
+<div class="flex items-center gap-1 px-3 py-2 bg-[#0a0f1d] rounded-xl border border-[#1b2844] h-10">
+<span class="inline-block w-1 min-h-[6px] bg-indigo-500 rounded-full wave-bar-1"></span>
+<span class="inline-block w-1 min-h-[6px] bg-indigo-400 rounded-full wave-bar-2"></span>
+<span class="inline-block w-1 min-h-[6px] bg-indigo-300 rounded-full wave-bar-3"></span>
+<span class="inline-block w-1 min-h-[6px] bg-indigo-400 rounded-full wave-bar-4"></span>
+<span class="inline-block w-1 min-h-[6px] bg-indigo-500 rounded-full wave-bar-5"></span>
+</div>
+</div>
+<!-- English Spoken Sentence -->
+<p class="text-base sm:text-lg font-bold text-white tracking-wide">
+              "The researcher obtains the data."
+            </p>
+<!-- Phonetic Transcription Guide -->
+<p class="text-xs sm:text-sm font-mono text-indigo-300/80 mt-0.5">
+              /ðə rɪˈsɜːrtʃər əbˈteɪnz ðə ˈdeɪtə/
+            </p>
+</div>
+</div>
+</div>
+<!-- Target Sentence Assembler / Snap Slots -->
+<section data-purpose="answer-assembly-dock">
+<label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
+          Area Kalimat Jawaban:
+        </label>
+<div class="min-h-[72px] sm:min-h-[82px] bg-[#0c1221] border-2 border-dashed border-[#2b3a5c] rounded-2xl p-3 flex flex-wrap items-center gap-2.5 transition-all shadow-inner" id="sentence-target-zone">
+<!-- Default instruction if empty -->
+<span class="text-slate-500 text-sm italic select-none" id="empty-state-text">
+            Klik kata-kata di bawah secara berurutan untuk menyusun kalimat terjemahan...
+          </span>
+<!-- Example Initial Placed Word (interactive toggle simulation) -->
+<button class="placed-tile tactile-button inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-indigo-600 border border-indigo-400/50 text-white font-bold text-sm sm:text-base shadow-[0_3px_0_#3730a3] animate-scale" onclick="removeWord(this, 'Peneliti')" type="button">
+<span>Peneliti</span>
+<span class="text-xs text-indigo-200">✕</span>
+</button>
+<button class="placed-tile tactile-button inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-indigo-600 border border-indigo-400/50 text-white font-bold text-sm sm:text-base shadow-[0_3px_0_#3730a3]" onclick="removeWord(this, 'memperoleh')" type="button">
+<span>memperoleh</span>
+<span class="text-xs text-indigo-200">✕</span>
+</button>
+<!-- Active insertion point indicator -->
+<div class="h-8 w-1 bg-indigo-500 rounded-full animate-pulse my-auto"></div>
+</div>
+</section>
+<!-- Word Bank Tile Options Deck -->
+<section data-purpose="word-bank-selection">
+<label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">
+          Pilihan Kosakata:
+        </label>
+<div class="flex flex-wrap gap-2.5 sm:gap-3.5" id="word-bank-container">
+<!-- Word 1 (Used state disabled representation) -->
+<button class="px-4 py-2.5 rounded-xl bg-[#141d30]/50 border border-dashed border-slate-700/60 text-slate-600 font-bold text-sm sm:text-base cursor-not-allowed" disabled="" type="button">
+            Peneliti
+          </button>
+<!-- Word 2 (Used state) -->
+<button class="px-4 py-2.5 rounded-xl bg-[#141d30]/50 border border-dashed border-slate-700/60 text-slate-600 font-bold text-sm sm:text-base cursor-not-allowed" disabled="" type="button">
+            memperoleh
+          </button>
+<!-- Word 3 -->
+<button class="tactile-button px-4 py-2.5 rounded-xl bg-[#19233a] hover:bg-[#223050] border-2 border-[#2b3c62] text-slate-100 font-bold text-sm sm:text-base shadow-game-tile hover:border-indigo-400/60 transition-all flex items-center gap-2" onclick="addWord(this, 'data')" type="button">
+<span>data</span>
+</button>
+<!-- Word 4 -->
+<button class="tactile-button px-4 py-2.5 rounded-xl bg-[#19233a] hover:bg-[#223050] border-2 border-[#2b3c62] text-slate-100 font-bold text-sm sm:text-base shadow-game-tile hover:border-indigo-400/60 transition-all" onclick="addWord(this, 'tersebut')" type="button">
+            tersebut
+          </button>
+<!-- Word 5 (Distractor) -->
+<button class="tactile-button px-4 py-2.5 rounded-xl bg-[#19233a] hover:bg-[#223050] border-2 border-[#2b3c62] text-slate-100 font-bold text-sm sm:text-base shadow-game-tile hover:border-indigo-400/60 transition-all" onclick="addWord(this, 'tidur')" type="button">
+            tidur
+          </button>
+<!-- Word 6 (Distractor) -->
+<button class="tactile-button px-4 py-2.5 rounded-xl bg-[#19233a] hover:bg-[#223050] border-2 border-[#2b3c62] text-slate-100 font-bold text-sm sm:text-base shadow-game-tile hover:border-indigo-400/60 transition-all" onclick="addWord(this, 'di')" type="button">
+            di
+          </button>
+<!-- Word 7 (Distractor) -->
+<button class="tactile-button px-4 py-2.5 rounded-xl bg-[#19233a] hover:bg-[#223050] border-2 border-[#2b3c62] text-slate-100 font-bold text-sm sm:text-base shadow-game-tile hover:border-indigo-400/60 transition-all" onclick="addWord(this, 'laboratorium')" type="button">
+            laboratorium
+          </button>
+<!-- Word 8 (Distractor) -->
+<button class="tactile-button px-4 py-2.5 rounded-xl bg-[#19233a] hover:bg-[#223050] border-2 border-[#2b3c62] text-slate-100 font-bold text-sm sm:text-base shadow-game-tile hover:border-indigo-400/60 transition-all" onclick="addWord(this, 'menolak')" type="button">
+            menolak
+          </button>
+</div>
+</section>
+</div>
+<!-- END: VIEW CONTAINER 1 -->
+<!-- ============================================== -->
+<!-- VIEW CONTAINER 2: 3D ILLUSTRATED FLASHCARDS -->
+<!-- ============================================== -->
+<div class="hidden space-y-6" data-purpose="mode-flashcard-choice" id="mode-flashcards">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+<!-- Card 1: Academic Journal (Selected / Active) -->
+<div class="flashcard-option cursor-pointer group relative bg-[#131b2f] border-2 border-indigo-500 rounded-2xl p-6 sm:p-7 flex flex-col items-center text-center transition-all shadow-[0_0_20px_rgba(99,102,241,0.25)] ring-2 ring-indigo-500/50 hover:-translate-y-1" onclick="selectCard(this)">
+<!-- Shortcut Key Badge -->
+<div class="absolute top-3 left-3 w-6 h-6 rounded-md bg-[#1f2a48] border border-[#2f3f6b] text-[11px] font-mono font-bold text-indigo-300 flex items-center justify-center shadow-sm">
+            1
+          </div>
+<!-- Radio selection indicator -->
+<div class="absolute top-3.5 right-3.5 w-5 h-5 rounded-full border-2 border-indigo-500 bg-indigo-600 flex items-center justify-center text-white text-[11px] font-black">
+            ✓
+          </div>
+<!-- Illustrated Icon Representation (Academic Journal) -->
+<div class="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl bg-gradient-to-tr from-indigo-900/60 to-purple-900/50 border border-indigo-500/30 flex items-center justify-center mb-5 group-hover:scale-105 transition-transform shadow-inner">
+<svg class="w-14 h-14 text-indigo-400" fill="currentColor" viewbox="0 0 24 24">
+<!-- Stack of books / Academic Journal icon from screenshot -->
+<path d="M4 6H20V8H4z" fill="#818cf8"></path>
+<path d="M4 10H20V12H4z" fill="#38bdf8"></path>
+<path d="M4 14H15V16H4z" fill="#34d399"></path>
+<rect fill="none" height="16" rx="2" stroke="#a5b4fc" stroke-width="2" width="18" x="3" y="4"></rect>
+</svg>
+</div>
+<!-- Vocabulary Title -->
+<h2 class="text-base sm:text-lg font-extrabold text-white group-hover:text-indigo-300 transition-colors flex items-center gap-1.5">
+            Academic Journal
+            <svg class="w-4 h-4 text-indigo-400 inline" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</h2>
+<p class="text-xs sm:text-sm text-slate-400 mt-1 font-medium">jurnal ilmiah</p>
+</div>
+<!-- Card 2: Coffee Cup -->
+<div class="flashcard-option cursor-pointer group relative bg-[#12192a] border-2 border-[#202c47] hover:border-slate-500 rounded-2xl p-6 sm:p-7 flex flex-col items-center text-center transition-all hover:-translate-y-1 shadow-md" onclick="selectCard(this)">
+<div class="absolute top-3 left-3 w-6 h-6 rounded-md bg-[#1a253e] border border-[#2b3a5f] text-[11px] font-mono font-bold text-slate-400 flex items-center justify-center">
+            2
+          </div>
+<!-- Radio selection indicator -->
+<div class="absolute top-3.5 right-3.5 w-5 h-5 rounded-full border-2 border-slate-600 bg-transparent"></div>
+<!-- Illustrated Icon Representation (Coffee Cup) -->
+<div class="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl bg-gradient-to-tr from-amber-950/40 to-stone-900/50 border border-amber-800/30 flex items-center justify-center mb-5 group-hover:scale-105 transition-transform shadow-inner">
+<svg class="w-14 h-14 text-amber-500" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M18 8h1a4 4 0 0 1 0 8h-1M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+<line stroke-linecap="round" stroke-width="2" x1="6" x2="6" y1="1" y2="4"></line>
+<line stroke-linecap="round" stroke-width="2" x1="10" x2="10" y1="1" y2="4"></line>
+<line stroke-linecap="round" stroke-width="2" x1="14" x2="14" y1="1" y2="4"></line>
+</svg>
+</div>
+<h2 class="text-base sm:text-lg font-extrabold text-white group-hover:text-amber-300 transition-colors flex items-center gap-1.5">
+            Coffee Cup
+            <svg class="w-4 h-4 text-slate-400 inline" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</h2>
+<p class="text-xs sm:text-sm text-slate-400 mt-1 font-medium">cangkir kopi</p>
+</div>
+<!-- Card 3: Water Bottle -->
+<div class="flashcard-option cursor-pointer group relative bg-[#12192a] border-2 border-[#202c47] hover:border-slate-500 rounded-2xl p-6 sm:p-7 flex flex-col items-center text-center transition-all hover:-translate-y-1 shadow-md" onclick="selectCard(this)">
+<div class="absolute top-3 left-3 w-6 h-6 rounded-md bg-[#1a253e] border border-[#2b3a5f] text-[11px] font-mono font-bold text-slate-400 flex items-center justify-center">
+            3
+          </div>
+<!-- Radio selection indicator -->
+<div class="absolute top-3.5 right-3.5 w-5 h-5 rounded-full border-2 border-slate-600 bg-transparent"></div>
+<!-- Illustrated Icon Representation (Water Bottle) -->
+<div class="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl bg-gradient-to-tr from-cyan-950/40 to-blue-900/40 border border-cyan-800/30 flex items-center justify-center mb-5 group-hover:scale-105 transition-transform shadow-inner">
+<svg class="w-14 h-14 text-cyan-400" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M10 2h4M9 5h6M8 8a2 2 0 012-2h4a2 2 0 012 2v12a2 2 0 01-2 2H10a2 2 0 01-2-2V8z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+<path d="M9 13h6" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path>
+</svg>
+</div>
+<h2 class="text-base sm:text-lg font-extrabold text-white group-hover:text-cyan-300 transition-colors flex items-center gap-1.5">
+            Water Bottle
+            <svg class="w-4 h-4 text-slate-400 inline" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</h2>
+<p class="text-xs sm:text-sm text-slate-400 mt-1 font-medium">botol air</p>
+</div>
+</div>
+</div>
+<!-- END: VIEW CONTAINER 2 -->
+<!-- Tactical Booster & Helper Bar -->
+<div class="mt-6 pt-4 border-t border-[#1a253d] flex flex-wrap items-center justify-between gap-3 text-xs" data-purpose="booster-bar">
+<div class="flex items-center gap-2 text-slate-400 font-semibold">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-emerald-950/50 border border-emerald-800/40 text-emerald-400">
+          🛡️ Pelindung Streak Aktif
+        </span>
+<span class="hidden sm:inline-block text-slate-500">• Tidak kehilangan nyawa pertama</span>
+</div>
+<div class="flex items-center gap-2">
+<button class="px-3 py-1.5 rounded-lg bg-[#141d30] hover:bg-[#1e2a44] border border-[#253556] text-amber-300 font-bold transition-all flex items-center gap-1.5" title="Dapatkan petunjuk dengan menukar 20 XP" type="button">
+<span>💡 Gunakan Petunjuk</span>
+<span class="text-[10px] text-amber-500/80">(-20 XP)</span>
+</button>
+</div>
+</div>
+</main>
+<!-- END: MainContent -->
+<!-- BEGIN: BottomActionDeck -->
+<footer class="w-full bg-[#0d1322] border-t-2 border-[#1c273f] py-4 sm:py-5 px-4 sticky bottom-0 z-40 backdrop-blur-md" data-purpose="footer-action-deck">
+<!-- Instant Feedback Banner (Hidden by default, shown upon checking) -->
+<div class="hidden max-w-4xl mx-auto mb-4 p-4 rounded-2xl bg-emerald-950/80 border-2 border-emerald-500/80 shadow-[0_0_20px_rgba(16,185,129,0.3)] animate-fade-in" id="feedback-banner">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-emerald-500 flex items-center justify-center text-slate-900 font-black text-xl shadow-lg">
+            ✓
+          </div>
+<div>
+<h3 class="text-emerald-300 font-extrabold text-base sm:text-lg flex items-center gap-2">
+              Luar Biasa! Jawaban Sempurna
+              <span class="px-2 py-0.5 rounded-full bg-emerald-400/20 text-emerald-200 text-xs font-black">+30 XP</span>
+</h3>
+<p class="text-xs sm:text-sm text-emerald-200/80 mt-0.5">
+<span class="font-bold">Penjelasan:</span> Kata kerja <em class="underline">"obtains"</em> merupakan bentuk <em class="italic">present simple tense</em> untuk subjek tunggal <em class="italic">"the researcher"</em>.
+            </p>
+</div>
+</div>
+<button class="tactile-button whitespace-nowrap px-6 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-sm tracking-wide shadow-game-btn-green" onclick="resetQuestState()" type="button">
+          Lanjut ke Soal Berikutnya →
+        </button>
+</div>
+</div>
+<!-- Default Control Buttons Bar -->
+<div class="max-w-4xl mx-auto flex items-center justify-between gap-4" id="default-action-bar">
+<!-- Skip / Lompati Button -->
+<button class="tactile-button px-5 sm:px-7 py-3 rounded-xl bg-[#141c2e] hover:bg-[#1c273f] border-2 border-[#243354] text-slate-400 hover:text-white font-bold text-sm sm:text-base tracking-wide transition-colors" data-purpose="skip-question-button" type="button">
+        Lompati
+      </button>
+<!-- Check Answer 3D Tactical Button -->
+<button class="tactile-button px-7 sm:px-12 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-sm sm:text-base tracking-wide shadow-game-btn-green active:shadow-game-btn-active transition-all flex items-center gap-2 group" data-purpose="submit-answer-button" id="btn-check-answer" onclick="verifyAnswer()" type="button">
+<span>Periksa</span>
+<svg class="w-5 h-5 transition-transform group-hover:translate-x-1" fill="currentColor" viewbox="0 0 20 20">
+<path clip-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" fill-rule="evenodd"></path>
+</svg>
+</button>
+</div>
+</footer>
+<!-- END: BottomActionDeck -->
+<!-- BEGIN: InteractiveScripts -->
+<script data-purpose="quest-interactive-controller">
+    // State management for demo simulation
+    let currentMode = 'audio';
+
+    function toggleChallengeMode(mode) {
+      const audioModeEl = document.getElementById('mode-sentence-builder');
+      const cardsModeEl = document.getElementById('mode-flashcards');
+      const promptTitle = document.getElementById('quest-prompt-title');
+      const btnAudio = document.getElementById('btn-mode-audio');
+      const btnCards = document.getElementById('btn-mode-cards');
+
+      if (mode === 'audio') {
+        currentMode = 'audio';
+        audioModeEl.classList.remove('hidden');
+        cardsModeEl.classList.add('hidden');
+        promptTitle.textContent = "Tuliskan dalam bahasa Indonesia apa yang diucapkan Prof. Hootie:";
+        
+        btnAudio.className = "px-2.5 py-1 rounded-lg font-bold transition-all bg-indigo-600 text-white shadow-sm";
+        btnCards.className = "px-2.5 py-1 rounded-lg font-medium text-slate-400 hover:text-slate-200 transition-all";
+      } else {
+        currentMode = 'cards';
+        audioModeEl.classList.add('hidden');
+        cardsModeEl.classList.remove('hidden');
+        promptTitle.textContent = 'Mana yang merepresentasikan "Academic Journal"?';
+
+        btnCards.className = "px-2.5 py-1 rounded-lg font-bold transition-all bg-indigo-600 text-white shadow-sm";
+        btnAudio.className = "px-2.5 py-1 rounded-lg font-medium text-slate-400 hover:text-slate-200 transition-all";
+      }
+    }
+
+    // Word Bank Interaction
+    function addWord(btnElement, text) {
+      const targetZone = document.getElementById('sentence-target-zone');
+      const emptyNotice = document.getElementById('empty-state-text');
+      if (emptyNotice) {
+        emptyNotice.style.display = 'none';
+      }
+
+      // Create placed chip
+      const chip = document.createElement('button');
+      chip.type = 'button';
+      chip.className = 'placed-tile tactile-button inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-indigo-600 border border-indigo-400/50 text-white font-bold text-sm sm:text-base shadow-[0_3px_0_#3730a3] animate-scale';
+      chip.innerHTML = `<span>${text}</span><span class="text-xs text-indigo-200">✕</span>`;
+      chip.onclick = function() {
+        removeWord(this, text, btnElement);
+      };
+
+      // Append before cursor
+      targetZone.appendChild(chip);
+
+      // Disable word bank button
+      btnElement.disabled = true;
+      btnElement.classList.add('opacity-40', 'cursor-not-allowed');
+    }
+
+    function removeWord(chipElement, text, originBtn) {
+      chipElement.remove();
+      
+      // If we know original button, reactivate it
+      if (originBtn) {
+        originBtn.disabled = false;
+        originBtn.classList.remove('opacity-40', 'cursor-not-allowed');
+      } else {
+        // Find by text content in word bank
+        const buttons = document.querySelectorAll('#word-bank-container button');
+        buttons.forEach(btn => {
+          if (btn.textContent.trim().includes(text)) {
+            btn.disabled = false;
+            btn.classList.remove('opacity-40', 'cursor-not-allowed');
+          }
+        });
+      }
+
+      // Check if target zone empty
+      const targetZone = document.getElementById('sentence-target-zone');
+      const placedChips = targetZone.querySelectorAll('.placed-tile');
+      const emptyNotice = document.getElementById('empty-state-text');
+      if (placedChips.length === 0 && emptyNotice) {
+        emptyNotice.style.display = 'inline';
+      }
+    }
+
+    // Card Selection in Model 2
+    function selectCard(selectedCard) {
+      const cards = document.querySelectorAll('.flashcard-option');
+      cards.forEach(card => {
+        // Reset styles
+        card.classList.remove('border-indigo-500', 'ring-2', 'ring-indigo-500/50', 'shadow-[0_0_20px_rgba(99,102,241,0.25)]');
+        card.classList.add('border-[#202c47]');
+        const radio = card.querySelector('.absolute.right-3\\.5');
+        if (radio) {
+          radio.className = 'absolute top-3.5 right-3.5 w-5 h-5 rounded-full border-2 border-slate-600 bg-transparent';
+          radio.innerHTML = '';
+        }
+      });
+
+      // Highlight selected
+      selectedCard.classList.remove('border-[#202c47]');
+      selectedCard.classList.add('border-indigo-500', 'ring-2', 'ring-indigo-500/50', 'shadow-[0_0_20px_rgba(99,102,241,0.25)]');
+      const activeRadio = selectedCard.querySelector('.absolute.right-3\\.5');
+      if (activeRadio) {
+        activeRadio.className = 'absolute top-3.5 right-3.5 w-5 h-5 rounded-full border-2 border-indigo-500 bg-indigo-600 flex items-center justify-center text-white text-[11px] font-black';
+        activeRadio.innerHTML = '✓';
+      }
+    }
+
+    // Answer Validation & Feedback Reveal
+    function verifyAnswer() {
+      const feedbackBanner = document.getElementById('feedback-banner');
+      feedbackBanner.classList.remove('hidden');
+      feedbackBanner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function resetQuestState() {
+      const feedbackBanner = document.getElementById('feedback-banner');
+      feedbackBanner.classList.add('hidden');
+      alert("Memuat soal berikutnya: Level Tantangan +1!");
+    }
+
+    function playAudioFeedback() {
+      // Visual feedback on owl avatar
+      console.log("Memutar audio sampel: 'The researcher obtains the data.'");
+    }
+  </script>
+<!-- END: InteractiveScripts -->
+</body></html>

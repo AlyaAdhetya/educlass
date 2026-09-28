@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>EduClass - Platform Belajar TOEFL ITP &amp; CEFR Interaktif</title>
+<!-- Google Fonts: Nunito Sans -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,300..900;1,6..12,300..900&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-background": "#0b1c30",
+            "surface": "#f8f9ff",
+            "on-secondary-container": "#6f5100",
+            "on-secondary-fixed-variant": "#5c4300",
+            "primary-fixed": "#dbe1ff",
+            "on-primary-container": "#eeefff",
+            "tertiary-fixed-dim": "#4ae176",
+            "on-error-container": "#93000a",
+            "on-surface": "#0b1c30",
+            "outline-variant": "#c3c6d7",
+            "secondary": "#795900",
+            "inverse-on-surface": "#eaf1ff",
+            "on-secondary-fixed": "#261a00",
+            "surface-container": "#e5eeff",
+            "secondary-fixed": "#ffdf9f",
+            "tertiary-fixed": "#6bff8f",
+            "surface-tint": "#0053db",
+            "on-tertiary": "#ffffff",
+            "surface-container-high": "#dce9ff",
+            "inverse-primary": "#b4c5ff",
+            "tertiary-container": "#007e37",
+            "on-error": "#ffffff",
+            "surface-container-low": "#eff4ff",
+            "on-primary-fixed-variant": "#003ea8",
+            "primary-container": "#2563eb",
+            "on-tertiary-container": "#c1ffc5",
+            "on-secondary": "#ffffff",
+            "on-primary": "#ffffff",
+            "surface-dim": "#cbdbf5",
+            "tertiary": "#006229",
+            "outline": "#737686",
+            "background": "#f8f9ff",
+            "secondary-container": "#ffc329",
+            "on-primary-fixed": "#00174b",
+            "primary-fixed-dim": "#b4c5ff",
+            "error": "#ba1a1a",
+            "inverse-surface": "#213145",
+            "surface-bright": "#f8f9ff",
+            "surface-container-highest": "#d3e4fe",
+            "on-tertiary-fixed-variant": "#005321",
+            "secondary-fixed-dim": "#f9bd22",
+            "on-surface-variant": "#434655"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "2xl": "1rem",
+            "3xl": "1.5rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "gutter": "1.5rem",
+            "margin-mobile": "1rem",
+            "gutter-mobile": "1rem",
+            "space-xs": "0.25rem",
+            "space-2xl": "3rem",
+            "space-sm": "0.5rem",
+            "space-lg": "1.5rem",
+            "space-xl": "2rem",
+            "margin": "2rem",
+            "space-md": "1rem"
+          },
+          "fontFamily": {
+            "title-sm": ["Nunito Sans"],
+            "body-md": ["Nunito Sans"],
+            "headline-md": ["Nunito Sans"],
+            "headline-xl-mobile": ["Nunito Sans"],
+            "label-lg": ["Nunito Sans"],
+            "label-md": ["Nunito Sans"],
+            "headline-lg-mobile": ["Nunito Sans"],
+            "body-sm": ["Nunito Sans"],
+            "label-sm": ["Nunito Sans"],
+            "body-lg": ["Nunito Sans"],
+            "title-md": ["Nunito Sans"],
+            "headline-sm": ["Nunito Sans"],
+            "headline-lg": ["Nunito Sans"],
+            "headline-xl": ["Nunito Sans"]
+          },
+          "fontSize": {
+            "title-sm": ["16px", { "lineHeight": "24px", "fontWeight": "700" }],
+            "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+            "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "700" }],
+            "headline-xl-mobile": ["30px", { "lineHeight": "38px", "fontWeight": "800" }],
+            "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "800" }],
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.03em", "fontWeight": "700" }],
+            "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "800" }],
+            "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "500" }],
+            "label-sm": ["10px", { "lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "700" }],
+            "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+            "title-md": ["18px", { "lineHeight": "26px", "fontWeight": "700" }],
+            "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "700" }],
+            "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "800" }],
+            "headline-xl": ["40px", { "lineHeight": "48px", "fontWeight": "800" }]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    body {
+      font-family: 'Nunito Sans', sans-serif;
+    }
+    
+    /* Tactile 3D pressable elements */
+    .tactile-btn-primary {
+      background-color: #2563eb;
+      border-bottom: 4px solid #1d4ed8;
+      transition: transform 0.1s ease, border-bottom 0.1s ease;
+    }
+    .tactile-btn-primary:active {
+      transform: translateY(2px);
+      border-bottom-width: 2px;
+    }
+    
+    .tactile-btn-secondary {
+      background-color: #ffc329;
+      border-bottom: 4px solid #d97706;
+      transition: transform 0.1s ease, border-bottom 0.1s ease;
+    }
+    .tactile-btn-secondary:active {
+      transform: translateY(2px);
+      border-bottom-width: 2px;
+    }
+
+    .tactile-btn-neutral {
+      background-color: #ffffff;
+      border: 1.5px solid #e2e8f0;
+      border-bottom: 4px solid #cbd5e1;
+      transition: transform 0.1s ease, border-bottom 0.1s ease;
+    }
+    .tactile-btn-neutral:active {
+      transform: translateY(2px);
+      border-bottom-width: 2px;
+    }
+
+    .tactile-node-active {
+      box-shadow: 0 0 0 6px rgba(37, 99, 235, 0.18);
+      animation: pulse-ring 2.4s infinite;
+    }
+
+    @keyframes pulse-ring {
+      0% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.35); }
+      70% { box-shadow: 0 0 0 14px rgba(37, 99, 235, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); }
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface antialiased min-h-screen selection:bg-primary-fixed selection:text-primary">
+<!-- ==================== LEFT SIDEBAR (Shared Component: SideNavBar) ==================== -->
+<aside class="fixed top-0 left-0 h-screen w-64 z-40 p-4 border-r border-outline-variant/30 flex flex-col justify-between bg-surface-container-lowest dark:bg-inverse-surface shadow-sm">
+<div class="flex flex-col gap-6">
+<!-- Logo Branding Header -->
+<div class="px-2 pt-1 flex items-center gap-3">
+<img alt="EduClass Logo with Hootie" class="h-10 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1XQ9jINnSBTrMQja39K89NqUrO4ETxfqJPTfF9u0ZzoVsLwDsjLEWBxZrRiRVcLb4rlmp_RvXXjnTQYjVZVUxE7X-zKVBuBjb_VFI_pKFnzPMTCyXqchfBj212E8YJXdiIbu6rlwlbbjcKUh498S1KwtocwK4Uh33R7i3QfDOp3I2aah99045gJuDSoWm8tKnp2Ft2wDnrPdaykvle7udLK1-3R0WfVgFIYI63WQFGM4-Fv2vl7Fht8UA"/>
+</div>
+<!-- Navigation Links -->
+<nav aria-label="Menu Utama" class="flex flex-col gap-1.5">
+<!-- Active Tab: Beranda -->
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl bg-surface-container-low dark:bg-surface-container text-primary dark:text-inverse-primary font-bold border-b-4 border-primary dark:border-inverse-primary active:translate-y-0.5 transition-transform duration-100" href="#beranda">
+<span class="material-symbols-outlined text-[22px]" data-icon="home" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="font-label-lg text-label-lg tracking-normal">Beranda</span>
+</a>
+<!-- TOEFL ITP Prep -->
+<a class="flex items-center justify-between px-4 py-3 rounded-xl text-on-surface-variant dark:text-outline-variant font-medium hover:bg-surface-container-low dark:hover:bg-surface-container hover:text-primary dark:hover:text-inverse-primary transition-colors duration-150 active:translate-y-0.5" href="#toefl-prep">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[22px]" data-icon="school">school</span>
+<span class="font-label-lg text-label-lg">TOEFL ITP Prep</span>
+</div>
+<span class="font-label-sm text-label-sm bg-primary-container text-on-primary-container px-2 py-0.5 rounded-full font-extrabold uppercase">Baru</span>
+</a>
+<!-- Modul & Materi -->
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant dark:text-outline-variant font-medium hover:bg-surface-container-low dark:hover:bg-surface-container hover:text-primary dark:hover:text-inverse-primary transition-colors duration-150 active:translate-y-0.5" href="#modul">
+<span class="material-symbols-outlined text-[22px]" data-icon="menu_book">menu_book</span>
+<span class="font-label-lg text-label-lg">Modul &amp; Materi</span>
+</a>
+<!-- Latihan Harian -->
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant dark:text-outline-variant font-medium hover:bg-surface-container-low dark:hover:bg-surface-container hover:text-primary dark:hover:text-inverse-primary transition-colors duration-150 active:translate-y-0.5" href="#latihan">
+<span class="material-symbols-outlined text-[22px]" data-icon="assignment_turned_in">assignment_turned_in</span>
+<span class="font-label-lg text-label-lg">Latihan Harian</span>
+</a>
+<!-- Papan Peringkat -->
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant dark:text-outline-variant font-medium hover:bg-surface-container-low dark:hover:bg-surface-container hover:text-primary dark:hover:text-inverse-primary transition-colors duration-150 active:translate-y-0.5" href="#leaderboard">
+<span class="material-symbols-outlined text-[22px]" data-icon="leaderboard">leaderboard</span>
+<span class="font-label-lg text-label-lg">Papan Peringkat</span>
+</a>
+<!-- Toko Hadiah -->
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant dark:text-outline-variant font-medium hover:bg-surface-container-low dark:hover:bg-surface-container hover:text-primary dark:hover:text-inverse-primary transition-colors duration-150 active:translate-y-0.5" href="#toko">
+<span class="material-symbols-outlined text-[22px]" data-icon="redeem">redeem</span>
+<span class="font-label-lg text-label-lg">Toko Hadiah</span>
+</a>
+<!-- Akun Saya -->
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant dark:text-outline-variant font-medium hover:bg-surface-container-low dark:hover:bg-surface-container hover:text-primary dark:hover:text-inverse-primary transition-colors duration-150 active:translate-y-0.5" href="#akun">
+<span class="material-symbols-outlined text-[22px]" data-icon="account_circle">account_circle</span>
+<span class="font-label-lg text-label-lg">Akun Saya</span>
+</a>
+</nav>
+</div>
+<!-- Sidebar Footer Actions -->
+<div class="flex flex-col gap-3 pt-4 border-t border-outline-variant/30">
+<div class="flex items-center justify-between px-2 text-on-surface-variant">
+<a class="flex items-center gap-2 p-2 rounded-lg hover:bg-surface-container-low transition-colors duration-150 text-body-sm font-body-sm" href="#pengaturan">
+<span class="material-symbols-outlined text-[20px]" data-icon="settings">settings</span>
+<span>Pengaturan</span>
+</a>
+<a class="p-2 rounded-lg hover:bg-surface-container-low transition-colors duration-150 text-on-surface-variant" href="#bantuan" title="Pusat Bantuan">
+<span class="material-symbols-outlined text-[20px]" data-icon="help">help</span>
+</a>
+</div>
+<!-- Quick CTA Button -->
+<button class="tactile-btn-primary w-full py-2.5 px-4 rounded-xl text-white font-label-lg text-label-lg shadow-sm flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[20px]" data-icon="play_arrow">play_arrow</span>
+        Mulai Belajar
+      </button>
+</div>
+</aside>
+<!-- ==================== TOP NAVIGATION BAR (Shared Component: TopNavBar) ==================== -->
+<header class="fixed top-0 left-64 right-0 h-16 z-30 px-8 flex justify-between items-center border-b border-outline-variant/30 bg-surface-container-lowest/95 backdrop-blur-md">
+<!-- Breadcrumb Context -->
+<div class="flex items-center gap-3">
+<span class="font-headline-sm text-headline-sm font-extrabold text-on-surface tracking-tight">Dashboard Mahasiswa</span>
+<span class="px-2.5 py-1 rounded-full bg-surface-container text-primary font-label-md text-label-md font-bold">
+        Semester Genap
+      </span>
+</div>
+<!-- Gamification Status Clusters & User Info -->
+<div class="flex items-center gap-3.5">
+<!-- Streak Pill -->
+<div class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-orange-50 border border-orange-200 text-orange-600 font-label-lg text-label-lg shadow-xs cursor-pointer hover:bg-orange-100 transition-colors" title="Streak Belajar Aktif">
+<span class="material-symbols-outlined text-[20px] text-orange-500" data-icon="local_fire_department" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+<span class="font-bold">14 Hari</span>
+</div>
+<!-- Gems Pill -->
+<div class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-purple-50 border border-purple-200 text-purple-700 font-label-lg text-label-lg shadow-xs cursor-pointer hover:bg-purple-100 transition-colors" title="Saldo Permata">
+<span class="material-symbols-outlined text-[20px] text-purple-600" data-icon="diamond" style="font-variation-settings: 'FILL' 1;">diamond</span>
+<span class="font-bold">1.240</span>
+</div>
+<!-- Energy / XP Pill -->
+<div class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-50 border border-amber-200 text-amber-700 font-label-lg text-label-lg shadow-xs cursor-pointer hover:bg-amber-100 transition-colors" title="Total Pengalaman Belajar">
+<span class="material-symbols-outlined text-[20px] text-amber-500" data-icon="bolt" style="font-variation-settings: 'FILL' 1;">bolt</span>
+<span class="font-bold">4.850 XP</span>
+</div>
+<!-- Notifications -->
+<button aria-label="Notifikasi" class="relative p-2 rounded-xl text-on-surface-variant hover:bg-surface-container-low transition-colors duration-150">
+<span class="material-symbols-outlined text-[22px]" data-icon="notifications">notifications</span>
+<span class="absolute top-1.5 right-1.5 w-2.5 h-2.5 bg-error rounded-full ring-2 ring-surface-container-lowest"></span>
+</button>
+<div class="h-6 w-px bg-outline-variant/40 mx-1"></div>
+<!-- User Profile Badge -->
+<div class="flex items-center gap-3 pl-1 cursor-pointer group">
+<div class="relative">
+<div class="w-10 h-10 rounded-full bg-primary-fixed border-2 border-primary overflow-hidden flex items-center justify-center font-bold text-primary">
+            RP
+          </div>
+<span class="absolute -bottom-1 -right-1 bg-primary text-white text-[10px] font-extrabold px-1.5 py-0.2 rounded-full border border-white">
+            12
+          </span>
+</div>
+<div class="flex flex-col text-left">
+<span class="font-title-sm text-title-sm text-on-surface group-hover:text-primary transition-colors leading-tight">Rian Pratama</span>
+<span class="font-label-md text-label-md text-on-surface-variant font-medium">Level 12 Scholar</span>
+</div>
+</div>
+</div>
+</header>
+<!-- ==================== MAIN CONTENT CANVAS ==================== -->
+<main class="ml-64 pt-20 p-8 min-h-screen bg-background">
+<div class="max-w-7xl mx-auto">
+<!-- GRID 12-KOLOM: 8 Kolom Utama + 4 Kolom Status Gamifikasi Samping -->
+<div class="grid grid-cols-12 gap-8 items-start">
+<!-- KOLOM KIRI / UTAMA (8 Kolom) -->
+<div class="col-span-8 flex flex-col gap-8">
+<!-- HERO WELCOME BANNER (Tactile, Motivating, Mascot Integrated) -->
+<div class="relative overflow-hidden bg-surface-container-lowest rounded-3xl p-6 border-[1.5px] border-outline-variant/30 shadow-[0_8px_24px_-4px_rgba(15,23,42,0.06)] flex items-center justify-between">
+<!-- Left Info Content -->
+<div class="flex flex-col gap-3 max-w-lg z-10">
+<div class="flex items-center gap-2">
+<span class="px-3 py-1 rounded-full bg-primary-fixed text-primary font-label-md text-label-md font-extrabold flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]" data-icon="flag">flag</span>
+                  Target: B2 Upper-Intermediate (TOEFL 550+)
+                </span>
+<span class="px-2.5 py-0.5 rounded-full bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-label-sm font-extrabold">
+                  +75 XP Hari Ini
+                </span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface font-extrabold tracking-tight">
+                Halo, Rian! Siap taklukkan TOEFL hari ini? 🎓
+              </h1>
+<p class="font-body-md text-body-md text-on-surface-variant">
+                Kamu berada di peringkat 5% teratas minggu ini. Selesaikan 2 materi lagi untuk mempertahankan gelar Scholar!
+              </p>
+<!-- Progress bar tracker -->
+<div class="flex flex-col gap-1.5 mt-2">
+<div class="flex justify-between items-center font-label-md text-label-md">
+<span class="font-bold text-on-surface">Target Misi Harian</span>
+<span class="text-tertiary font-extrabold">3 dari 5 misi selesai (60%)</span>
+</div>
+<div class="w-full h-3.5 bg-surface-container rounded-full overflow-hidden p-0.5 border border-outline-variant/20">
+<div class="h-full bg-tertiary-container rounded-full transition-all duration-500 relative" style="width: 60%;">
+<div class="absolute inset-0 bg-white/20 h-1 rounded-full"></div>
+</div>
+</div>
+</div>
+<!-- Chunky Tactile Hero CTA -->
+<div class="pt-3">
+<button class="tactile-btn-primary px-6 py-3.5 rounded-2xl text-white font-title-sm text-title-sm flex items-center gap-3 shadow-md hover:brightness-105">
+<span class="material-symbols-outlined text-[24px]" data-icon="play_circle" style="font-variation-settings: 'FILL' 1;">play_circle</span>
+<span>Lanjutkan Belajar: Structure &amp; Written Expression #4</span>
+</button>
+</div>
+</div>
+<!-- Mascot Illustration -->
+<div class="relative z-10 w-56 h-56 flex-shrink-0 flex items-center justify-center -mr-2">
+<div class="absolute inset-0 bg-primary-fixed/40 rounded-full blur-2xl transform scale-90"></div>
+<img alt="Maskot EduClass Hootie Si Burung Hantu Sarjana Cerdas" class="relative z-10 w-full h-full object-contain filter drop-shadow-lg transform hover:scale-105 transition-transform duration-300" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA4zmcVyHIw5VVmUZODDE1hB3qz6gVY9FeP52ccvXjzlZLAe5Y-qmUeb_-S3qIr87QR70G51xdTiKJeg2lgKeUj7nbEvc7UWsy1PcAF8eUf-3heowKIJHXxh_mBgIpypqKrawHvkG8CGEJRURI6QXoeFImaDSRfImM50ZtHtNfd_WDZZ4syyAgya0yOUVYYglCD6y8Xwca7ewLTSmgZmjJ3XiFRexkKqPV8a4bZqGUhR_mI_Mxar9Nq"/>
+</div>
+<!-- Background decorative shapes -->
+<div class="absolute -right-8 -bottom-10 w-72 h-72 rounded-full bg-surface-container-low/60 pointer-events-none"></div>
+</div>
+<!-- JALUR BELAJAR INTERAKTIF (Learning Path / Skill Tree) -->
+<div class="bg-surface-container-lowest rounded-3xl p-8 border-[1.5px] border-outline-variant/30 shadow-[0_8px_24px_-4px_rgba(15,23,42,0.06)] flex flex-col gap-6">
+<div class="flex items-center justify-between border-b border-outline-variant/20 pb-4">
+<div>
+<h2 class="font-headline-md text-headline-md font-extrabold text-on-surface">Jalur Pembelajaran Interaktif</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Kurikulum Terstruktur CEFR &amp; TOEFL ITP Standardized Modules</p>
+</div>
+<div class="flex items-center gap-2">
+<span class="flex items-center gap-1 text-label-md font-label-md text-on-surface-variant bg-surface-container px-3 py-1 rounded-full">
+<span class="w-2.5 h-2.5 rounded-full bg-tertiary"></span> Modul 2 dari 5
+                </span>
+</div>
+</div>
+<!-- Path Timeline Zig-Zag Flow -->
+<div class="relative py-4 flex flex-col items-center">
+<!-- Vertical Path Connector Line -->
+<div class="absolute top-10 bottom-12 w-2.5 bg-surface-container-high rounded-full z-0"></div>
+<!-- ============ UNIT 1: SELESAI ============ -->
+<div class="relative z-10 w-full flex items-center justify-between max-w-lg mb-10">
+<div class="w-48 text-right pr-6">
+<span class="font-label-sm text-label-sm text-tertiary font-extrabold uppercase tracking-wide">Unit 1 • Selesai</span>
+<h3 class="font-title-sm text-title-sm text-on-surface font-extrabold leading-snug">Foundations of Academic Vocabulary</h3>
+<div class="flex items-center justify-end gap-1 text-amber-500 mt-1">
+<span class="material-symbols-outlined text-[18px]" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+</div>
+<!-- Node Icon Button (Green Crown Complete) -->
+<div class="w-20 h-20 rounded-full bg-white border-4 border-tertiary shadow-md flex items-center justify-center transform hover:scale-105 transition-transform cursor-pointer">
+<div class="w-14 h-14 rounded-full bg-tertiary-fixed text-tertiary flex items-center justify-center">
+<span class="material-symbols-outlined text-[30px]" data-icon="workspace_premium" style="font-variation-settings: 'FILL' 1;">workspace_premium</span>
+</div>
+</div>
+<div class="w-48 pl-6">
+<span class="text-body-sm font-body-sm text-tertiary font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px]" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                    Skor: 100% (Mastered)
+                  </span>
+</div>
+</div>
+<!-- ============ UNIT 2: AKTIF (Sedang Dipelajari) ============ -->
+<div class="relative z-10 w-full flex items-center justify-between max-w-lg mb-10">
+<div class="w-48 text-right pr-6">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary-fixed text-primary font-label-sm text-label-sm font-extrabold uppercase">
+<span class="material-symbols-outlined text-[14px]" data-icon="radar">radar</span>
+                    Sedang Aktif
+                  </span>
+<h3 class="font-title-sm text-title-sm text-primary font-extrabold leading-snug mt-1">Sentence Structure &amp; Inversion</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Latihan 4 dari 8 Sesi</p>
+</div>
+<!-- Node Icon Button (Pulsing Vibrant Blue Active) -->
+<div class="tactile-node-active w-24 h-24 rounded-full bg-white border-4 border-primary shadow-lg flex items-center justify-center transform hover:scale-105 transition-transform cursor-pointer">
+<div class="w-18 h-18 rounded-full bg-primary-container text-white flex flex-col items-center justify-center p-2">
+<span class="material-symbols-outlined text-[36px]" data-icon="auto_stories" style="font-variation-settings: 'FILL' 1;">auto_stories</span>
+</div>
+</div>
+<div class="w-48 pl-6 flex flex-col items-start gap-1">
+<button class="tactile-btn-primary px-4 py-2 rounded-xl text-white font-label-md text-label-md flex items-center gap-1.5 shadow-sm">
+<span>Mulai Sesi</span>
+<span class="bg-primary-fixed text-primary font-bold text-[10px] px-1.5 py-0.5 rounded-full">+25 XP</span>
+</button>
+</div>
+</div>
+<!-- ============ UNIT 3: TERBUKA ============ -->
+<div class="relative z-10 w-full flex items-center justify-between max-w-lg mb-10">
+<div class="w-48 text-right pr-6">
+<span class="font-label-sm text-label-sm text-on-surface-variant font-bold uppercase">Unit 3 • Siap Diakses</span>
+<h3 class="font-title-sm text-title-sm text-on-surface font-extrabold leading-snug">Academic Listening: Campus Conversations</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">TOEFL Part A &amp; B</p>
+</div>
+<!-- Node Icon Button (Unlocked Blue Tint) -->
+<div class="w-20 h-20 rounded-full bg-white border-4 border-outline-variant shadow-sm flex items-center justify-center transform hover:scale-105 transition-transform cursor-pointer">
+<div class="w-14 h-14 rounded-full bg-surface-container text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[28px]" data-icon="headphones">headphones</span>
+</div>
+</div>
+<div class="w-48 pl-6">
+<span class="text-body-sm font-body-sm text-on-surface-variant flex items-center gap-1 font-semibold">
+<span class="material-symbols-outlined text-[18px]" data-icon="lock_open">lock_open</span>
+                    Prasyarat Terpenuhi
+                  </span>
+</div>
+</div>
+<!-- ============ UNIT 4: TERKUNCI ============ -->
+<div class="relative z-10 w-full flex items-center justify-between max-w-lg mb-10 opacity-75">
+<div class="w-48 text-right pr-6">
+<span class="font-label-sm text-label-sm text-outline font-bold uppercase">Unit 4 • Terkunci</span>
+<h3 class="font-title-sm text-title-sm text-on-surface-variant font-extrabold leading-snug">Reading Comprehension: Science &amp; Arts</h3>
+<p class="font-body-sm text-body-sm text-outline">Skimming &amp; Inference</p>
+</div>
+<!-- Node Icon Button (Gray Locked) -->
+<div class="w-20 h-20 rounded-full bg-surface-container-high border-4 border-outline-variant/60 shadow-none flex items-center justify-center cursor-not-allowed">
+<div class="w-14 h-14 rounded-full bg-surface-dim text-outline flex items-center justify-center">
+<span class="material-symbols-outlined text-[26px]" data-icon="lock">lock</span>
+</div>
+</div>
+<div class="w-48 pl-6">
+<span class="text-body-sm font-body-sm text-outline font-medium">Tuntaskan Unit 2 &amp; 3</span>
+</div>
+</div>
+<!-- ============ UNIT 5: PRACTICE TEST SIMULASI ============ -->
+<div class="relative z-10 w-full flex items-center justify-between max-w-lg opacity-75">
+<div class="w-48 text-right pr-6">
+<span class="font-label-sm text-label-sm text-amber-700 font-bold uppercase">Ujian Puncak</span>
+<h3 class="font-title-sm text-title-sm text-on-surface-variant font-extrabold leading-snug">Full Practice Test Simulasi ITP #1</h3>
+<p class="font-body-sm text-body-sm text-outline">140 Soal • 115 Menit</p>
+</div>
+<!-- Node Icon Button (Golden Locked Trophy) -->
+<div class="w-20 h-20 rounded-full bg-secondary-fixed/40 border-4 border-secondary-fixed-dim shadow-none flex items-center justify-center cursor-not-allowed">
+<div class="w-14 h-14 rounded-full bg-secondary-fixed text-amber-800 flex items-center justify-center">
+<span class="material-symbols-outlined text-[28px]" data-icon="emoji_events">emoji_events</span>
+</div>
+</div>
+<div class="w-48 pl-6">
+<span class="text-body-sm font-body-sm text-outline font-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]" data-icon="lock">lock</span>
+                    Sertifikat Prediksi TOEFL
+                  </span>
+</div>
+</div>
+</div>
+</div>
+<!-- MINI QUIZ CARD (Tactile Multiple Choice Showcase) -->
+<div class="bg-surface-container-lowest rounded-3xl p-6 border-[1.5px] border-outline-variant/30 shadow-[0_8px_24px_-4px_rgba(15,23,42,0.06)] flex flex-col gap-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="p-1.5 rounded-lg bg-primary-fixed text-primary">
+<span class="material-symbols-outlined text-[20px]" data-icon="quiz">quiz</span>
+</span>
+<span class="font-title-sm text-title-sm text-on-surface font-extrabold">Uji Pemahaman Cepat (Daily Micro-Quiz)</span>
+</div>
+<span class="font-label-sm text-label-sm bg-tertiary-fixed text-on-tertiary-fixed font-bold px-2.5 py-1 rounded-full">
+                Reward: +10 XP
+              </span>
+</div>
+<p class="font-body-md text-body-md text-on-surface font-semibold pt-1">
+              "Not only ________ the examination with top honors, but she also received a research fellowship."
+            </p>
+<!-- Multiple Choice Grid (Tactile 3D Buttons) -->
+<div class="grid grid-cols-2 gap-3 pt-1">
+<button class="tactile-btn-neutral p-3 rounded-xl flex items-center gap-3 text-left hover:border-primary group">
+<span class="w-7 h-7 rounded-lg bg-surface-container text-on-surface-variant font-bold text-sm flex items-center justify-center group-hover:bg-primary group-hover:text-white">A</span>
+<span class="font-body-sm text-body-sm text-on-surface font-semibold">she passed</span>
+</button>
+<button class="tactile-btn-neutral p-3 rounded-xl flex items-center gap-3 text-left border-primary bg-primary-fixed/20 group">
+<span class="w-7 h-7 rounded-lg bg-primary text-white font-bold text-sm flex items-center justify-center">B</span>
+<span class="font-body-sm text-body-sm text-primary font-bold">did she pass</span>
+</button>
+<button class="tactile-btn-neutral p-3 rounded-xl flex items-center gap-3 text-left hover:border-primary group">
+<span class="w-7 h-7 rounded-lg bg-surface-container text-on-surface-variant font-bold text-sm flex items-center justify-center group-hover:bg-primary group-hover:text-white">C</span>
+<span class="font-body-sm text-body-sm text-on-surface font-semibold">she had passed</span>
+</button>
+<button class="tactile-btn-neutral p-3 rounded-xl flex items-center gap-3 text-left hover:border-primary group">
+<span class="w-7 h-7 rounded-lg bg-surface-container text-on-surface-variant font-bold text-sm flex items-center justify-center group-hover:bg-primary group-hover:text-white">D</span>
+<span class="font-body-sm text-body-sm text-on-surface font-semibold">she has passed</span>
+</button>
+</div>
+<div class="flex items-center justify-between pt-2">
+<span class="font-body-sm text-body-sm text-tertiary font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px]" data-icon="lightbulb">lightbulb</span>
+                Tips: Aturan Negative Inversion diawali dengan 'Not only + auxiliary verb'.
+              </span>
+<button class="tactile-btn-primary px-5 py-2 rounded-xl text-white font-label-md text-label-md">
+                Periksa Jawaban
+              </button>
+</div>
+</div>
+</div>
+<!-- KOLOM KANAN / WIDGET GAMIFIKASI & METRIK (4 Kolom) -->
+<div class="col-span-4 flex flex-col gap-6">
+<!-- WIDGET 1: TARGET SKOR TOEFL ITP -->
+<div class="bg-surface-container-lowest rounded-3xl p-6 border-[1.5px] border-outline-variant/30 shadow-[0_8px_24px_-4px_rgba(15,23,42,0.06)] flex flex-col gap-4">
+<div class="flex items-center justify-between">
+<h3 class="font-title-md text-title-md font-extrabold text-on-surface">Target Skor TOEFL ITP</h3>
+<span class="material-symbols-outlined text-primary text-[22px]" data-icon="insights">insights</span>
+</div>
+<!-- Score Progress Gauge -->
+<div class="bg-surface-container-low rounded-2xl p-4 flex flex-col gap-3 border border-outline-variant/30">
+<div class="flex items-baseline justify-between">
+<div>
+<span class="font-headline-lg text-headline-lg font-extrabold text-primary">510</span>
+<span class="text-body-sm font-body-sm text-on-surface-variant font-medium">/ 550 Target</span>
+</div>
+<span class="font-label-sm text-label-sm bg-tertiary-fixed text-on-tertiary-fixed font-bold px-2 py-0.5 rounded-full">
+                  +30 Poin dari tes awal
+                </span>
+</div>
+<!-- Bar gauge -->
+<div class="w-full h-3 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-primary-container rounded-full" style="width: 82%;"></div>
+</div>
+<div class="flex justify-between text-label-sm font-label-sm text-on-surface-variant">
+<span>Skor Masuk: 480</span>
+<span>Tersisa 40 Poin</span>
+<span>Target: 550</span>
+</div>
+</div>
+<!-- TOEFL Section Breakdown Cards -->
+<div class="flex flex-col gap-2 pt-1">
+<span class="font-label-md text-label-md font-bold text-on-surface">Rincian Kemampuan Seksi:</span>
+<!-- Listening -->
+<div class="flex items-center justify-between p-2.5 rounded-xl bg-surface-container-lowest border border-outline-variant/20 hover:border-primary/40 transition-colors">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[20px] text-primary" data-icon="headphones">headphones</span>
+<div>
+<span class="font-label-lg text-label-lg font-bold text-on-surface block">Listening Comprehension</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Kekuatan: Short Dialogues</span>
+</div>
+</div>
+<span class="font-title-sm text-title-sm font-extrabold text-on-surface">52 / 68</span>
+</div>
+<!-- Structure -->
+<div class="flex items-center justify-between p-2.5 rounded-xl bg-surface-container-lowest border border-outline-variant/20 hover:border-primary/40 transition-colors">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[20px] text-amber-600" data-icon="edit_note">edit_note</span>
+<div>
+<span class="font-label-lg text-label-lg font-bold text-on-surface block">Structure &amp; Expression</span>
+<span class="font-body-sm text-body-sm text-amber-700 font-semibold">Perlu latihan inversion</span>
+</div>
+</div>
+<span class="font-title-sm text-title-sm font-extrabold text-amber-600">48 / 68</span>
+</div>
+<!-- Reading -->
+<div class="flex items-center justify-between p-2.5 rounded-xl bg-surface-container-lowest border border-outline-variant/20 hover:border-primary/40 transition-colors">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[20px] text-tertiary" data-icon="article">article</span>
+<div>
+<span class="font-label-lg text-label-lg font-bold text-on-surface block">Reading Comprehension</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Vocabulary in context stabil</span>
+</div>
+</div>
+<span class="font-title-sm text-title-sm font-extrabold text-tertiary">53 / 67</span>
+</div>
+</div>
+<button class="tactile-btn-neutral w-full py-2.5 rounded-xl text-primary font-label-lg text-label-lg flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]" data-icon="analytics">analytics</span>
+              Lihat Analisis Diagnostik Lengkap
+            </button>
+</div>
+<!-- WIDGET 2: MISI HARIAN (Daily Quests) -->
+<div class="bg-surface-container-lowest rounded-3xl p-6 border-[1.5px] border-outline-variant/30 shadow-[0_8px_24px_-4px_rgba(15,23,42,0.06)] flex flex-col gap-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-amber-500 text-[24px]" data-icon="task_alt" style="font-variation-settings: 'FILL' 1;">task_alt</span>
+<h3 class="font-title-md text-title-md font-extrabold text-on-surface">Misi Harian (Quests)</h3>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-container px-2 py-0.5 rounded-full">
+                Reset: 7 Jam lagi
+              </span>
+</div>
+<!-- Quest Item 1 -->
+<div class="flex flex-col gap-2 p-3 rounded-2xl bg-surface-container-low border border-outline-variant/20">
+<div class="flex items-start justify-between">
+<div>
+<h4 class="font-label-lg text-label-lg font-extrabold text-on-surface">Raih 50 XP Hari Ini</h4>
+<span class="font-body-sm text-body-sm text-on-surface-variant">35 / 50 XP dikumpulkan</span>
+</div>
+<span class="flex items-center gap-1 font-label-sm text-label-sm font-extrabold text-purple-700 bg-purple-100 px-2 py-0.5 rounded-full">
+<span class="material-symbols-outlined text-[14px]" data-icon="diamond" style="font-variation-settings: 'FILL' 1;">diamond</span> +10
+                </span>
+</div>
+<div class="w-full h-2 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-amber-500 rounded-full" style="width: 70%;"></div>
+</div>
+</div>
+<!-- Quest Item 2 (Completed & Claimed) -->
+<div class="flex items-center justify-between p-3 rounded-2xl bg-tertiary-fixed/30 border border-tertiary/30">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-tertiary text-[24px]" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<div>
+<h4 class="font-label-lg text-label-lg font-extrabold text-on-surface line-through opacity-80">1 Sesi Listening Tanpa Salah</h4>
+<span class="font-body-sm text-body-sm text-tertiary font-bold">1 / 1 Selesai • Klaim Sukses</span>
+</div>
+</div>
+<span class="font-label-sm text-label-sm text-tertiary font-extrabold">✅</span>
+</div>
+<!-- Quest Item 3 -->
+<div class="flex flex-col gap-2 p-3 rounded-2xl bg-surface-container-low border border-outline-variant/20">
+<div class="flex items-start justify-between">
+<div>
+<h4 class="font-label-lg text-label-lg font-extrabold text-on-surface">Latihan 15 Menit Berturut-turut</h4>
+<span class="font-body-sm text-body-sm text-on-surface-variant">12 / 15 Menit aktif</span>
+</div>
+<span class="flex items-center gap-1 font-label-sm text-label-sm font-extrabold text-purple-700 bg-purple-100 px-2 py-0.5 rounded-full">
+<span class="material-symbols-outlined text-[14px]" data-icon="diamond" style="font-variation-settings: 'FILL' 1;">diamond</span> +15
+                </span>
+</div>
+<div class="w-full h-2 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-primary-container rounded-full" style="width: 80%;"></div>
+</div>
+</div>
+</div>
+<!-- WIDGET 3: PAPAN PERINGKAT LIGA MAHASISWA NASIONAL -->
+<div class="bg-surface-container-lowest rounded-3xl p-6 border-[1.5px] border-outline-variant/30 shadow-[0_8px_24px_-4px_rgba(15,23,42,0.06)] flex flex-col gap-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-amber-500 text-[24px]" data-icon="military_tech" style="font-variation-settings: 'FILL' 1;">military_tech</span>
+<h3 class="font-title-md text-title-md font-extrabold text-on-surface">Liga Mahasiswa</h3>
+</div>
+<span class="font-label-sm text-label-sm text-primary font-extrabold bg-primary-fixed px-2.5 py-0.5 rounded-full">
+                Liga Ruby
+              </span>
+</div>
+<!-- Promotion Zone Alert -->
+<div class="flex items-center gap-2 p-2.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-body-sm font-body-sm font-bold">
+<span class="material-symbols-outlined text-[20px] text-emerald-600" data-icon="arrow_upward">arrow_upward</span>
+<span>Zona Promosi ke Liga Diamond (Sisa 2 Hari)!</span>
+</div>
+<!-- Leaderboard Rows -->
+<div class="flex flex-col gap-2">
+<!-- Rank 1 -->
+<div class="flex items-center justify-between p-2.5 rounded-xl bg-surface-container-lowest border border-outline-variant/20">
+<div class="flex items-center gap-3">
+<span class="font-extrabold text-amber-500 font-title-sm text-title-sm w-4 text-center">1</span>
+<div class="w-8 h-8 rounded-full bg-amber-100 text-amber-800 flex items-center justify-center font-bold text-xs">
+                    AS
+                  </div>
+<div>
+<span class="font-label-lg text-label-lg font-bold text-on-surface block">Adinda S.</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Univ. Indonesia</span>
+</div>
+</div>
+<div class="flex items-center gap-1">
+<span class="font-title-sm text-title-sm font-extrabold text-on-surface">6.200</span>
+<span class="text-xs text-on-surface-variant">XP</span>
+<span class="text-base">🥇</span>
+</div>
+</div>
+<!-- Rank 2: USER (Rian Pratama - Highlighted) -->
+<div class="flex items-center justify-between p-2.5 rounded-xl bg-primary-fixed/30 border-2 border-primary">
+<div class="flex items-center gap-3">
+<span class="font-extrabold text-primary font-title-sm text-title-sm w-4 text-center">2</span>
+<div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold text-xs">
+                    RP
+                  </div>
+<div>
+<span class="font-label-lg text-label-lg font-extrabold text-primary block">Rian Pratama (Kamu)</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">ITB Kampus Ganesha</span>
+</div>
+</div>
+<div class="flex items-center gap-1">
+<span class="font-title-sm text-title-sm font-extrabold text-primary">4.850</span>
+<span class="text-xs text-on-surface-variant font-bold">XP</span>
+<span class="text-base">🥈</span>
+</div>
+</div>
+<!-- Rank 3 -->
+<div class="flex items-center justify-between p-2.5 rounded-xl bg-surface-container-lowest border border-outline-variant/20">
+<div class="flex items-center gap-3">
+<span class="font-extrabold text-amber-700 font-title-sm text-title-sm w-4 text-center">3</span>
+<div class="w-8 h-8 rounded-full bg-slate-200 text-slate-700 flex items-center justify-center font-bold text-xs">
+                    BS
+                  </div>
+<div>
+<span class="font-label-lg text-label-lg font-bold text-on-surface block">Budi Santoso</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">UGM Yogyakarta</span>
+</div>
+</div>
+<div class="flex items-center gap-1">
+<span class="font-title-sm text-title-sm font-extrabold text-on-surface">4.620</span>
+<span class="text-xs text-on-surface-variant">XP</span>
+<span class="text-base">🥉</span>
+</div>
+</div>
+</div>
+<a class="text-center font-label-md text-label-md text-primary font-bold hover:underline pt-1" href="#leaderboard">
+              Lihat 50 Peringkat Nasional →
+            </a>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

@@ -4,437 +4,914 @@ import { create } from 'zustand';
 const initialMaterials = [
   {
     id: 1,
-    title: 'Basic Vocabulary',
+    unit: 'Unit 1',
+    title: 'Academic Vocabulary Mastery',
     category: 'Vocabulary',
+    cefr: 'CEFR A2-B1',
     level: 1,
     status: 'completed',
-    xp_reward: 30,
+    xp_reward: 80,
     min_score: 60,
-    description: 'Kenali dan hafalkan kosakata dasar Bahasa Inggris sehari-hari.',
+    stars: 3,
+    description: 'Kenali dan kuasai kosakata akademik formal untuk perkuliahan dan publikasi.',
     pages: [
       {
-        title: 'Apa itu Vocabulary?',
-        content: `Vocabulary (kosakata) adalah kumpulan kata-kata yang kita ketahui dan gunakan dalam berkomunikasi. Semakin banyak vocabulary yang kamu kuasai, semakin mudah kamu memahami dan berbicara dalam Bahasa Inggris.
+        title: 'Pengenalan Academic Vocabulary',
+        content: `Academic Vocabulary adalah kata-kata yang umum dipakai dalam literatur ilmiah, perkuliahan formal, dan penulisan karya tulis ilmiah.
 
-**Mengapa Vocabulary Penting?**
-Vocabulary adalah fondasi utama dalam belajar bahasa. Tanpa kosakata yang cukup, kita tidak bisa menyampaikan pikiran atau memahami orang lain.`
+**Mengapa Penting?**
+Penguasaan kosakata akademis membedakan bahasa percakapan sehari-hari (*casual English*) dengan bahasa ilmiah (*formal English*). Contohnya kata **"analyze"** lebih tepat digunakan daripada sekadar **"look at"**.`
       },
       {
-        title: 'Kosakata Dasar: Benda Sehari-hari',
-        content: `Berikut adalah kosakata benda sehari-hari yang sering digunakan:
-
-| Bahasa Inggris | Bahasa Indonesia |
-|---|---|
-| Book | Buku |
-| Pen | Pulpen |
-| Table | Meja |
-| Chair | Kursi |
-| Window | Jendela |
-| Door | Pintu |
-| Phone | Telepon / HP |
-| Bag | Tas |
-
-**Tips:** Coba hubungkan setiap kata dengan benda yang ada di sekitarmu!`
+        title: 'Contoh Kosakata Akademik Populer',
+        content: `| Kata Informal | Kata Akademik | Arti |
+|---|---|---|
+| find out | determine / discover | menemukan / menentukan |
+| get | obtain / acquire | memperoleh |
+| think about | consider / examine | mempertimbangkan / menelaah |
+| make sure | verify / substantiate | memastikan / memverifikasi |
+| show | demonstrate / indicate | menunjukkan / mendemonstrasikan |`
       },
       {
-        title: 'Kosakata Dasar: Kata Kerja',
-        content: `Kata kerja (verb) adalah kata yang menyatakan tindakan atau keadaan. Berikut kata kerja dasar yang wajib kamu hafal:
-
-| Kata Kerja | Arti |
-|---|---|
-| Eat | Makan |
-| Drink | Minum |
-| Sleep | Tidur |
-| Walk | Berjalan |
-| Read | Membaca |
-| Write | Menulis |
-| Run | Berlari |
-| Study | Belajar |
-
-**Contoh Kalimat:**
-- I **eat** rice every day. (Saya makan nasi setiap hari.)
-- She **reads** a book. (Dia membaca buku.)`
-      },
-      {
-        title: 'Latihan & Ringkasan',
-        content: `Selamat! Kamu telah mempelajari kosakata dasar Bahasa Inggris.
-
-**Ringkasan yang telah dipelajari:**
-✅ Pengertian Vocabulary
-✅ Kosakata benda sehari-hari (Book, Pen, Table, dll.)
-✅ Kosakata kata kerja dasar (Eat, Drink, Sleep, dll.)
-
-**Tantangan untuk kamu:**
-Coba tuliskan 5 benda yang ada di sekitarmu dalam Bahasa Inggris!
-
-Kamu siap untuk mengerjakan kuis evaluasi? Klik tombol di bawah untuk membuktikan pemahamanmu! 🎯`
+        title: 'Ringkasan & Evaluasi',
+        content: `Kamu telah mempelajari kosakata formal dasar! Pastikan kamu mengingat perbedaan gaya bahasa casual dan akademis.`
       }
     ],
     quiz: [
-      { q: 'What is the English word for "Buku"?', options: ['Pen', 'Book', 'Chair', 'Bag'], answer: 1 },
-      { q: 'What does the word "Eat" mean?', options: ['Tidur', 'Berlari', 'Makan', 'Membaca'], answer: 2 },
-      { q: 'Which of these is a verb (kata kerja)?', options: ['Table', 'Window', 'Run', 'Phone'], answer: 2 },
-      { q: 'What is the English word for "Menulis"?', options: ['Read', 'Walk', 'Study', 'Write'], answer: 3 },
+      { q: 'Which word is the academic equivalent for "to find out"?', options: ['Determine', 'Look up', 'Guess', 'Ignore'], answer: 0, explanation: '"Determine" adalah bentuk akademik formal untuk mencari tahu fakta.' },
+      { q: 'What is the academic term for "to get"?', options: ['Grab', 'Acquire', 'Take away', 'Catch'], answer: 1, explanation: '"Acquire" berarti mendapatkan atau memperoleh sesuatu secara formal.' },
+      { q: 'Choose the most formal phrase for a research paper:', options: ['The results show...', 'The data demonstrates...', 'Look at the data...', 'Data is cool...'], answer: 1, explanation: '"The data demonstrates" adalah standar kalimat akademik.' },
+    ],
+    questSteps: [
+      {
+        id: 'u1_q1',
+        type: 'image_select',
+        tag: 'KOSAKATA BARU',
+        prompt: 'Mana yang merepresentasikan "Academic Journal"?',
+        audioText: 'Academic Journal',
+        options: [
+          { id: 1, label: 'Academic Journal', phonetic: 'æk.əˈdem.ɪk ˈdʒɜː.nəl', sub: 'jurnal ilmiah', emoji: '📚', isCorrect: true },
+          { id: 2, label: 'Coffee Cup', phonetic: 'ˈkɒf.i kʌp', sub: 'cangkir kopi', emoji: '☕', isCorrect: false },
+          { id: 3, label: 'Water Bottle', phonetic: 'ˈwɔː.tər ˈbɒt.əl', sub: 'botol air', emoji: '🧴', isCorrect: false }
+        ]
+      },
+      {
+        id: 'u1_q2',
+        type: 'character_translate',
+        tag: 'DENGARKAN & TERJEMAHKAN',
+        prompt: 'Tuliskan dalam bahasa Indonesia apa yang diucapkan Prof. Hootie:',
+        speechText: 'The researcher obtains the data.',
+        phonetic: 'ðə rɪˈsɜː.tʃər əbˈteɪnz ðə ˈdeɪ.tə',
+        targetWords: ['Peneliti', 'memperoleh', 'data', 'tersebut'],
+        wordBank: ['Peneliti', 'memperoleh', 'data', 'tersebut', 'tidur', 'di', 'laboratorium', 'menolak']
+      },
+      {
+        id: 'u1_q3',
+        type: 'word_arrange',
+        tag: 'SUSUN KALIMAT FORMAL',
+        prompt: 'Susun kalimat bahasa Inggris formal:',
+        targetMeaning: 'Data tersebut membuktikan hipotesis kami.',
+        targetWords: ['The', 'data', 'demonstrates', 'our', 'hypothesis'],
+        wordBank: ['The', 'data', 'demonstrates', 'our', 'hypothesis', 'proves', 'look', 'is']
+      }
     ]
   },
   {
     id: 2,
-    title: 'Daily English Phrases',
-    category: 'Daily English',
+    unit: 'Unit 2',
+    title: 'Past Perfect vs Past Simple',
+    category: 'Grammar',
+    cefr: 'CEFR B1',
     level: 1,
-    status: 'active',
-    xp_reward: 30,
+    status: 'completed',
+    xp_reward: 90,
     min_score: 60,
-    description: 'Pelajari ungkapan sehari-hari yang paling sering digunakan dalam percakapan.',
+    stars: 3,
+    description: 'Pahami urutan kronologis masa lampau untuk melaporkan hasil penelitian dan riwayat literatur.',
     pages: [
       {
-        title: 'Ungkapan Salam (Greetings)',
-        content: `Salam adalah hal pertama yang kamu ucapkan saat bertemu seseorang. Berikut ungkapan salam yang umum:
+        title: 'Past Simple vs Past Perfect',
+        content: `Dalam penulisan abstrak dan metodologi, kita sering perlu menceritakan dua kejadian yang terjadi di masa lampau di mana satu kejadian mendahului yang lain.
 
-**Salam Formal:**
-- Good morning! (Selamat pagi!)
-- Good afternoon! (Selamat siang!)
-- Good evening! (Selamat sore/malam!)
-- How do you do? (Apa kabar? — Formal)
-
-**Salam Informal:**
-- Hi! / Hey! (Hai!)
-- What's up? (Apa kabar? — Santai)
-- How are you? (Bagaimana kabarmu?)
-- How's it going? (Bagaimana keadaanmu?)`
+- **Past Simple**: Peristiwa lampau yang selesai di waktu tertentu. (*Subject + V2*)
+- **Past Perfect**: Peristiwa yang telah selesai **SEBELUM** peristiwa lampau lainnya terjadi. (*Subject + had + V3*)`
       },
       {
-        title: 'Ungkapan Perpisahan (Farewells)',
-        content: `Sama pentingnya dengan salam, ungkapan perpisahan juga penting dikuasai:
-
-**Perpisahan Umum:**
-- Goodbye! / Bye! (Selamat tinggal!)
-- See you later! (Sampai jumpa!)
-- See you tomorrow! (Sampai jumpa besok!)
-- Take care! (Jaga diri baik-baik!)
-
-**Perpisahan Malam:**
-- Good night! (Selamat malam!)
-- Sweet dreams! (Mimpi indah!)
-
-**Contoh Dialog:**
-> A: Goodbye, have a nice day!
-> B: You too! Take care!`
-      },
-      {
-        title: 'Ungkapan Terima Kasih & Maaf',
-        content: `Sopan santun adalah kunci komunikasi yang baik!
-
-**Terima Kasih:**
-- Thank you! / Thanks! (Terima kasih!)
-- Thank you so much! (Terima kasih banyak!)
-- I really appreciate it. (Saya sangat menghargainya.)
-
-**Respons Terima Kasih:**
-- You're welcome! (Sama-sama!)
-- No problem! (Tidak masalah!)
-- My pleasure! (Dengan senang hati!)
-
-**Meminta Maaf:**
-- I'm sorry! (Maaf!)
-- Excuse me! (Permisi! / Maaf!)
-- I apologize. (Saya meminta maaf.)`
-      },
-      {
-        title: 'Ringkasan & Siap Evaluasi',
-        content: `Luar biasa! Kamu telah menguasai ungkapan sehari-hari dalam Bahasa Inggris.
-
-**Yang sudah kamu pelajari:**
-✅ Ungkapan Salam (Greetings) — formal & informal
-✅ Ungkapan Perpisahan (Farewells)
-✅ Terima Kasih & Meminta Maaf
-
-**Praktikkan setiap hari!**
-Coba gunakan ungkapan-ungkapan ini saat berinteraksi dengan teman atau ketika melihat konten berbahasa Inggris.
-
-Kamu siap untuk evaluasi? Pastikan kamu sudah memahami semua materi di atas! 💪`
+        title: 'Contoh Kalimat Riset',
+        content: `Contoh:
+"The researcher **had prepared** the samples before the observation **began**."
+- Aksi 1 (terjadi lebih dulu): *had prepared* (Past Perfect)
+- Aksi 2 (terjadi kemudian): *began* (Past Simple)`
       }
     ],
     quiz: [
-      { q: 'What is the Indonesian meaning of "Good morning"?', options: ['Selamat malam', 'Selamat pagi', 'Selamat sore', 'Selamat tidur'], answer: 1 },
-      { q: 'Which phrase is used to say goodbye informally?', options: ['Good morning', 'How do you do', 'See you later', 'I apologize'], answer: 2 },
-      { q: 'What is the correct response to "Thank you"?', options: ['Excuse me', "You're welcome", 'I am sorry', 'How are you'], answer: 1 },
-      { q: '"Excuse me" is used to...', options: ['Say hello', 'Say goodbye', 'Ask for attention or apologize', 'Express gratitude'], answer: 2 },
+      { q: 'By the time the professor arrived, the students _____ the experiment.', options: ['finished', 'had finished', 'have finished', 'finishing'], answer: 1, explanation: 'Karena selesai sebelum profesor tiba di masa lampau, gunakan "had finished".' },
+      { q: 'She said she _____ the academic journal before submitting her thesis.', options: ['readed', 'had read', 'has read', 'reading'], answer: 1, explanation: 'Gunakan Past Perfect "had read" untuk aksi sebelum penyerahan skripsi.' },
+    ],
+    questSteps: [
+      {
+        id: 'u2_q1',
+        type: 'image_select',
+        tag: 'KOSAKATA BARU',
+        prompt: 'Mana yang merepresentasikan "Graduation Ceremony"?',
+        audioText: 'Graduation Ceremony',
+        options: [
+          { id: 1, label: 'Graduation Ceremony', phonetic: 'ˌɡrædʒ.uˈeɪ.ʃən', sub: 'wisuda sarjana', emoji: '🎓', isCorrect: true },
+          { id: 2, label: 'Running Race', phonetic: 'ˈrʌn.ɪŋ reɪs', sub: 'lomba lari', emoji: '🏃', isCorrect: false },
+          { id: 3, label: 'Movie Theater', phonetic: 'ˈmuː.vi ˌθɪə.tər', sub: 'bioskop film', emoji: '🍿', isCorrect: false }
+        ]
+      },
+      {
+        id: 'u2_q2',
+        type: 'word_arrange',
+        tag: 'URUTAN WAKTU LAMPAU',
+        prompt: 'Susun kalimat Past Perfect yang tepat:',
+        targetMeaning: 'Profesor telah tiba sebelum eksperimen dimulai.',
+        targetWords: ['The', 'professor', 'had', 'arrived', 'before', 'the', 'experiment'],
+        wordBank: ['The', 'professor', 'had', 'arrived', 'before', 'the', 'experiment', 'has', 'arriving']
+      }
     ]
   },
   {
     id: 3,
-    title: 'Present Tense',
+    unit: 'Unit 3',
+    title: 'Passive Voice in Research Paper',
     category: 'Grammar',
+    cefr: 'CEFR B1+',
     level: 2,
-    status: 'locked',
-    xp_reward: 40,
+    status: 'active',
+    xp_reward: 100,
     min_score: 70,
-    description: 'Pelajari penggunaan Present Tense yang benar dalam kalimat Bahasa Inggris.',
+    stars: 0,
+    description: 'Kuasai konstruksi kalimat formal dan Passive Voice untuk penulisan metodologi jurnal ilmiah.',
     pages: [
       {
-        title: 'Apa itu Present Tense?',
-        content: `Present Tense adalah bentuk kata kerja yang digunakan untuk menyatakan kejadian yang berlangsung **saat ini**, kebiasaan, atau fakta umum.
+        title: 'Fungsi Passive Voice dalam Karya Ilmiah',
+        content: `Dalam artikel ilmiah, fokus utama adalah pada **objek penelitian** dan **proses**, bukan pada siapa pelakunya. Oleh karena itu, *Passive Voice* sangat sering digunakan pada bagian *Methodology* dan *Results*.
 
-**Jenis Present Tense:**
-1. Simple Present Tense
-2. Present Continuous Tense
-3. Present Perfect Tense
-
-Kita akan fokus pada **Simple Present Tense** dulu karena ini yang paling sering digunakan.`
+**Rumus Utama:**
+\`Subject (Objek Aksi) + Be (is/am/are/was/were/been) + Past Participle (V3)\``
       },
       {
-        title: 'Simple Present Tense',
-        content: `**Rumus Simple Present Tense:**
-- Subject + Verb (base form)
-- Untuk he/she/it: Subject + Verb + **s/es**
+        title: 'Perbandingan Active vs Passive',
+        content: `**Active:**
+"We collected fifty blood samples from the participants."
 
-**Contoh Kalimat:**
-- I **study** English every day.
-- She **reads** a book every night.
-- They **go** to school by bus.
-- He **watches** TV in the evening.
-
-**Kapan Digunakan?**
-✅ Kebiasaan (I brush my teeth every morning.)
-✅ Fakta umum (The sun rises in the east.)
-✅ Jadwal (The train leaves at 8 AM.)`
+**Passive (Lebih Akademis):**
+"Fifty blood samples **were collected** from the participants."`
       },
       {
-        title: 'Kalimat Negatif & Tanya',
-        content: `**Kalimat Negatif:**
-Gunakan **do not (don't)** atau **does not (doesn't)** untuk he/she/it.
+        title: 'Passive Voice dengan Modal Verbs',
+        content: `Format: \`Modal + be + V3\`
 
-- I **don't** like coffee.
-- She **doesn't** play basketball.
-- They **don't** work on Sundays.
-
-**Kalimat Tanya (Interrogative):**
-Gunakan **Do** atau **Does** di awal kalimat.
-
-- **Do** you speak English?
-- **Does** he live in Jakarta?
-- **Do** they study together?
-
-**Jawaban Singkat:**
-- Yes, I do. / No, I don't.
-- Yes, she does. / No, she doesn't.`
-      },
-      {
-        title: 'Ringkasan & Siap Evaluasi',
-        content: `Hebat! Kamu sudah memahami dasar-dasar Present Tense!
-
-**Rangkuman:**
-✅ Simple Present Tense untuk kebiasaan, fakta, dan jadwal
-✅ Tambahkan -s/-es untuk subjek he/she/it
-✅ Gunakan don't / doesn't untuk kalimat negatif
-✅ Gunakan Do / Does untuk kalimat tanya
-
-**Ingat:**
-- I/You/We/They → do, don't, + verb dasar
-- He/She/It → does, doesn't, + verb + s/es
-
-Siap buktikan pemahamanmu? Kerjakan kuis di bawah! 🚀`
+Contoh:
+- The error **can be minimized** by recalibrating the sensors.
+- Further studies **should be conducted** to confirm the hypothesis.`
       }
     ],
     quiz: [
-      { q: 'Which sentence uses Simple Present Tense correctly?', options: ['She studying now', 'He study every day', 'They studies English', 'She studies every morning'], answer: 3 },
-      { q: 'Fill in the blank: "He _____ not like spicy food."', options: ['do', 'does', 'did', 'is'], answer: 1 },
-      { q: 'Which is correct?', options: ['Do she work here?', 'Does she works here?', 'Does she work here?', 'She does work here?'], answer: 2 },
-      { q: '"The sun _____ in the east." (rise)', options: ['rise', 'rising', 'rises', 'rose'], answer: 2 },
+      { q: 'Convert to academic passive: "Researchers analyzed the survey data."', options: ['The survey data was analyzing by researchers.', 'The survey data were analyzed by researchers.', 'The survey data is analyzed.', 'Researchers were analyzed data.'], answer: 1, explanation: '"The survey data were analyzed" adalah bentuk pasif lampau yang tepat.' },
+      { q: 'Complete the sentence: "The chemical mixture _____ before testing."', options: ['must heated', 'must be heated', 'must heating', 'must be heat'], answer: 1, explanation: 'Gunakan Modal + be + V3: "must be heated".' },
+      { q: 'Why is passive voice preferred in scientific methodologies?', options: ['To make the text longer', 'To highlight the action and object rather than the agent', 'Because active voice is grammatically wrong', 'To make it harder to read'], answer: 1, explanation: 'Passive voice menekankan metodologi dan data penelitian daripada individu pelaku.' },
+    ],
+    questSteps: [
+      {
+        id: 'u3_q1',
+        type: 'image_select',
+        tag: 'KOSAKATA BARU',
+        prompt: 'Mana yang menggambarkan "Laboratory Experiment"?',
+        audioText: 'Laboratory Experiment',
+        options: [
+          { id: 1, label: 'Laboratory Experiment', phonetic: 'ləˈbɒr.ə.tər.i ɪkˈsper.ɪ.mənt', sub: 'eksperimen lab', emoji: '🧪', isCorrect: true },
+          { id: 2, label: 'Music Concert', phonetic: 'ˈmjuː.zɪk ˈkɒn.sət', sub: 'konser musik', emoji: '🎸', isCorrect: false },
+          { id: 3, label: 'Fast Food', phonetic: 'fɑːst fuːd', sub: 'makanan cepat saji', emoji: '🍔', isCorrect: false }
+        ]
+      },
+      {
+        id: 'u3_q2',
+        type: 'character_translate',
+        tag: 'PASSIVE VOICE',
+        prompt: 'Dengarkan Prof. Hootie dan susun kalimat bahasa Indonesia yang tepat:',
+        speechText: 'Fifty samples were collected by the team.',
+        phonetic: 'ˈfɪf.ti ˈsɑːm.pəlz wɜː kəˈlek.tɪd baɪ ðə tiːm',
+        targetWords: ['Lima', 'puluh', 'sampel', 'dikumpulkan', 'oleh', 'tim'],
+        wordBank: ['Lima', 'puluh', 'sampel', 'dikumpulkan', 'oleh', 'tim', 'mengumpulkan', 'kemarin', 'kami']
+      },
+      {
+        id: 'u3_q3',
+        type: 'word_arrange',
+        tag: 'SUSUN KALIMAT AKADEMIS',
+        prompt: 'Susun kalimat Passive Voice yang benar dalam bahasa Inggris:',
+        targetMeaning: 'Hasil penelitian ini telah dianalisis secara mendalam.',
+        targetWords: ['The', 'results', 'were', 'analyzed', 'thoroughly'],
+        wordBank: ['The', 'results', 'were', 'analyzed', 'thoroughly', 'was', 'analyzing', 'they']
+      },
+      {
+        id: 'u3_q4',
+        type: 'multiple_choice',
+        tag: 'KAIDAH TATA BAHASA',
+        prompt: 'Lengkapi kalimat pasif akademik ini:',
+        sentence: 'The formal methodology _____ approved by the ethical board.',
+        options: ['has been', 'have were', 'is being was', 'did'],
+        answer: 0,
+        explanation: 'Gunakan "has been approved" (Present Perfect Passive) untuk subjek tunggal "The methodology".'
+      }
     ]
   },
   {
     id: 4,
-    title: 'Reading Comprehension 1',
+    unit: 'Unit 4',
+    title: 'Academic Reading Comprehension',
     category: 'Reading',
+    cefr: 'CEFR B2',
     level: 2,
     status: 'locked',
-    xp_reward: 40,
-    min_score: 70,
-    description: 'Latih kemampuan membaca dan memahami teks pendek berbahasa Inggris.',
+    xp_reward: 110,
+    min_score: 75,
+    stars: 0,
+    description: 'Latih kemampuan membaca kritis (skimming, scanning, inferensi) pada artikel jurnal internasional.',
     pages: [
-      {
-        title: 'Strategi Membaca Efektif',
-        content: `Reading Comprehension adalah kemampuan memahami isi bacaan. Ada beberapa strategi yang bisa membantu kamu:
-
-**1. Skimming**
-Membaca cepat untuk mendapatkan gambaran umum teks. Fokus pada judul, subjudul, dan kalimat pertama setiap paragraf.
-
-**2. Scanning**
-Mencari informasi spesifik dalam teks. Contoh: mencari tanggal, nama, atau angka tertentu.
-
-**3. Careful Reading**
-Membaca detail untuk memahami makna mendalam teks.`
-      },
-      {
-        title: 'Membaca Teks: A Day at School',
-        content: `Baca teks berikut dengan cermat:
-
----
-
-**A Day at School**
-
-Every morning, Rina wakes up at 6 o'clock. She takes a shower and eats breakfast. Then, she goes to school by bicycle. She arrives at school at 7:30 AM.
-
-At school, Rina's favorite subject is English. She likes to read stories and practice speaking with her friends. Her English teacher, Mr. Budi, always gives interesting activities.
-
-After school, Rina goes to the library. She reads books and does her homework there. She arrives home at 4 PM and helps her mother cook dinner.
-
----
-
-Baca teks di atas dengan cermat. Kita akan menjawab pertanyaan tentang teks ini!`
-      },
-      {
-        title: 'Analisis Teks',
-        content: `Mari kita analisis teks "A Day at School" bersama-sama:
-
-**Informasi Utama:**
-- Nama tokoh: **Rina**
-- Rina bangun pukul: **6 pagi**
-- Cara ke sekolah: **Naik sepeda**
-- Mata pelajaran favorit: **Bahasa Inggris**
-- Nama guru: **Mr. Budi**
-
-**Kosakata Penting:**
-- wakes up = bangun tidur
-- takes a shower = mandi
-- arrives = tiba/sampai
-- favorite subject = mata pelajaran favorit
-- interesting activities = kegiatan menarik
-
-**Tips Memahami Teks:**
-Saat membaca, selalu tanya diri sendiri:
-- Siapa? (Who?)
-- Apa? (What?)
-- Kapan? (When?)
-- Di mana? (Where?)`
-      },
-      {
-        title: 'Ringkasan & Siap Evaluasi',
-        content: `Luar biasa! Kamu sudah menyelesaikan materi Reading Comprehension.
-
-**Yang sudah kamu pelajari:**
-✅ Strategi membaca: Skimming, Scanning, Careful Reading
-✅ Membaca dan memahami teks pendek "A Day at School"
-✅ Menganalisis informasi utama dari teks
-✅ Mengenal kosakata baru dari konteks
-
-**Ingat strategi 5W:**
-Who? What? When? Where? Why?
-Gunakan ini setiap kali membaca teks berbahasa Inggris!
-
-Kamu siap untuk kuis evaluasi? Klik tombol di bawah! 📖`
-      }
+      { title: 'Skimming and Scanning', content: 'Teknik membaca cepat untuk menemukan argumen sentral dan bukti spesifik dalam teks akademik.' }
     ],
     quiz: [
-      { q: 'What time does Rina wake up?', options: ['5 AM', '6 AM', '7 AM', '7:30 AM'], answer: 1 },
-      { q: 'How does Rina go to school?', options: ['By bus', 'By car', 'By bicycle', 'On foot'], answer: 2 },
-      { q: "What is Rina's favorite subject?", options: ['Math', 'Science', 'History', 'English'], answer: 3 },
-      { q: 'What is "Skimming" used for?', options: ['Finding specific information', 'Getting the general idea quickly', 'Reading for details', 'Memorizing vocabulary'], answer: 1 },
+      { q: 'What is the purpose of skimming an academic abstract?', options: ['To memorize data', 'To quickly grasp the research core argument', 'To edit spelling errors', 'To count words'], answer: 1, explanation: 'Skimming bertujuan menangkap ide utama secara kilat.' }
     ]
   },
   {
     id: 5,
-    title: 'Academic Writing Intro',
+    unit: 'Unit 5',
+    title: 'Abstract & Thesis Argumentation',
     category: 'Writing',
+    cefr: 'CEFR B2+',
     level: 3,
     status: 'locked',
-    xp_reward: 50,
+    xp_reward: 130,
     min_score: 75,
-    description: 'Pengantar penulisan akademik dalam Bahasa Inggris.',
+    stars: 0,
+    description: 'Sintesis argumen ilmiah, perumusan thesis statement, dan penyusunan abstrak berbahasa Inggris.',
     pages: [
-      { title: 'Pengantar Penulisan Akademik', content: 'Materi penulisan akademik akan membahas struktur esai, paragraph writing, dan penggunaan kata transisi dalam Bahasa Inggris akademik.' },
-      { title: 'Struktur Esai', content: 'Sebuah esai akademik terdiri dari Introduction, Body Paragraphs, dan Conclusion. Setiap bagian memiliki fungsi yang berbeda.' },
-      { title: 'Ringkasan', content: 'Kamu telah menyelesaikan pengantar penulisan akademik. Siap untuk evaluasi?' }
+      { title: 'Menulis Abstrak Efektif', content: 'Struktur IMRAD dalam abstrak: Introduction, Method, Results, and Discussion.' }
     ],
     quiz: [
-      { q: 'What is the first part of an essay?', options: ['Body', 'Conclusion', 'Introduction', 'Title'], answer: 2 },
-      { q: 'How many main parts does an academic essay have?', options: ['2', '3', '4', '5'], answer: 1 },
+      { q: 'What does the "R" in IMRAD stand for?', options: ['Review', 'Research', 'Results', 'Rationale'], answer: 2, explanation: 'IMRAD: Introduction, Methods, Results, and Discussion.' }
     ]
   }
 ];
 
 const initialUserStats = {
-  total_xp: 30,
-  level: 1,
-  levelName: 'Beginner',
-  current_streak: 1,
-  longest_streak: 1,
-  total_completed_materials: 1,
-  average_score: 0,
+  total_xp: 2450,
+  level: 14,
+  levelName: 'Archmage of Grammar',
+  current_streak: 14,
+  longest_streak: 21,
+  gems: 850,
+  hearts: 5,
+  maxHearts: 5,
+  sp_barrier: 850,
+  max_sp: 1000,
+  roomName: 'Bahasa Inggris 3B',
+  cefrLevel: 'CEFR B1 Intermediate',
+  total_completed_materials: 2,
 };
 
-const initialStudents = [
-  { id: 101, name: 'Dewi Nurlita', nim: '230101', level: 5, levelName: 'Advanced Learner', xp: 3120, streak: 18, avg_score: 95 },
-  { id: 102, name: 'Bagas Aditya', nim: '230102', level: 4, levelName: 'Intermediate', xp: 2780, streak: 15, avg_score: 88 },
-  { id: 103, name: 'Budi Santoso', nim: '230103', level: 1, levelName: 'Beginner', xp: 30, streak: 1, avg_score: 0 },
-  { id: 104, name: 'Siti Aminah', nim: '230104', level: 2, levelName: 'Elementary', xp: 250, streak: 2, avg_score: 75 },
-  { id: 105, name: 'Reza Rahadian', nim: '230105', level: 3, levelName: 'Pre-Intermediate', xp: 1200, streak: 5, avg_score: 82 },
+const initialLeaderboard = [
+  {
+    rank: 1,
+    name: 'Dimas Setiawan',
+    nim: '230101',
+    title: 'Supreme Scholar',
+    xp: 3120,
+    streak: 19,
+    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&h=120&q=80',
+    tier: 'Gold',
+    badge: 'crown'
+  },
+  {
+    rank: 2,
+    name: 'Kamu (Naufal)',
+    nim: '230103',
+    title: 'Archmage of Grammar',
+    xp: 2450,
+    streak: 14,
+    avatar: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=120&h=120&q=80',
+    tier: 'Silver',
+    isCurrentUser: true,
+    badge: 'silver'
+  },
+  {
+    rank: 3,
+    name: 'Nabila Putri',
+    nim: '230104',
+    title: 'Syntax Virtuoso',
+    xp: 2390,
+    streak: 12,
+    avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=120&h=120&q=80',
+    tier: 'Bronze',
+    badge: 'bronze'
+  },
+  {
+    rank: 4,
+    name: 'Bagas Aditya',
+    nim: '230102',
+    title: 'Grammar Knight',
+    xp: 2180,
+    streak: 10,
+    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&h=120&q=80',
+    tier: 'Diamond'
+  },
+  {
+    rank: 5,
+    name: 'Siti Aminah',
+    nim: '230105',
+    title: 'Vocabulary Adept',
+    xp: 1950,
+    streak: 8,
+    avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&h=120&q=80',
+    tier: 'Platinum'
+  },
+  {
+    rank: 6,
+    name: 'Reza Rahadian',
+    nim: '230106',
+    title: 'Reading Explorer',
+    xp: 1820,
+    streak: 7,
+    avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=120&h=120&q=80',
+    tier: 'Platinum'
+  }
 ];
 
-const initialQuizzes = [
-  { id: 1, title: 'Vocabulary Challenge', type: 'Vocabulary', xp_reward: 20, min_score: 70 },
-  { id: 2, title: 'Grammar Challenge', type: 'Grammar', xp_reward: 20, min_score: 70 },
+const initialDailyQuests = [
+  {
+    id: 1,
+    title: 'Dapatkan 50 XP dari Quiz atau Modul',
+    current: 35,
+    target: 50,
+    unit: 'XP',
+    rewardGems: 25,
+    rewardXp: 50,
+    icon: 'bolt',
+    completed: false
+  },
+  {
+    id: 2,
+    title: 'Kerjakan 1 Latihan TOEFL Boss Battle',
+    current: 1,
+    target: 1,
+    unit: 'Battle',
+    rewardGems: 50,
+    rewardXp: 75,
+    icon: 'swords',
+    completed: true
+  },
+  {
+    id: 3,
+    title: 'Pertahankan Streak Belajar Hari Ini',
+    current: 1,
+    target: 1,
+    unit: 'Streak',
+    rewardGems: 20,
+    rewardXp: 30,
+    icon: 'local_fire_department',
+    completed: true
+  }
 ];
 
-const initialAchievements = [
-  { id: 'first_quiz', name: 'First Quiz', description: 'Menyelesaikan kuis pertama', icon: '🎯' },
-  { id: 'streak_7', name: '7 Day Streak', description: 'Belajar 7 hari berturut-turut', icon: '🔥' },
+const initialShopItems = [
+  {
+    id: 'perk_double_xp',
+    category: 'perks',
+    name: 'Elixir of Enlightenment (2x XP)',
+    description: 'Lipatgandakan perolehan XP untuk 30 menit ke depan saat mengerjakan kuis atau boss.',
+    priceGems: 150,
+    icon: 'bolt',
+    accentColor: 'indigo'
+  },
+  {
+    id: 'perk_streak_freeze',
+    category: 'perks',
+    name: 'Frost Guardian (Streak Freeze)',
+    description: 'Melindungi streak belajarmu dari reset jika kamu melewatkan sesi 1 hari.',
+    priceGems: 200,
+    icon: 'ac_unit',
+    accentColor: 'sky'
+  },
+  {
+    id: 'perk_heart_refill',
+    category: 'perks',
+    name: 'Vitality Core (Isi 5 Nyawa)',
+    description: 'Langsung pulihkan 5 nyawa agar bisa terus berlatih kuis tanpa jeda tunggu.',
+    priceGems: 100,
+    icon: 'favorite',
+    accentColor: 'rose'
+  },
+  {
+    id: 'avatar_laurel',
+    category: 'avatar',
+    name: 'Mahkota Daun Perak (Silver Laurels)',
+    description: 'Ornamen kepala eksklusif untuk mahasiswa berprestasi di Top 3 Divisi.',
+    priceGems: 350,
+    icon: 'workspace_premium',
+    accentColor: 'amber'
+  },
+  {
+    id: 'avatar_robe',
+    category: 'avatar',
+    name: 'Jubah Wisudawan Archmage',
+    description: 'Jubah akademik berhiaskan runic glow ungu dengan bordir emas.',
+    priceGems: 450,
+    icon: 'styler',
+    accentColor: 'purple'
+  },
+  {
+    id: 'avatar_grimoire',
+    category: 'avatar',
+    name: 'Grimoire Kamus Oxford Legendaris',
+    description: 'Buku mantra kuno berisi kamus idiomatik bahasa Inggris tingkat C2.',
+    priceGems: 500,
+    icon: 'menu_book',
+    accentColor: 'emerald'
+  }
 ];
 
-const initialRewards = [
-  { id: 'theme_ocean', name: 'Ocean Theme', type: 'theme', requirement_xp: 500, icon: '🌊' },
-  { id: 'theme_forest', name: 'Forest Theme', type: 'theme', requirement_xp: 1000, icon: '🌲' },
-];
-
-const initialUnlocked = {
-  achievements: ['first_quiz', 'streak_7'],
-  rewards: []
+// TOEFL / IELTS Boss Battle Dataset
+const initialBossBattle = {
+  bossName: 'Grammar & Listening Challenge',
+  title: 'Simulasi TOEFL ITP: Section 2 (Structure & Written Expression)',
+  cefrPhase: 'CEFR B2 Phase',
+  maxHp: 10000,
+  currentHp: 4200,
+  damagePerHit: 350,
+  timeRemainingSec: 2535, // ~42:15
+  questions: [
+    {
+      id: 1,
+      type: 'Structure',
+      question: 'Not only _____ the research findings, but she also presented a compelling alternative model.',
+      options: [
+        'she challenged',
+        'did she challenge',
+        'she was challenging',
+        'has she been challenge'
+      ],
+      answer: 1,
+      explanation: 'Negative inversion: setelah frasa "Not only" di awal klausa, gunakan inversi subjek-kata kerja bantu (auxiliary did + subject she + V1 challenge).'
+    },
+    {
+      id: 2,
+      type: 'Written Expression',
+      question: 'The committee decided to postpone the academic conference because of the delegates (A) had not yet (B) received their (C) travel authorizations (D).',
+      options: [
+        'because of',
+        'had not yet',
+        'received their',
+        'authorizations'
+      ],
+      answer: 0,
+      explanation: 'Kesalahan ada pada (A) "because of". Karena diikuti oleh klausa lengkap (subject + verb: "the delegates had not yet received..."), kata yang tepat adalah konjungsi "because", bukan preposisi "because of".'
+    },
+    {
+      id: 3,
+      type: 'Structure',
+      question: 'Were the hypothesis _____ valid, the team would proceed with clinical trials immediately.',
+      options: [
+        'proven',
+        'to be proven',
+        'proved to',
+        'proving'
+      ],
+      answer: 1,
+      explanation: 'Inverted Conditional Type 2: "Were the hypothesis to be proven valid..." menggantikan "If the hypothesis were to be proven valid...".'
+    }
+  ]
 };
 
-const LEVEL_NAMES = ['Beginner', 'Elementary', 'Pre-Intermediate', 'Intermediate', 'Upper-Intermediate', 'Advanced'];
+// Dosen / Lecturer Class Data & Rooms
+const initialRooms = [
+  {
+    id: 'room-3b',
+    name: 'Bahasa Inggris Akademik A — Kelas 3B (TI-2024)',
+    shortName: 'Kelas 3B (TI-2024)',
+    code: 'ENG-3B-2026',
+    department: 'Teknik Informatika',
+    semester: 'Semester Ganjil 2026/2027',
+    schedule: 'Senin, 08:00 - 10:30 WIB',
+    totalStudents: 38,
+    cefrTarget: 'CEFR B2',
+    avgLevel: 'CEFR B1 (68%)',
+    streakRate: '89%',
+    avgScore: '86.4'
+  },
+  {
+    id: 'room-2a',
+    name: 'English for IT & Communication — Kelas 2A (SI-2024)',
+    shortName: 'Kelas 2A (SI-2024)',
+    code: 'ENG-2A-2026',
+    department: 'Sistem Informasi',
+    semester: 'Semester Ganjil 2026/2027',
+    schedule: 'Rabu, 13:00 - 15:30 WIB',
+    totalStudents: 32,
+    cefrTarget: 'CEFR B1',
+    avgLevel: 'CEFR A2 (80%)',
+    streakRate: '75%',
+    avgScore: '81.2'
+  }
+];
 
-const getLevelName = (xp) => {
-  const lvl = Math.floor(xp / 200);
-  return LEVEL_NAMES[Math.min(lvl, LEVEL_NAMES.length - 1)];
+const initialLecturerAssignments = [
+  {
+    id: 'asg-1',
+    roomId: 'room-3b',
+    title: 'Unit 3: Academic Reading & Passive Voice in Scientific Abstracts',
+    type: 'global_module',
+    targetUnit: 'Unit 3',
+    cefr: 'CEFR B1.2 Core',
+    deadline: '14 Okt 2026, 23:59 WIB',
+    submittedCount: 31,
+    totalCount: 38,
+    status: 'active',
+    minScore: 70,
+    xpReward: 120,
+    rubric: 'Penyelesaian Quest Unit 3 & Skor Kuis Min. 70%',
+    description: 'Selesaikan seluruh step pembelajaran pada Quest Unit 3 di Quest Map dan selesaikan quiz review pemahaman.'
+  },
+  {
+    id: 'asg-2',
+    roomId: 'room-3b',
+    title: 'Academic Writing & Speaking: The Future Impact of AI on Software Engineering',
+    type: 'custom_task',
+    targetUnit: 'Tugas Akademik Khusus',
+    cefr: 'CEFR B2 Academic',
+    deadline: '18 Okt 2026, 23:59 WIB',
+    submittedCount: 32,
+    totalCount: 38,
+    status: 'active',
+    minScore: 75,
+    xpReward: 200,
+    rubric: 'Min 350 kata format IMRAD + Audio Speaking 2 menit',
+    description: 'Tulis esai terstruktur mengenai dampak Gen-AI terhadap arsitektur perangkat lunak serta rekam ringkasan oral presentasi.'
+  },
+  {
+    id: 'asg-3',
+    roomId: 'room-3b',
+    title: 'Grammar Duel: Inverted Conditionals & Passive Voice',
+    type: 'custom_quiz',
+    targetUnit: 'Kuis Singkat',
+    cefr: 'CEFR B2 Advanced',
+    deadline: '22 Okt 2026, 23:59 WIB',
+    submittedCount: 28,
+    totalCount: 38,
+    status: 'active',
+    minScore: 65,
+    xpReward: 90,
+    rubric: 'Skor minimal evaluasi 75%',
+    description: '10 butir soal pilihan ganda evaluasi pemahaman inversion grammar tipe 1, 2, dan 3.'
+  }
+];
+
+const initialManualSubmissions = [
+  {
+    id: 'sub-1',
+    roomId: 'room-3b',
+    studentName: 'Nabila Putri',
+    nim: '2401082',
+    avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150',
+    taskTitle: 'Writing & Speaking: AI Impact on Software Engineering',
+    topic: 'The Future Impact of Generative AI on Software Engineering',
+    submittedAt: 'Kemarin, 21:15 WIB',
+    status: 'pending',
+    essayExcerpt: '...In conclusion, while automated code completion might accelerate standard scaffolding, the fundamental necessity of critical architectural evaluation and robust edge-case validation remains entirely human-driven. Therefore, software engineers must augment their cognitive versatility rather than merely relying on stochastic output generation...',
+    fullEssay: `Abstract & Introduction:
+Recent advancements in generative artificial intelligence have precipitated paradigm shifts across contemporary software engineering methodologies. Automated synthesis engines now routinely assist practitioners in boilerplate formulation, unit test authoring, and defect diagnosis.
+
+Methodology & Discussion:
+However, empirical observations reveal that automated language models frequently propagate latent security anti-patterns and syntactical hallucinations. While code completion velocity increases exponentially, systemic resilience necessitates rigorous peer evaluation. In our departmental case study involving twenty undergraduate developers, static analysis revealed that algorithmic correctness diminished when relying exclusively on unverified prompt iterations.
+
+Conclusion:
+In conclusion, while automated code completion might accelerate standard scaffolding, the fundamental necessity of critical architectural evaluation and robust edge-case validation remains entirely human-driven. Therefore, software engineers must augment their cognitive versatility rather than merely relying on stochastic output generation.`,
+    audioFile: 'Speaking_Response_Nabila.wav',
+    audioDuration: '01:42',
+    grammarScore: 88,
+    vocabScore: 82,
+    fluencyScore: 90,
+    finalScore: 87,
+    feedback: ''
+  },
+  {
+    id: 'sub-2',
+    roomId: 'room-3b',
+    studentName: 'Budi Santoso',
+    nim: '2401001',
+    avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150',
+    taskTitle: 'Writing & Speaking: AI Impact on Software Engineering',
+    topic: 'Autonomous Cloud Architecture & Microservices',
+    submittedAt: 'Hari ini, 09:30 WIB',
+    status: 'pending',
+    essayExcerpt: '...Distributed serverless computing has transformed high-availability deployment pipelines. The integration of containerization ensures that microservices can scale horizontally with minimal latency degradation...',
+    fullEssay: 'Distributed serverless computing has transformed high-availability deployment pipelines. The integration of containerization ensures that microservices can scale horizontally with minimal latency degradation. Nevertheless, monitoring multi-tenant orchestration remains challenging without automated tracing frameworks.',
+    audioFile: 'Speaking_Budi_Cloud.wav',
+    audioDuration: '01:15',
+    grammarScore: 80,
+    vocabScore: 85,
+    fluencyScore: 78,
+    finalScore: 81,
+    feedback: ''
+  },
+  {
+    id: 'sub-3',
+    roomId: 'room-3b',
+    studentName: 'Siti Aminah',
+    nim: '2401002',
+    avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150',
+    taskTitle: 'Writing & Speaking: AI Impact on Software Engineering',
+    topic: 'Ethical Implications of Algorithmic Biases in FinTech',
+    submittedAt: '2 hari lalu',
+    status: 'graded',
+    essayExcerpt: '...Algorithmic bias must be mitigated by comprehensive demographic parity audits prior to commercial loan underwriting deployments...',
+    fullEssay: 'Algorithmic bias must be mitigated by comprehensive demographic parity audits prior to commercial loan underwriting deployments. Machine learning models trained on historical redlining datasets inherently mirror systemic socioeconomic inequities.',
+    audioFile: 'Speaking_Siti_Fintech.wav',
+    audioDuration: '01:55',
+    grammarScore: 94,
+    vocabScore: 92,
+    fluencyScore: 90,
+    finalScore: 92,
+    feedback: 'Analisis etika sangat mendalam dan pemilihan vocabulary akademik (demographic parity, systemic inequities) sangat akurat. Pertahankan!'
+  },
+  {
+    id: 'sub-4',
+    roomId: 'room-3b',
+    studentName: 'Raka Pratama',
+    nim: '2401003',
+    avatar: 'https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=150',
+    taskTitle: 'Writing & Speaking: AI Impact on Software Engineering',
+    topic: 'Cybersecurity Threat Modeling in Zero-Trust Environments',
+    submittedAt: 'Hari ini, 07:45 WIB',
+    status: 'pending',
+    essayExcerpt: '...Zero-trust network architecture assumes perpetual adversarial compromise. Consequently, continuous mutual cryptographic authentication is mandated at every perimeter ingress...',
+    fullEssay: 'Zero-trust network architecture assumes perpetual adversarial compromise. Consequently, continuous mutual cryptographic authentication is mandated at every perimeter ingress. Legacy VPN frameworks are demonstrably inadequate for decentralized workforce models.',
+    audioFile: 'Speaking_Raka_ZeroTrust.wav',
+    audioDuration: '01:30',
+    grammarScore: 85,
+    vocabScore: 88,
+    fluencyScore: 84,
+    finalScore: 86,
+    feedback: ''
+  }
+];
+
+const initialStudentGrades = [
+  { id: 1, nim: '2401082', name: 'Nabila Putri', cefr: 'CEFR B2', streak: 14, quizAvg: 92, assignmentAvg: 87, finalScore: 90.0, letterGrade: 'A', status: 'Lulus' },
+  { id: 2, nim: '2401001', name: 'Budi Santoso', cefr: 'CEFR B1', streak: 14, quizAvg: 85, assignmentAvg: 81, finalScore: 83.4, letterGrade: 'A-', status: 'Lulus' },
+  { id: 3, nim: '2401002', name: 'Siti Aminah', cefr: 'CEFR B2', streak: 12, quizAvg: 95, assignmentAvg: 92, finalScore: 93.8, letterGrade: 'A', status: 'Lulus' },
+  { id: 4, nim: '2401003', name: 'Raka Pratama', cefr: 'CEFR B1', streak: 9, quizAvg: 80, assignmentAvg: 86, finalScore: 82.4, letterGrade: 'B+', status: 'Lulus' },
+  { id: 5, nim: '2401015', name: 'Dimas Aditya', cefr: 'CEFR B1', streak: 8, quizAvg: 78, assignmentAvg: 75, finalScore: 76.8, letterGrade: 'B', status: 'Lulus' },
+  { id: 6, nim: '2401022', name: 'Anisa Rahmawati', cefr: 'CEFR B2', streak: 11, quizAvg: 88, assignmentAvg: 89, finalScore: 88.4, letterGrade: 'A', status: 'Lulus' },
+  { id: 7, nim: '2401034', name: 'Farhan Maulana', cefr: 'CEFR A2', streak: 4, quizAvg: 68, assignmentAvg: 70, finalScore: 68.8, letterGrade: 'C+', status: 'Perlu Perhatian' },
+  { id: 8, nim: '2401041', name: 'Tiara Larasati', cefr: 'CEFR B1', streak: 7, quizAvg: 82, assignmentAvg: 80, finalScore: 81.2, letterGrade: 'B+', status: 'Lulus' },
+  { id: 9, nim: '2401053', name: 'Bayu Wicaksono', cefr: 'CEFR B1', streak: 10, quizAvg: 84, assignmentAvg: 83, finalScore: 83.6, letterGrade: 'A-', status: 'Lulus' },
+  { id: 10, nim: '2401067', name: 'Clara Oktaviani', cefr: 'CEFR B2', streak: 15, quizAvg: 96, assignmentAvg: 94, finalScore: 95.2, letterGrade: 'A', status: 'Lulus' },
+];
+
+const initialLecturerData = {
+  className: 'Bahasa Inggris Akademik A — Kelas 3B (TI-2024)',
+  lecturerName: 'Dr. Hendra Wijaya, M.Hum.',
+  nip: '198204122010121003',
+  semester: 'Semester Ganjil 2026/2027',
+  metrics: {
+    totalStudents: 38,
+    placementTestRate: '100%',
+    avgClassLevel: 'CEFR B1 (68%)',
+    activeStreakRate: '89%',
+    avgScore: '86.4 / 100',
+    pendingGradingCount: 3
+  },
+  assignments: initialLecturerAssignments
 };
 
 export const useDataStore = create((set) => ({
   materials: initialMaterials,
   userStats: initialUserStats,
-  students: initialStudents,
-  quizzes: initialQuizzes,
-  achievements: initialAchievements,
-  rewards: initialRewards,
-  unlocked: initialUnlocked,
+  leaderboard: initialLeaderboard,
+  dailyQuests: initialDailyQuests,
+  shopItems: initialShopItems,
+  inventory: ['perk_streak_freeze'],
+  bossBattle: initialBossBattle,
+  lecturerData: initialLecturerData,
+  rooms: initialRooms,
+  activeRoomId: 'room-3b',
+  lecturerAssignments: initialLecturerAssignments,
+  manualSubmissions: initialManualSubmissions,
+  studentGrades: initialStudentGrades,
 
-  // Add XP and auto-update level
+  // Lecturer Room Switcher
+  setActiveRoom: (roomId) => set((state) => {
+    const selectedRoom = state.rooms.find(r => r.id === roomId);
+    if (!selectedRoom) return state;
+    return {
+      activeRoomId: roomId,
+      lecturerData: {
+        ...state.lecturerData,
+        className: selectedRoom.name,
+        semester: selectedRoom.semester,
+        metrics: {
+          ...state.lecturerData.metrics,
+          totalStudents: selectedRoom.totalStudents,
+          avgClassLevel: selectedRoom.avgLevel,
+          activeStreakRate: selectedRoom.streakRate,
+          avgScore: `${selectedRoom.avgScore} / 100`
+        }
+      }
+    };
+  }),
+
+  // Lecturer Room Creation
+  createRoom: (newRoom) => set((state) => {
+    const fullRoom = {
+      id: `room-${Date.now()}`,
+      totalStudents: 0,
+      avgLevel: 'Menunggu Tes',
+      streakRate: '0%',
+      avgScore: '0',
+      ...newRoom
+    };
+    return {
+      rooms: [fullRoom, ...state.rooms],
+      activeRoomId: fullRoom.id,
+      lecturerData: {
+        ...state.lecturerData,
+        className: fullRoom.name
+      }
+    };
+  }),
+
+  // Lecturer Hybrid Assignment Creation
+  createAssignment: (newAsg) => set((state) => {
+    const created = {
+      id: `asg-${Date.now()}`,
+      roomId: state.activeRoomId,
+      submittedCount: 0,
+      totalCount: state.lecturerData.metrics.totalStudents || 38,
+      status: 'active',
+      ...newAsg
+    };
+    const updatedAssignments = [created, ...state.lecturerAssignments];
+    return {
+      lecturerAssignments: updatedAssignments,
+      lecturerData: {
+        ...state.lecturerData,
+        assignments: updatedAssignments
+      }
+    };
+  }),
+
+  // Lecturer Manual Grading (CEFR Rubrics)
+  gradeSubmission: (submissionId, { grammarScore, vocabScore, fluencyScore, feedback }) => set((state) => {
+    const finalScore = Math.round((Number(grammarScore) + Number(vocabScore) + Number(fluencyScore)) / 3);
+    const updatedSubmissions = state.manualSubmissions.map((sub) => {
+      if (sub.id === submissionId) {
+        return {
+          ...sub,
+          status: 'graded',
+          grammarScore: Number(grammarScore),
+          vocabScore: Number(vocabScore),
+          fluencyScore: Number(fluencyScore),
+          finalScore,
+          feedback
+        };
+      }
+      return sub;
+    });
+
+    // Also update studentGrades table
+    const targetSub = state.manualSubmissions.find(s => s.id === submissionId);
+    let updatedGrades = state.studentGrades;
+    if (targetSub) {
+      updatedGrades = state.studentGrades.map((grade) => {
+        if (grade.nim === targetSub.nim) {
+          const newAssignmentAvg = Math.round((grade.assignmentAvg + finalScore) / 2);
+          const newFinalScore = Number(((grade.quizAvg * 0.4) + (newAssignmentAvg * 0.6)).toFixed(1));
+          let letterGrade = 'B';
+          if (newFinalScore >= 85) letterGrade = 'A';
+          else if (newFinalScore >= 80) letterGrade = 'A-';
+          else if (newFinalScore >= 75) letterGrade = 'B+';
+          else if (newFinalScore >= 70) letterGrade = 'B';
+          else if (newFinalScore >= 65) letterGrade = 'C+';
+          return {
+            ...grade,
+            assignmentAvg: newAssignmentAvg,
+            finalScore: newFinalScore,
+            letterGrade,
+            status: newFinalScore >= 70 ? 'Lulus' : 'Perlu Perhatian'
+          };
+        }
+        return grade;
+      });
+    }
+
+    const pendingCount = updatedSubmissions.filter(s => s.status === 'pending').length;
+
+    return {
+      manualSubmissions: updatedSubmissions,
+      studentGrades: updatedGrades,
+      lecturerData: {
+        ...state.lecturerData,
+        metrics: {
+          ...state.lecturerData.metrics,
+          pendingGradingCount: pendingCount
+        }
+      }
+    };
+  }),
+
+  // Add XP and handle leveling
   addXP: (amount) => set((state) => {
     const newXP = state.userStats.total_xp + amount;
-    const newLevel = Math.floor(newXP / 200) + 1;
+    const newLevel = Math.floor(newXP / 180) + 1;
     return {
       userStats: {
         ...state.userStats,
         total_xp: newXP,
         level: newLevel,
-        levelName: getLevelName(newXP),
       }
     };
   }),
 
-  // Mark material complete AND unlock the next one
+  // Add & Spend Gems
+  addGems: (amount) => set((state) => ({
+    userStats: { ...state.userStats, gems: state.userStats.gems + amount }
+  })),
+
+  spendGems: (amount) => set((state) => {
+    if (state.userStats.gems < amount) return state;
+    return {
+      userStats: { ...state.userStats, gems: state.userStats.gems - amount }
+    };
+  }),
+
+  // Hearts logic (Duolingo style)
+  deductHeart: () => set((state) => ({
+    userStats: { ...state.userStats, hearts: Math.max(0, state.userStats.hearts - 1) }
+  })),
+
+  restoreHearts: () => set((state) => ({
+    userStats: { ...state.userStats, hearts: state.userStats.maxHearts }
+  })),
+
+  // Mark material complete & unlock next
   completeMaterialAndUnlockNext: (materialId, score) => set((state) => {
     const idx = state.materials.findIndex(m => m.id === materialId);
     const material = state.materials[idx];
     const passed = score >= (material?.min_score || 60);
 
     const updatedMaterials = state.materials.map((m, i) => {
-      if (m.id === materialId) return { ...m, status: 'completed', last_score: score };
-      if (i === idx + 1 && passed) return { ...m, status: m.status === 'locked' ? 'active' : m.status };
+      if (m.id === materialId) {
+        return {
+          ...m,
+          status: 'completed',
+          stars: passed ? 3 : 1,
+          last_score: score
+        };
+      }
+      if (i === idx + 1 && passed) {
+        return {
+          ...m,
+          status: m.status === 'locked' ? 'active' : m.status
+        };
+      }
       return m;
     });
 
-    return { materials: updatedMaterials };
+    return {
+      materials: updatedMaterials,
+      userStats: {
+        ...state.userStats,
+        total_completed_materials: updatedMaterials.filter(m => m.status === 'completed').length,
+        gems: state.userStats.gems + 50
+      }
+    };
   }),
+
+  // Boss Battle damage action
+  damageBoss: (amount) => set((state) => {
+    const newHp = Math.max(0, state.bossBattle.currentHp - amount);
+    return {
+      bossBattle: {
+        ...state.bossBattle,
+        currentHp: newHp
+      }
+    };
+  }),
+
+  // Buy item from shop
+  buyItem: (itemId) => set((state) => {
+    const item = state.shopItems.find(i => i.id === itemId);
+    if (!item || state.userStats.gems < item.priceGems) return state;
+    return {
+      userStats: {
+        ...state.userStats,
+        gems: state.userStats.gems - item.priceGems
+      },
+      inventory: [...state.inventory, itemId]
+    };
+  })
 }));

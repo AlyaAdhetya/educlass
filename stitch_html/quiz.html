@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>EduClass - Sesi Belajar Interaktif &amp; Gamified Micro-Lesson</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-surface-variant": "#464554",
+            "tertiary-container": "#a36700",
+            "on-background": "#131b2e",
+            "on-tertiary-fixed-variant": "#653e00",
+            "on-primary-container": "#fffbff",
+            "inverse-surface": "#283044",
+            "on-secondary": "#ffffff",
+            "tertiary-fixed-dim": "#ffb95f",
+            "coral-pulse": "#F43F5E",
+            "coral-pulse-shadow": "#BE123C",
+            "background": "#faf8ff",
+            "surface": "#faf8ff",
+            "surface-container-lowest": "#ffffff",
+            "surface-card": "#FFFFFF",
+            "secondary-fixed": "#6ffbbe",
+            "primary-fixed-dim": "#c0c1ff",
+            "secondary-container": "#6cf8bb",
+            "emerald-mint": "#10B981",
+            "outline-variant": "#c7c4d7",
+            "error": "#ba1a1a",
+            "on-error-container": "#93000a",
+            "tertiary": "#825100",
+            "sunburst-amber-shadow": "#B45309",
+            "on-secondary-fixed": "#002113",
+            "surface-container-high": "#e2e7ff",
+            "inverse-on-surface": "#eef0ff",
+            "surface-tint": "#494bd6",
+            "on-tertiary-container": "#fffbff",
+            "on-primary-fixed-variant": "#2f2ebe",
+            "surface-glass": "rgba(255, 255, 255, 0.82)",
+            "electric-violet-deep": "#4F46E5",
+            "outline": "#767586",
+            "primary-container": "#6063ee",
+            "primary": "#4648d4",
+            "secondary": "#006c49",
+            "surface-container-low": "#f2f3ff",
+            "sky-focus": "#0EA5E9",
+            "tertiary-fixed": "#ffddb8",
+            "secondary-fixed-dim": "#4edea3",
+            "surface-canvas": "#F8FAFC",
+            "primary-fixed": "#e1e0ff",
+            "inverse-primary": "#c0c1ff",
+            "emerald-mint-shadow": "#047857",
+            "on-error": "#ffffff",
+            "error-container": "#ffdad6",
+            "on-tertiary": "#ffffff",
+            "surface-container-highest": "#dae2fd",
+            "surface-variant": "#dae2fd",
+            "electric-violet-shadow": "#3730A3",
+            "on-surface": "#131b2e",
+            "on-primary": "#ffffff",
+            "electric-violet": "#6366F1",
+            "on-secondary-container": "#00714d",
+            "surface-dim": "#d2d9f4",
+            "sunburst-amber": "#F59E0B",
+            "on-primary-fixed": "#07006c",
+            "surface-container": "#eaedff",
+            "on-secondary-fixed-variant": "#005236",
+            "surface-bright": "#faf8ff",
+            "on-tertiary-fixed": "#2a1700"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "gutter": "1.5rem",
+            "margin": "2rem",
+            "margin-mobile": "1rem",
+            "space-xs": "0.25rem",
+            "space-sm": "0.5rem",
+            "space-lg": "1.5rem",
+            "space-2xl": "3rem",
+            "space-md": "1rem",
+            "space-xl": "2rem",
+            "gutter-sm": "1rem"
+          },
+          "fontFamily": {
+            "display-hero-mobile": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"],
+            "body-strong": ["Plus Jakarta Sans"],
+            "label-lg": ["Plus Jakarta Sans"],
+            "headline-lg-mobile": ["Plus Jakarta Sans"],
+            "label-md": ["Plus Jakarta Sans"],
+            "title-md": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "body-lg": ["Plus Jakarta Sans"],
+            "headline-sm": ["Plus Jakarta Sans"],
+            "label-sm": ["Plus Jakarta Sans"],
+            "display-hero": ["Plus Jakarta Sans"],
+            "stat-counter": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "display-hero-mobile": ["34px", { "lineHeight": "42px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+            "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "body-md": ["14px", { "lineHeight": "22px", "fontWeight": "400" }],
+            "body-strong": ["14px", { "lineHeight": "22px", "fontWeight": "600" }],
+            "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "700" }],
+            "headline-lg-mobile": ["26px", { "lineHeight": "34px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "700" }],
+            "title-md": ["18px", { "lineHeight": "26px", "fontWeight": "600" }],
+            "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.015em", "fontWeight": "700" }],
+            "body-lg": ["16px", { "lineHeight": "26px", "fontWeight": "400" }],
+            "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+            "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.03em", "fontWeight": "600" }],
+            "display-hero": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.03em", "fontWeight": "800" }],
+            "stat-counter": ["22px", { "lineHeight": "26px", "fontWeight": "800" }]
+          }
+        },
+      },
+    }
+  </script>
+</head>
+<body class="bg-background text-on-surface antialiased min-h-screen flex flex-col justify-between selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- Header Bar Minimalis Berenergi -->
+<header class="w-full bg-surface-glass backdrop-blur-md sticky top-0 z-40 px-4 md:px-8 py-3.5 border-b border-outline-variant/40">
+<div class="max-w-4xl mx-auto flex items-center justify-between gap-4 md:gap-6">
+<!-- Tombol Exit / Silang -->
+<button aria-label="Tutup Sesi" class="w-10 h-10 rounded-xl bg-surface-container-low hover:bg-surface-container text-on-surface-variant flex items-center justify-center border-b-[3px] border-outline-variant active:translate-y-0.5 active:border-b-0 transition-all focus:outline-none" type="button">
+<span class="material-symbols-outlined text-[24px]">close</span>
+</button>
+<!-- XP Progress Bar Interaktif -->
+<div class="flex-1 flex flex-col gap-1.5">
+<div class="flex justify-between items-center px-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-emerald-mint text-[16px]" style="font-variation-settings: 'FILL' 1;">bolt</span>
+            PROGRESS KUIS
+          </span>
+<span class="font-label-sm text-label-sm text-secondary font-extrabold bg-secondary-fixed/50 px-2 py-0.5 rounded-full">
+            70% Complete
+          </span>
+</div>
+<div class="w-full h-4 bg-surface-container rounded-full p-0.5 overflow-hidden shadow-inner flex items-center">
+<div class="h-full bg-gradient-to-r from-emerald-mint via-secondary-container to-emerald-mint rounded-full transition-all duration-700 ease-out relative w-[70%] shadow-sm">
+<div class="absolute inset-0 bg-white/20 rounded-full h-1/2"></div>
+</div>
+</div>
+</div>
+<!-- Vital Stats Cluster: Hearts & Streak -->
+<div class="flex items-center gap-2">
+<!-- Hearts Indicator -->
+<div class="flex items-center gap-1 bg-surface-container-lowest border border-outline-variant/60 rounded-xl px-3 py-1.5 shadow-sm">
+<div class="flex items-center text-coral-pulse">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">favorite</span>
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">favorite</span>
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">favorite</span>
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">favorite</span>
+<span class="material-symbols-outlined text-outline-variant text-[20px]">favorite</span>
+</div>
+<span class="hidden sm:inline font-label-sm text-label-sm text-on-surface font-extrabold ml-1">4</span>
+</div>
+<!-- Streak XP Bonus Chip -->
+<div class="hidden sm:flex items-center gap-1.5 bg-sunburst-amber/15 border border-sunburst-amber/40 text-on-tertiary-fixed-variant px-3 py-1.5 rounded-xl shadow-sm">
+<span class="material-symbols-outlined text-sunburst-amber text-[20px]" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+<span class="font-label-sm text-label-sm font-bold">+15 XP</span>
+</div>
+</div>
+</div>
+</header>
+<!-- Area Soal Interaktif (Central Focus Workspace) -->
+<main class="flex-1 max-w-3xl w-full mx-auto px-4 md:px-6 py-6 md:py-8 flex flex-col justify-center">
+<!-- Category Pill & Audio Pronunciation Tooltip -->
+<div class="flex items-center justify-between gap-3 mb-4">
+<div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary-fixed text-primary font-label-md text-label-md">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">school</span>
+<span>Grammar Challenge • Past Participle</span>
+</div>
+<!-- Mini Audio Pronunciation Tooltip with Mini Waveform -->
+<button class="group flex items-center gap-2 px-3 py-1.5 bg-surface-card hover:bg-surface-container border border-outline-variant rounded-xl shadow-sm active:scale-95 transition-all text-on-surface-variant hover:text-primary" type="button">
+<span class="material-symbols-outlined text-[20px]">volume_up</span>
+<div class="flex items-end gap-0.5 h-3">
+<span class="w-1 bg-primary/70 h-2 rounded-full animate-pulse"></span>
+<span class="w-1 bg-primary h-3 rounded-full animate-pulse"></span>
+<span class="w-1 bg-primary/40 h-1.5 rounded-full"></span>
+<span class="w-1 bg-primary h-2.5 rounded-full"></span>
+</div>
+<span class="font-label-sm text-label-sm font-bold text-on-surface hidden sm:inline">Dengarkan</span>
+</button>
+</div>
+<!-- Karakter Maskot "Prof. Hootie" + Speech Bubble -->
+<div class="flex items-start gap-4 mb-6">
+<!-- Mascot Avatar Frame -->
+<div class="relative flex-shrink-0">
+<div class="w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-surface-card border-2 border-primary/30 p-1 shadow-md overflow-hidden flex items-center justify-center">
+<img class="w-full h-full object-cover rounded-xl" data-alt="Cute scholarly owl cartoon mascot wearing an academic graduation mortarboard cap and round spectacles, vibrant vector digital illustration, clean light academia theme with soft violet and amber accents on white backdrop" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC7xxD3bAx0VWs6WB-vKEELzPfeBPgOS8jPdL2EeUEerr65mqmw8dCcr-PZChH3OpR7a6v88XbNN2oj5aN4KQZZcz8NQhTZNVKTShLlwyXczVUIsxCmCNEgUTrqcIyXxdI9QXnSl9CCIzcM81rNcnJQEzlQqhqc6deTmBjuvVb5UhDJyZgBJzEHPVKN_pWFAqDRwGXNGCSZSe7JVvOhWYI8z4oEr8QsdNv4ejw_SmNUgE62BcAJHuIqBw"/>
+</div>
+<div class="absolute -bottom-1 -right-1 bg-emerald-mint text-white rounded-full p-0.5 shadow-sm">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+</div>
+<!-- Speech Bubble -->
+<div class="relative bg-surface-card border border-outline-variant/60 rounded-2xl rounded-tl-sm px-4 py-3 shadow-sm flex-1">
+<div class="flex items-center justify-between mb-1">
+<span class="font-label-sm text-label-sm font-bold text-primary">Prof. Hootie</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-medium">Instruktur AI</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface font-body-strong">
+          Lengkapi kalimat akademik berikut dengan bentuk kata kerja yang tepat!
+        </p>
+</div>
+</div>
+<!-- Academic Question Card Prompt -->
+<div class="bg-surface-glass border border-outline-variant/80 rounded-2xl p-6 md:p-8 backdrop-blur-md shadow-sm mb-6 text-center md:text-left">
+<p class="font-headline-sm md:font-headline-md text-headline-sm md:text-headline-md text-on-surface leading-relaxed md:leading-loose">
+        "The comprehensive research report 
+        <span class="inline-flex items-center px-4 py-1 mx-1.5 bg-primary-fixed border-b-4 border-electric-violet-shadow rounded-xl text-primary font-headline-sm font-bold shadow-sm align-middle min-w-[140px] justify-center text-center">
+          was evaluated
+        </span> 
+        by the university committee last semester."
+      </p>
+<!-- Hint Accordion / Action -->
+<div class="mt-5 pt-4 border-t border-outline-variant/40 flex items-center justify-between flex-wrap gap-2">
+<span class="font-body-md text-body-md text-on-surface-variant">Pilih opsi yang sesuai aturan passive voice masa lampau.</span>
+<button class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-surface-container-low hover:bg-surface-container border-b-2 border-outline-variant rounded-xl text-tertiary font-label-sm text-label-sm active:translate-y-0.5 transition-all" type="button">
+<span class="material-symbols-outlined text-[18px] text-sunburst-amber">lightbulb</span>
+          Petunjuk Gramatikal (-2 XP)
+        </button>
+</div>
+</div>
+<!-- Opsi Interaktif (Gamified Tile Chips Grid) -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 mb-8">
+<!-- Pilihan A: Selected State (Active / Evaluated Correct) -->
+<div class="relative bg-surface-container-high border-2 border-primary border-b-[5px] border-electric-violet-shadow rounded-xl p-4 cursor-pointer transform translate-y-0.5 transition-all shadow-md flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="w-8 h-8 rounded-lg bg-primary text-on-primary font-label-lg text-label-lg flex items-center justify-center font-extrabold shadow-sm">
+            A
+          </span>
+<span class="font-title-md text-title-md text-primary font-bold">was evaluated</span>
+</div>
+<div class="w-6 h-6 rounded-full bg-primary text-on-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">check</span>
+</div>
+</div>
+<!-- Pilihan B -->
+<div class="bg-surface-card hover:bg-surface-container-low border-2 border-outline-variant border-b-[4px] border-outline-variant rounded-xl p-4 cursor-pointer active:translate-y-0.5 active:border-b-[2px] transition-all flex items-center justify-between group">
+<div class="flex items-center gap-3">
+<span class="w-8 h-8 rounded-lg bg-surface-container text-on-surface-variant font-label-lg text-label-lg flex items-center justify-center font-extrabold group-hover:bg-primary-fixed group-hover:text-primary transition-colors">
+            B
+          </span>
+<span class="font-title-md text-title-md text-on-surface">were evaluated</span>
+</div>
+<span class="w-5 h-5 rounded-full border-2 border-outline-variant"></span>
+</div>
+<!-- Pilihan C -->
+<div class="bg-surface-card hover:bg-surface-container-low border-2 border-outline-variant border-b-[4px] border-outline-variant rounded-xl p-4 cursor-pointer active:translate-y-0.5 active:border-b-[2px] transition-all flex items-center justify-between group">
+<div class="flex items-center gap-3">
+<span class="w-8 h-8 rounded-lg bg-surface-container text-on-surface-variant font-label-lg text-label-lg flex items-center justify-center font-extrabold group-hover:bg-primary-fixed group-hover:text-primary transition-colors">
+            C
+          </span>
+<span class="font-title-md text-title-md text-on-surface">evaluates</span>
+</div>
+<span class="w-5 h-5 rounded-full border-2 border-outline-variant"></span>
+</div>
+<!-- Pilihan D -->
+<div class="bg-surface-card hover:bg-surface-container-low border-2 border-outline-variant border-b-[4px] border-outline-variant rounded-xl p-4 cursor-pointer active:translate-y-0.5 active:border-b-[2px] transition-all flex items-center justify-between group">
+<div class="flex items-center gap-3">
+<span class="w-8 h-8 rounded-lg bg-surface-container text-on-surface-variant font-label-lg text-label-lg flex items-center justify-center font-extrabold group-hover:bg-primary-fixed group-hover:text-primary transition-colors">
+            D
+          </span>
+<span class="font-title-md text-title-md text-on-surface">has been evaluating</span>
+</div>
+<span class="w-5 h-5 rounded-full border-2 border-outline-variant"></span>
+</div>
+</div>
+</main>
+<!-- Bottom Floating Feedback Drawer / Action Bar (Sticky Green Celebration Banner) -->
+<footer class="sticky bottom-0 w-full bg-surface-card border-t border-secondary/30 shadow-[0_-10px_25px_-5px_rgba(16,185,129,0.12)] z-30 transition-all">
+<div class="bg-secondary-fixed/30 border-b border-secondary/20 px-4 py-2">
+<div class="max-w-4xl mx-auto flex items-center justify-between text-secondary">
+<span class="font-label-sm text-label-sm font-extrabold flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[18px]">verified</span>
+          UJI KOMPETENSI CEFR B1
+        </span>
+<span class="font-label-sm text-label-sm font-bold bg-secondary/10 px-2 py-0.5 rounded-full">
+          Streak Aktif: 14 Hari 🔥
+        </span>
+</div>
+</div>
+<div class="max-w-4xl mx-auto p-4 md:px-8 md:py-5 flex flex-col md:flex-row items-center justify-between gap-4">
+<!-- Feedback Message -->
+<div class="flex items-center gap-4 w-full md:w-auto">
+<div class="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-emerald-mint text-white flex-shrink-0 flex items-center justify-center border-b-4 border-emerald-mint-shadow shadow-md">
+<span class="material-symbols-outlined text-[32px]">task_alt</span>
+</div>
+<div>
+<h2 class="font-headline-sm text-headline-sm text-secondary font-extrabold flex items-center gap-2">
+            Luar Biasa! Jawabanmu Tepat Sekali
+            <span class="font-label-md text-label-md bg-secondary-fixed text-on-secondary-fixed font-bold px-2.5 py-0.5 rounded-full">
+              +20 XP
+            </span>
+</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-0.5">
+<span class="font-body-strong text-on-surface font-semibold">'report'</span> adalah subjek singular di masa lampau, sehingga menggunakan <span class="font-body-strong text-primary font-bold">'was + V3'</span>.
+          </p>
+</div>
+</div>
+<!-- Tactile 3D Action Button (Next Question) -->
+<div class="w-full md:w-auto flex-shrink-0">
+<button class="w-full md:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 bg-emerald-mint text-white font-label-lg text-label-lg rounded-xl border-b-[4px] border-emerald-mint-shadow hover:brightness-105 active:translate-y-0.5 active:border-b-[2px] transition-all shadow-lg shadow-emerald-mint/20 cursor-pointer" type="button">
+<span>Lanjut ke Soal Berikutnya</span>
+<span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</footer>
+</body></html>
