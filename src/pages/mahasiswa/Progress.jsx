@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { useDataStore } from '../../store/dataStore';
 import HootieMascot from '../../components/mascot/HootieMascot';
 import { motion } from 'framer-motion';
@@ -11,10 +11,10 @@ export default function StudentProgress() {
   const materialProgress = Math.round((completedMaterials / totalMaterials) * 100) || 0;
 
   const categories = [
-    { name: 'Academic Vocabulary', progress: 100, level: 'CEFR B1', color: 'bg-emerald-500' },
-    { name: 'Grammar & Syntax', progress: 75, level: 'CEFR B1+', color: 'bg-indigo-600' },
-    { name: 'Reading Comprehension', progress: 30, level: 'CEFR B2', color: 'bg-amber-500' },
-    { name: 'Academic Writing', progress: 15, level: 'CEFR B2+', color: 'bg-purple-600' },
+    { name: 'Academic Vocabulary', progress: 100, level: 'Menengah', color: 'bg-emerald-500' },
+    { name: 'Grammar & Syntax', progress: 75, level: 'Menengah Atas', color: 'bg-indigo-600' },
+    { name: 'Reading Comprehension', progress: 30, level: 'Menengah Atas', color: 'bg-amber-500' },
+    { name: 'Academic Writing', progress: 15, level: 'Mahir', color: 'bg-purple-600' },
   ];
 
   return (
@@ -29,7 +29,7 @@ export default function StudentProgress() {
             My Progress
           </h1>
           <p className="text-xs md:text-sm text-slate-500 mt-1 max-w-lg leading-relaxed">
-            Performa kumulatif penguasaan CEFR, konsistensi streak harian, dan skor kuis pembelajaran.
+            Performa kumulatif penguasaan materi, konsistensi streak harian, dan skor kuis pembelajaran.
           </p>
         </div>
 
@@ -85,7 +85,7 @@ export default function StudentProgress() {
         <div className="bg-white p-6 rounded-3xl border border-indigo-100 shadow-xs space-y-5">
           <h2 className="text-sm font-black text-slate-900 flex items-center gap-2">
             <span className="material-symbols-outlined text-indigo-600">monitoring</span>
-            Penguasaan Silabus CEFR
+            Penguasaan Silabus
           </h2>
 
           <div className="space-y-4">
@@ -109,12 +109,12 @@ export default function StudentProgress() {
           </div>
         </div>
 
-        {/* Diagnostic Milestone & TOEFL Ready */}
+        {/* Diagnostic Milestone & EELS Ready */}
         <div className="bg-white p-6 rounded-3xl border border-indigo-100 shadow-xs space-y-4 flex flex-col justify-between">
           <div>
             <h2 className="text-sm font-black text-slate-900 flex items-center gap-2">
               <span className="material-symbols-outlined text-amber-500">verified</span>
-              Prediksi Kesiapan Ujian TOEFL ITP
+              Prediksi Kesiapan Ujian EELS
             </h2>
             <p className="text-xs text-slate-500 mt-1 leading-relaxed">
               Berdasarkan performa di Quiz Arena dan evaluasi modul pembelajaran:
@@ -122,7 +122,7 @@ export default function StudentProgress() {
 
             <div className="mt-4 p-4 rounded-2xl bg-indigo-50/70 border border-indigo-100 space-y-2">
               <div className="flex justify-between text-xs font-black text-indigo-950">
-                <span>Estimasi Skor TOEFL ITP:</span>
+                <span>Estimasi Skor EELS:</span>
                 <span className="text-indigo-600 font-extrabold">520 - 550</span>
               </div>
               <div className="flex justify-between text-[11px] text-slate-500">

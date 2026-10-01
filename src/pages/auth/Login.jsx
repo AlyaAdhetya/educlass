@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuthStore } from '../../store/authStore';
 import { 
@@ -80,7 +80,7 @@ export default function Login() {
           <EduLogo size="md" />
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/90 border border-blue-200 text-blue-700 text-xs font-bold shadow-xs">
             <CheckCircle2 className="w-3.5 h-3.5 text-blue-600" />
-            Official TOEFL Prep
+            Official EELS Prep
           </div>
         </div>
 
@@ -90,7 +90,7 @@ export default function Login() {
           <div className="relative mb-5 bg-white px-5 py-3 rounded-2xl border border-blue-100 shadow-md max-w-md animate-fade-in">
             <p className="text-xs font-bold text-slate-700 flex items-center justify-center gap-1.5">
               <span>👋</span>
-              Halo Calon Scholar! Siap taklukkan target skor TOEFL ITP hari ini?
+              Halo Calon Scholar! Siap taklukkan target skor EELS hari ini?
             </p>
             {/* Bubble arrow */}
             <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-white border-b border-r border-blue-100 transform rotate-45" />
@@ -111,7 +111,7 @@ export default function Login() {
             Belajar Cerdas, Raih Beasiswa Impian
           </h2>
           <p className="text-xs text-slate-600 mt-2 leading-relaxed max-w-md">
-            Platform latihan adaptif CEFR & simulasi resmi TOEFL ITP berstandar kurikulum universitas.
+            Platform latihan adaptif bahasa Inggris & simulasi resmi EELS berstandar kurikulum universitas.
           </p>
         </div>
 
@@ -123,7 +123,7 @@ export default function Login() {
             </div>
             <div className="text-left">
               <p className="text-[9px] font-black uppercase text-slate-400">SILABUS</p>
-              <p className="text-xs font-extrabold text-slate-800 leading-tight">TOEFL ITP Prep</p>
+              <p className="text-xs font-extrabold text-slate-800 leading-tight">EELS Prep</p>
             </div>
           </div>
 
@@ -176,7 +176,7 @@ export default function Login() {
               Masuk ke EduClass
             </h1>
             <p className="text-xs sm:text-sm text-slate-500 leading-relaxed">
-              Lanjutkan perjalanan persiapan TOEFL & sertifikasi akademikmu hari ini.
+              Lanjutkan perjalanan persiapan EELS & sertifikasi akademikmu hari ini.
             </p>
           </div>
 
@@ -328,7 +328,7 @@ export default function Login() {
               </div>
               <div>
                 <p className="text-xs font-black text-slate-900 leading-tight">Mahasiswa - Budi</p>
-                <p className="text-[10px] text-slate-500 mt-0.5">TOEFL Target 550</p>
+                <p className="text-[10px] text-slate-500 mt-0.5">EELS Target 550</p>
               </div>
             </button>
 

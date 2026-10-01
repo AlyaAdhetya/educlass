@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useDataStore } from '../../store/dataStore';
 import HootieMascot from '../../components/mascot/HootieMascot';
@@ -244,7 +244,7 @@ export default function MaterialDetail() {
           <div>
             <div className="flex items-center gap-2">
               <span className="text-[10px] font-black uppercase text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-md">
-                {material.cefr || 'CEFR B1'}
+                {material.cefr || 'Menengah'}
               </span>
               <span className="text-xs text-slate-400 font-semibold">• {material.category}</span>
             </div>

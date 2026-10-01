@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { useDataStore } from '../../store/dataStore';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -87,10 +87,10 @@ export default function DosenSubmissions() {
             <span className="text-xs text-slate-400">• {pendingCount} Submission Menunggu Penilaian</span>
           </div>
           <h1 className="text-xl md:text-2xl font-black text-slate-900 tracking-tight">
-            Rubrik Penilaian Writing & Speaking (CEFR)
+            Rubrik Penilaian Writing & Speaking
           </h1>
           <p className="text-xs text-slate-500 mt-1">
-            Berikan evaluasi kualitatif dan skor objektif menggunakan indikator CEFR untuk esai teks dan rekaman audio mahasiswa.
+            Berikan evaluasi kualitatif dan skor objektif menggunakan indikator penilaian untuk esai teks dan rekaman audio mahasiswa.
           </p>
         </div>
 
@@ -293,11 +293,11 @@ export default function DosenSubmissions() {
                 </div>
               </div>
 
-              {/* SECTION 3: INTERACTIVE CEFR RUBRIC SLIDERS */}
+              {/* SECTION 3: INTERACTIVE RUBRIC SLIDERS */}
               <div className="space-y-4 pt-2 border-t border-slate-100">
                 <h3 className="text-xs font-black text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
                   <span className="material-symbols-outlined text-indigo-600 text-base">tune</span>
-                  Rubrik Penilaian CEFR (Skala 0 - 100)
+                  Rubrik Penilaian (Skala 0 - 100)
                 </h3>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

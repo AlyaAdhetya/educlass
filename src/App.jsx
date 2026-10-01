@@ -15,7 +15,6 @@ import MaterialDetail from './pages/mahasiswa/MaterialDetail';
 import LessonQuiz from './pages/mahasiswa/LessonQuiz';
 import BossBattle from './pages/mahasiswa/BossBattle';
 import Leaderboard from './pages/mahasiswa/Leaderboard';
-import QuestSession from './pages/mahasiswa/QuestSession';
 
 // Admin Pages
 import AdminDashboard from './pages/admin/Dashboard';
@@ -35,9 +34,6 @@ export default function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
       </Route>
-
-      {/* Full-screen Duolingo-style Quest Session */}
-      <Route path="/dashboard/quest/:id" element={<QuestSession />} />
 
       {/* Shared Protected Route (Profile - accessible by any logged-in user) */}
       <Route element={<DashboardLayout />}>

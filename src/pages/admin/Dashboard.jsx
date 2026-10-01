@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDataStore } from '../../store/dataStore';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -131,8 +131,8 @@ export default function AdminDashboard() {
             </span>
           </div>
           <div>
-            <span className="text-[11px] font-bold text-slate-400 block">Rata-rata Kemampuan CEFR</span>
-            <h3 className="text-xl font-black text-slate-900 mt-0.5">CEFR B1 (Inter)</h3>
+            <span className="text-[11px] font-bold text-slate-400 block">Rata-rata Kemampuan Bahasa</span>
+            <h3 className="text-xl font-black text-slate-900 mt-0.5">Menengah</h3>
             <div className="w-full bg-slate-100 h-2 rounded-full mt-2 overflow-hidden">
               <div className="bg-gradient-to-r from-indigo-500 to-emerald-400 h-full rounded-full w-[68%]" />
             </div>
@@ -221,7 +221,7 @@ export default function AdminDashboard() {
                         <span className="px-2 py-0.5 bg-indigo-100 text-indigo-800 text-[10px] font-black rounded uppercase">
                           {m.unit}
                         </span>
-                        <span className="text-[10px] text-slate-500 font-bold">{m.cefr || 'CEFR B1'}</span>
+                        <span className="text-[10px] text-slate-500 font-bold">{m.cefr || 'Menengah'}</span>
                       </div>
                       <h4 className="font-extrabold text-xs text-slate-900 mt-1">{m.title}</h4>
                     </div>

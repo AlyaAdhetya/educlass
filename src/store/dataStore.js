@@ -1,4 +1,4 @@
-import { create } from 'zustand';
+﻿import { create } from 'zustand';
 
 // === MOCK MATERIALS WITH PAGINATED CONTENT ===
 const initialMaterials = [
@@ -7,7 +7,7 @@ const initialMaterials = [
     unit: 'Unit 1',
     title: 'Academic Vocabulary Mastery',
     category: 'Vocabulary',
-    cefr: 'CEFR A2-B1',
+    cefr: 'Dasar - Menengah',
     level: 1,
     status: 'completed',
     xp_reward: 80,
@@ -81,7 +81,7 @@ Penguasaan kosakata akademis membedakan bahasa percakapan sehari-hari (*casual E
     unit: 'Unit 2',
     title: 'Past Perfect vs Past Simple',
     category: 'Grammar',
-    cefr: 'CEFR B1',
+    cefr: 'Menengah',
     level: 1,
     status: 'completed',
     xp_reward: 90,
@@ -137,7 +137,7 @@ Penguasaan kosakata akademis membedakan bahasa percakapan sehari-hari (*casual E
     unit: 'Unit 3',
     title: 'Passive Voice in Research Paper',
     category: 'Grammar',
-    cefr: 'CEFR B1+',
+    cefr: 'Menengah Atas',
     level: 2,
     status: 'active',
     xp_reward: 100,
@@ -223,7 +223,7 @@ Contoh:
     unit: 'Unit 4',
     title: 'Academic Reading Comprehension',
     category: 'Reading',
-    cefr: 'CEFR B2',
+    cefr: 'Menengah Atas',
     level: 2,
     status: 'locked',
     xp_reward: 110,
@@ -242,7 +242,7 @@ Contoh:
     unit: 'Unit 5',
     title: 'Abstract & Thesis Argumentation',
     category: 'Writing',
-    cefr: 'CEFR B2+',
+    cefr: 'Mahir',
     level: 3,
     status: 'locked',
     xp_reward: 130,
@@ -270,7 +270,7 @@ const initialUserStats = {
   sp_barrier: 850,
   max_sp: 1000,
   roomName: 'Bahasa Inggris 3B',
-  cefrLevel: 'CEFR B1 Intermediate',
+  cefrLevel: 'Menengah',
   total_completed_materials: 2,
 };
 
@@ -355,7 +355,7 @@ const initialDailyQuests = [
   },
   {
     id: 2,
-    title: 'Kerjakan 1 Latihan TOEFL Boss Battle',
+    title: 'Kerjakan 1 Latihan EELS Boss Battle',
     current: 1,
     target: 1,
     unit: 'Battle',
@@ -434,11 +434,11 @@ const initialShopItems = [
   }
 ];
 
-// TOEFL / IELTS Boss Battle Dataset
+// EELS Boss Battle Dataset
 const initialBossBattle = {
   bossName: 'Grammar & Listening Challenge',
-  title: 'Simulasi TOEFL ITP: Section 2 (Structure & Written Expression)',
-  cefrPhase: 'CEFR B2 Phase',
+  title: 'Simulasi EELS: Section 2 (Structure & Written Expression)',
+  cefrPhase: 'Fase Menengah Atas',
   maxHp: 10000,
   currentHp: 4200,
   damagePerHit: 350,
@@ -497,8 +497,8 @@ const initialRooms = [
     semester: 'Semester Ganjil 2026/2027',
     schedule: 'Senin, 08:00 - 10:30 WIB',
     totalStudents: 38,
-    cefrTarget: 'CEFR B2',
-    avgLevel: 'CEFR B1 (68%)',
+    levelTarget: 'Menengah Atas',
+    avgLevel: 'Menengah (68%)',
     streakRate: '89%',
     avgScore: '86.4'
   },
@@ -511,8 +511,8 @@ const initialRooms = [
     semester: 'Semester Ganjil 2026/2027',
     schedule: 'Rabu, 13:00 - 15:30 WIB',
     totalStudents: 32,
-    cefrTarget: 'CEFR B1',
-    avgLevel: 'CEFR A2 (80%)',
+    levelTarget: 'Menengah',
+    avgLevel: 'Dasar (80%)',
     streakRate: '75%',
     avgScore: '81.2'
   }
@@ -525,7 +525,7 @@ const initialLecturerAssignments = [
     title: 'Unit 3: Academic Reading & Passive Voice in Scientific Abstracts',
     type: 'global_module',
     targetUnit: 'Unit 3',
-    cefr: 'CEFR B1.2 Core',
+    cefr: 'Menengah',
     deadline: '14 Okt 2026, 23:59 WIB',
     submittedCount: 31,
     totalCount: 38,
@@ -541,7 +541,7 @@ const initialLecturerAssignments = [
     title: 'Academic Writing & Speaking: The Future Impact of AI on Software Engineering',
     type: 'custom_task',
     targetUnit: 'Tugas Akademik Khusus',
-    cefr: 'CEFR B2 Academic',
+    cefr: 'Menengah Atas',
     deadline: '18 Okt 2026, 23:59 WIB',
     submittedCount: 32,
     totalCount: 38,
@@ -557,7 +557,7 @@ const initialLecturerAssignments = [
     title: 'Grammar Duel: Inverted Conditionals & Passive Voice',
     type: 'custom_quiz',
     targetUnit: 'Kuis Singkat',
-    cefr: 'CEFR B2 Advanced',
+    cefr: 'Mahir',
     deadline: '22 Okt 2026, 23:59 WIB',
     submittedCount: 28,
     totalCount: 38,
@@ -660,16 +660,16 @@ In conclusion, while automated code completion might accelerate standard scaffol
 ];
 
 const initialStudentGrades = [
-  { id: 1, nim: '2401082', name: 'Nabila Putri', cefr: 'CEFR B2', streak: 14, quizAvg: 92, assignmentAvg: 87, finalScore: 90.0, letterGrade: 'A', status: 'Lulus' },
-  { id: 2, nim: '2401001', name: 'Budi Santoso', cefr: 'CEFR B1', streak: 14, quizAvg: 85, assignmentAvg: 81, finalScore: 83.4, letterGrade: 'A-', status: 'Lulus' },
-  { id: 3, nim: '2401002', name: 'Siti Aminah', cefr: 'CEFR B2', streak: 12, quizAvg: 95, assignmentAvg: 92, finalScore: 93.8, letterGrade: 'A', status: 'Lulus' },
-  { id: 4, nim: '2401003', name: 'Raka Pratama', cefr: 'CEFR B1', streak: 9, quizAvg: 80, assignmentAvg: 86, finalScore: 82.4, letterGrade: 'B+', status: 'Lulus' },
-  { id: 5, nim: '2401015', name: 'Dimas Aditya', cefr: 'CEFR B1', streak: 8, quizAvg: 78, assignmentAvg: 75, finalScore: 76.8, letterGrade: 'B', status: 'Lulus' },
-  { id: 6, nim: '2401022', name: 'Anisa Rahmawati', cefr: 'CEFR B2', streak: 11, quizAvg: 88, assignmentAvg: 89, finalScore: 88.4, letterGrade: 'A', status: 'Lulus' },
-  { id: 7, nim: '2401034', name: 'Farhan Maulana', cefr: 'CEFR A2', streak: 4, quizAvg: 68, assignmentAvg: 70, finalScore: 68.8, letterGrade: 'C+', status: 'Perlu Perhatian' },
-  { id: 8, nim: '2401041', name: 'Tiara Larasati', cefr: 'CEFR B1', streak: 7, quizAvg: 82, assignmentAvg: 80, finalScore: 81.2, letterGrade: 'B+', status: 'Lulus' },
-  { id: 9, nim: '2401053', name: 'Bayu Wicaksono', cefr: 'CEFR B1', streak: 10, quizAvg: 84, assignmentAvg: 83, finalScore: 83.6, letterGrade: 'A-', status: 'Lulus' },
-  { id: 10, nim: '2401067', name: 'Clara Oktaviani', cefr: 'CEFR B2', streak: 15, quizAvg: 96, assignmentAvg: 94, finalScore: 95.2, letterGrade: 'A', status: 'Lulus' },
+  { id: 1, nim: '2401082', name: 'Nabila Putri', cefr: 'Menengah Atas', streak: 14, quizAvg: 92, assignmentAvg: 87, finalScore: 90.0, letterGrade: 'A', status: 'Lulus' },
+  { id: 2, nim: '2401001', name: 'Budi Santoso', cefr: 'Menengah', streak: 14, quizAvg: 85, assignmentAvg: 81, finalScore: 83.4, letterGrade: 'A-', status: 'Lulus' },
+  { id: 3, nim: '2401002', name: 'Siti Aminah', cefr: 'Menengah Atas', streak: 12, quizAvg: 95, assignmentAvg: 92, finalScore: 93.8, letterGrade: 'A', status: 'Lulus' },
+  { id: 4, nim: '2401003', name: 'Raka Pratama', cefr: 'Menengah', streak: 9, quizAvg: 80, assignmentAvg: 86, finalScore: 82.4, letterGrade: 'B+', status: 'Lulus' },
+  { id: 5, nim: '2401015', name: 'Dimas Aditya', cefr: 'Menengah', streak: 8, quizAvg: 78, assignmentAvg: 75, finalScore: 76.8, letterGrade: 'B', status: 'Lulus' },
+  { id: 6, nim: '2401022', name: 'Anisa Rahmawati', cefr: 'Menengah Atas', streak: 11, quizAvg: 88, assignmentAvg: 89, finalScore: 88.4, letterGrade: 'A', status: 'Lulus' },
+  { id: 7, nim: '2401034', name: 'Farhan Maulana', cefr: 'Dasar', streak: 4, quizAvg: 68, assignmentAvg: 70, finalScore: 68.8, letterGrade: 'C+', status: 'Perlu Perhatian' },
+  { id: 8, nim: '2401041', name: 'Tiara Larasati', cefr: 'Menengah', streak: 7, quizAvg: 82, assignmentAvg: 80, finalScore: 81.2, letterGrade: 'B+', status: 'Lulus' },
+  { id: 9, nim: '2401053', name: 'Bayu Wicaksono', cefr: 'Menengah', streak: 10, quizAvg: 84, assignmentAvg: 83, finalScore: 83.6, letterGrade: 'A-', status: 'Lulus' },
+  { id: 10, nim: '2401067', name: 'Clara Oktaviani', cefr: 'Menengah Atas', streak: 15, quizAvg: 96, assignmentAvg: 94, finalScore: 95.2, letterGrade: 'A', status: 'Lulus' },
 ];
 
 const initialLecturerData = {
@@ -680,7 +680,7 @@ const initialLecturerData = {
   metrics: {
     totalStudents: 38,
     placementTestRate: '100%',
-    avgClassLevel: 'CEFR B1 (68%)',
+    avgClassLevel: 'Menengah (68%)',
     activeStreakRate: '89%',
     avgScore: '86.4 / 100',
     pendingGradingCount: 3
@@ -764,7 +764,7 @@ export const useDataStore = create((set) => ({
     };
   }),
 
-  // Lecturer Manual Grading (CEFR Rubrics)
+  // Lecturer Manual Grading (Rubrics)
   gradeSubmission: (submissionId, { grammarScore, vocabScore, fluencyScore, feedback }) => set((state) => {
     const finalScore = Math.round((Number(grammarScore) + Number(vocabScore) + Number(fluencyScore)) / 3);
     const updatedSubmissions = state.manualSubmissions.map((sub) => {

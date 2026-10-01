@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { useDataStore } from '../../store/dataStore';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -17,7 +17,7 @@ export default function DosenGrading() {
       'No',
       'NIM',
       'Nama Mahasiswa',
-      'Level CEFR',
+      'Level',
       'Streak Belajar (Hari)',
       'Nilai Kuis Modul (Bobot 40%)',
       'Nilai Tugas Esai (Bobot 60%)',
@@ -191,7 +191,7 @@ export default function DosenGrading() {
               onChange={(e) => setLevelFilter(e.target.value)}
               className="text-xs py-1.5 px-3 rounded-xl border border-slate-200 bg-slate-50 font-bold text-slate-700"
             >
-              <option value="all">Semua CEFR</option>
+              <option value="all">Semua Level</option>
               <option value="B2">Level B2</option>
               <option value="B1">Level B1</option>
               <option value="A2">Level A2</option>
@@ -218,7 +218,7 @@ export default function DosenGrading() {
                 <th className="py-3 px-4 text-center">No</th>
                 <th className="py-3 px-4">NIM</th>
                 <th className="py-3 px-4">Nama Mahasiswa</th>
-                <th className="py-3 px-4">Level CEFR</th>
+                <th className="py-3 px-4">Level</th>
                 <th className="py-3 px-4">Streak Belajar</th>
                 <th className="py-3 px-4">Kuis Modul (40%)</th>
                 <th className="py-3 px-4">Tugas Esai (60%)</th>

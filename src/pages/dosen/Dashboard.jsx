@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDataStore } from '../../store/dataStore';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -168,7 +168,7 @@ export default function DosenDashboard() {
               <span className="material-symbols-outlined text-2xl">trending_up</span>
             </div>
             <span className="text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded text-[10px] font-black border border-indigo-100">
-              Target {currentRoom.cefrTarget}
+              Target {currentRoom.levelTarget}
             </span>
           </div>
           <div>
@@ -288,7 +288,7 @@ export default function DosenDashboard() {
                         Unit 3
                       </span>
                       <span className="text-[11px] text-indigo-800 font-bold">
-                        CEFR Level B1.2 Core Curriculum
+                        Kurikulum Inti Bahasa Inggris
                       </span>
                     </div>
                     <h3 className="text-xs md:text-sm font-black text-slate-900 mt-1">
@@ -317,7 +317,7 @@ export default function DosenDashboard() {
             <div className="p-3 rounded-2xl bg-slate-50 border border-slate-200/80 flex flex-col sm:flex-row items-center justify-between gap-3">
               <div className="flex items-center gap-2.5 text-xs text-slate-600">
                 <span className="material-symbols-outlined text-amber-500">lightbulb</span>
-                <span>Tersedia <strong>42 Modul Global</strong> (Vocabulary, Grammar, TOEFL Prep).</span>
+                <span>Tersedia <strong>42 Modul Global</strong> (Vocabulary, Grammar, EELS Prep).</span>
               </div>
               <Link
                 to="/dosen/assignments"
@@ -455,7 +455,7 @@ export default function DosenDashboard() {
                   </span>
                 </div>
 
-                {/* CEFR Rubric Sliders */}
+                {/* Rubric Sliders */}
                 <div className="space-y-3 pt-1">
                   <div>
                     <div className="flex justify-between text-[11px] font-bold mb-1">

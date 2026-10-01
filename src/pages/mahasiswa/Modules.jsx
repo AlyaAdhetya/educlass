@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDataStore } from '../../store/dataStore';
 import { motion } from 'framer-motion';
@@ -21,7 +21,7 @@ export default function Modules() {
       <section className="bg-white rounded-3xl p-6 md:p-8 border border-slate-200/80 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <span className="px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 font-black text-[10px] uppercase tracking-wider border border-blue-100">
-            Kurikulum CEFR Bahasa Inggris
+            Kurikulum Bahasa Inggris
           </span>
           <h1 className="text-xl md:text-2xl font-black text-slate-900 mt-2">
             Edu Module

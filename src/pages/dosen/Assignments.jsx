@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { useDataStore } from '../../store/dataStore';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -25,7 +25,7 @@ export default function DosenAssignments() {
   // Form states for Custom Task
   const [customTitle, setCustomTitle] = useState('');
   const [customType, setCustomType] = useState('custom_task'); // 'custom_task' | 'custom_quiz'
-  const [customCefr, setCustomCefr] = useState('CEFR B2 Academic');
+  const [customCefr, setCustomCefr] = useState('Menengah Atas');
   const [customDeadline, setCustomDeadline] = useState('3 Hari Lagi (Minggu 23:59 WIB)');
   const [customRubric, setCustomRubric] = useState('Min 400 kata format IMRAD + Audio Speaking ringkasan 2 menit.');
   const [customDesc, setCustomDesc] = useState('');
@@ -38,7 +38,7 @@ export default function DosenAssignments() {
       title: `${mod.unit}: ${mod.title}`,
       type: 'global_module',
       targetUnit: mod.unit,
-      cefr: mod.cefr || 'CEFR B1',
+      cefr: mod.cefr || 'Menengah',
       deadline: globalDeadline,
       minScore: Number(globalMinScore),
       xpReward: Number(globalXPReward),
@@ -242,7 +242,7 @@ export default function DosenAssignments() {
               Tugaskan Modul Global dari Quest Map
             </h2>
             <p className="text-xs text-slate-500 mt-0.5">
-              Anda tidak perlu membuat materi dari nol. Pilih modul terstruktur CEFR yang sudah disediakan sistem untuk ditugaskan ke mahasiswa.
+              Anda tidak perlu membuat materi dari nol. Pilih modul terstruktur yang sudah disediakan sistem untuk ditugaskan ke mahasiswa.
             </p>
           </div>
 
@@ -258,7 +258,7 @@ export default function DosenAssignments() {
               >
                 {materials.map((m) => (
                   <option key={m.id} value={m.id}>
-                    {m.unit}: {m.title} — ({m.cefr || 'CEFR Intermediate'}) • Kategori: {m.category}
+                    {m.unit}: {m.title} — ({m.cefr || 'Menengah'}) • Kategori: {m.category}
                   </option>
                 ))}
               </select>
@@ -379,16 +379,16 @@ export default function DosenAssignments() {
 
               <div>
                 <label className="text-xs font-bold text-slate-700 block mb-1">
-                  Standar CEFR
+                  Standar Level
                 </label>
                 <select
                   value={customCefr}
                   onChange={(e) => setCustomCefr(e.target.value)}
                   className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 >
-                  <option value="CEFR B1 Intermediate">B1 (Intermediate)</option>
-                  <option value="CEFR B2 Academic">B2 (Academic Upper-Intermediate)</option>
-                  <option value="CEFR C1 Advanced">C1 (Advanced IELTS/TOEFL Level)</option>
+                  <option value="Menengah">B1 (Intermediate)</option>
+                  <option value="Menengah Atas">B2 (Academic Upper-Intermediate)</option>
+                  <option value="Mahir">C1 (Advanced EELS Level)</option>
                 </select>
               </div>
             </div>

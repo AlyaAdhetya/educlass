@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { useDataStore } from '../../store/dataStore';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -15,7 +15,7 @@ export default function DosenClasses() {
   const [newRoomName, setNewRoomName] = useState('');
   const [newDepartment, setNewDepartment] = useState('Teknik Informatika');
   const [newSchedule, setNewSchedule] = useState('Kamis, 10:00 - 12:30 WIB');
-  const [newTargetCEFR, setNewTargetCEFR] = useState('CEFR B2');
+  const [newTargetLevel, setnewTargetLevel] = useState('Menengah Atas');
 
   const handleCopyCode = (code) => {
     navigator.clipboard?.writeText(code);
@@ -39,7 +39,7 @@ export default function DosenClasses() {
       department: newDepartment,
       semester: 'Semester Ganjil 2026/2027',
       schedule: newSchedule,
-      cefrTarget: newTargetCEFR
+      levelTarget: newTargetLevel
     };
 
     createRoom(created);
@@ -162,7 +162,7 @@ export default function DosenClasses() {
             </div>
             <div>
               <span className="text-[10px] text-indigo-300 block">Target Kemampuan</span>
-              <span className="text-sm font-black text-emerald-400">{currentRoom.cefrTarget}</span>
+              <span className="text-sm font-black text-emerald-400">{currentRoom.levelTarget}</span>
             </div>
             <div>
               <span className="text-[10px] text-indigo-300 block">Dosen Pengampu</span>
@@ -265,7 +265,7 @@ export default function DosenClasses() {
               <tr className="bg-slate-50/80 text-slate-500 border-b border-slate-100 uppercase tracking-wider font-extrabold text-[10px]">
                 <th className="py-3 px-6">NIM</th>
                 <th className="py-3 px-6">Nama Mahasiswa</th>
-                <th className="py-3 px-6">Level Placement CEFR</th>
+                <th className="py-3 px-6">Level Placement</th>
                 <th className="py-3 px-6">Streak Belajar</th>
                 <th className="py-3 px-6">Rata-rata Skor</th>
                 <th className="py-3 px-6">Status Perkuliahan</th>
@@ -355,17 +355,17 @@ export default function DosenClasses() {
 
                 <div>
                   <label className="text-xs font-bold text-slate-700 block mb-1">
-                    Target Level CEFR
+                    Target Level
                   </label>
                   <select
-                    value={newTargetCEFR}
-                    onChange={(e) => setNewTargetCEFR(e.target.value)}
+                    value={newTargetLevel}
+                    onChange={(e) => setnewTargetLevel(e.target.value)}
                     className="w-full px-3.5 py-2 text-xs rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   >
-                    <option value="CEFR A2">A2 (Elementary)</option>
-                    <option value="CEFR B1">B1 (Intermediate)</option>
-                    <option value="CEFR B2">B2 (Upper Intermediate)</option>
-                    <option value="CEFR C1">C1 (Advanced Academic)</option>
+                    <option value="Dasar">A2 (Elementary)</option>
+                    <option value="Menengah">B1 (Intermediate)</option>
+                    <option value="Menengah Atas">B2 (Upper Intermediate)</option>
+                    <option value="Mahir">C1 (Advanced Academic)</option>
                   </select>
                 </div>
               </div>
