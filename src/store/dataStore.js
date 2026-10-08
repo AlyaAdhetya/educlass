@@ -1,4 +1,4 @@
-﻿import { create } from 'zustand';
+import { create } from 'zustand';
 
 // === MOCK MATERIALS WITH PAGINATED CONTENT ===
 const initialMaterials = [
@@ -272,6 +272,7 @@ const initialUserStats = {
   roomName: 'Bahasa Inggris 3B',
   cefrLevel: 'Menengah',
   total_completed_materials: 2,
+  activeTheme: 'bg-[#f8fafc]',
 };
 
 const initialLeaderboard = [
@@ -379,58 +380,64 @@ const initialDailyQuests = [
 
 const initialShopItems = [
   {
-    id: 'perk_double_xp',
-    category: 'perks',
-    name: 'Elixir of Enlightenment (2x XP)',
-    description: 'Lipatgandakan perolehan XP untuk 30 menit ke depan saat mengerjakan kuis atau boss.',
+    id: 'theme_slate',
+    category: 'theme',
+    name: 'Midnight Slate',
+    description: 'Warna latar gelap dan elegan untuk fokus maksimal di malam hari.',
     priceGems: 150,
-    icon: 'bolt',
-    accentColor: 'indigo'
+    icon: 'dark_mode',
+    accentColor: 'slate',
+    themeClass: 'bg-slate-900'
   },
   {
-    id: 'perk_streak_freeze',
-    category: 'perks',
-    name: 'Frost Guardian (Streak Freeze)',
-    description: 'Melindungi streak belajarmu dari reset jika kamu melewatkan sesi 1 hari.',
-    priceGems: 200,
-    icon: 'ac_unit',
-    accentColor: 'sky'
+    id: 'theme_indigo',
+    category: 'theme',
+    name: 'Deep Indigo',
+    description: 'Warna ungu-kebiruan misterius yang menenangkan.',
+    priceGems: 250,
+    icon: 'nightlight',
+    accentColor: 'indigo',
+    themeClass: 'bg-indigo-950'
   },
   {
-    id: 'perk_heart_refill',
-    category: 'perks',
-    name: 'Vitality Core (Isi 5 Nyawa)',
-    description: 'Langsung pulihkan 5 nyawa agar bisa terus berlatih kuis tanpa jeda tunggu.',
-    priceGems: 100,
-    icon: 'favorite',
-    accentColor: 'rose'
+    id: 'theme_emerald',
+    category: 'theme',
+    name: 'Forest Emerald',
+    description: 'Nuansa hijau alam yang menyegarkan untuk sesi belajar panjang.',
+    priceGems: 300,
+    icon: 'forest',
+    accentColor: 'emerald',
+    themeClass: 'bg-emerald-950'
   },
   {
-    id: 'avatar_laurel',
-    category: 'avatar',
-    name: 'Mahkota Daun Perak (Silver Laurels)',
-    description: 'Ornamen kepala eksklusif untuk mahasiswa berprestasi di Top 3 Divisi.',
-    priceGems: 350,
-    icon: 'workspace_premium',
-    accentColor: 'amber'
+    id: 'theme_rose',
+    category: 'theme',
+    name: 'Crimson Rose',
+    description: 'Warna merah mawar gelap untuk semangat berapi-api.',
+    priceGems: 400,
+    icon: 'local_fire_department',
+    accentColor: 'rose',
+    themeClass: 'bg-rose-950'
   },
   {
-    id: 'avatar_robe',
-    category: 'avatar',
-    name: 'Jubah Wisudawan Archmage',
-    description: 'Jubah akademik berhiaskan runic glow ungu dengan bordir emas.',
-    priceGems: 450,
-    icon: 'styler',
-    accentColor: 'purple'
-  },
-  {
-    id: 'avatar_grimoire',
-    category: 'avatar',
-    name: 'Grimoire Kamus Oxford Legendaris',
-    description: 'Buku mantra kuno berisi kamus idiomatik bahasa Inggris tingkat C2.',
+    id: 'theme_amber',
+    category: 'theme',
+    name: 'Golden Amber',
+    description: 'Sentuhan keemasan premium untuk mahasiswa berprestasi.',
     priceGems: 500,
-    icon: 'menu_book',
-    accentColor: 'emerald'
+    icon: 'stars',
+    accentColor: 'amber',
+    themeClass: 'bg-[#1a1205]' // Dark amber/brown
+  },
+  {
+    id: 'theme_default',
+    category: 'theme',
+    name: 'Classic Bright',
+    description: 'Tampilan cerah bawaan sistem yang bersih dan rapi.',
+    priceGems: 0,
+    icon: 'light_mode',
+    accentColor: 'blue',
+    themeClass: 'bg-[#f8fafc]'
   }
 ];
 
@@ -688,13 +695,170 @@ const initialLecturerData = {
   assignments: initialLecturerAssignments
 };
 
+// ============================================================
+// === ADMIN DATA SECTION =====================================
+// ============================================================
+
+// Extended student list for Admin User Management
+const initialStudents = [
+  { id: 1, name: 'Nabila Putri', email: 'nabila@kampus.ac.id', nim: '2401082', role: 'mahasiswa', status: 'active', level: 4, levelName: 'Intermediate', xp: 2390, streak: 14, lastActivity: '07 Oct 2026', quizAvg: 92, completedMaterials: 4, completedQuizzes: 18, avgScore: 92, longestStreak: 20 },
+  { id: 2, name: 'Budi Santoso', email: 'budi@kampus.ac.id', nim: '2401001', role: 'mahasiswa', status: 'active', level: 4, levelName: 'Intermediate', xp: 2450, streak: 14, lastActivity: '07 Oct 2026', quizAvg: 85, completedMaterials: 3, completedQuizzes: 15, avgScore: 85, longestStreak: 21 },
+  { id: 3, name: 'Siti Aminah', email: 'siti@kampus.ac.id', nim: '2401002', role: 'mahasiswa', status: 'active', level: 5, levelName: 'Advanced Learner', xp: 2850, streak: 12, lastActivity: '07 Oct 2026', quizAvg: 95, completedMaterials: 4, completedQuizzes: 22, avgScore: 95, longestStreak: 18 },
+  { id: 4, name: 'Raka Pratama', email: 'raka@kampus.ac.id', nim: '2401003', role: 'mahasiswa', status: 'active', level: 3, levelName: 'English Explorer', xp: 1820, streak: 9, lastActivity: '06 Oct 2026', quizAvg: 80, completedMaterials: 3, completedQuizzes: 12, avgScore: 80, longestStreak: 15 },
+  { id: 5, name: 'Dimas Aditya', email: 'dimas@kampus.ac.id', nim: '2401015', role: 'mahasiswa', status: 'active', level: 3, levelName: 'English Explorer', xp: 1650, streak: 8, lastActivity: '06 Oct 2026', quizAvg: 78, completedMaterials: 2, completedQuizzes: 10, avgScore: 78, longestStreak: 12 },
+  { id: 6, name: 'Anisa Rahmawati', email: 'anisa@kampus.ac.id', nim: '2401022', role: 'mahasiswa', status: 'active', level: 4, levelName: 'Intermediate', xp: 2100, streak: 11, lastActivity: '07 Oct 2026', quizAvg: 88, completedMaterials: 4, completedQuizzes: 16, avgScore: 88, longestStreak: 17 },
+  { id: 7, name: 'Farhan Maulana', email: 'farhan@kampus.ac.id', nim: '2401034', role: 'mahasiswa', status: 'active', level: 2, levelName: 'English Learner', xp: 820, streak: 4, lastActivity: '05 Oct 2026', quizAvg: 68, completedMaterials: 1, completedQuizzes: 6, avgScore: 68, longestStreak: 7 },
+  { id: 8, name: 'Tiara Larasati', email: 'tiara@kampus.ac.id', nim: '2401041', role: 'mahasiswa', status: 'active', level: 3, levelName: 'English Explorer', xp: 1480, streak: 7, lastActivity: '06 Oct 2026', quizAvg: 82, completedMaterials: 2, completedQuizzes: 11, avgScore: 82, longestStreak: 10 },
+  { id: 9, name: 'Bayu Wicaksono', email: 'bayu@kampus.ac.id', nim: '2401053', role: 'mahasiswa', status: 'active', level: 3, levelName: 'English Explorer', xp: 1720, streak: 10, lastActivity: '07 Oct 2026', quizAvg: 84, completedMaterials: 3, completedQuizzes: 13, avgScore: 84, longestStreak: 14 },
+  { id: 10, name: 'Clara Oktaviani', email: 'clara@kampus.ac.id', nim: '2401067', role: 'mahasiswa', status: 'active', level: 5, levelName: 'Advanced Learner', xp: 3120, streak: 15, lastActivity: '07 Oct 2026', quizAvg: 96, completedMaterials: 5, completedQuizzes: 24, avgScore: 96, longestStreak: 25 },
+  { id: 11, name: 'Dimas Setiawan', email: 'dimas.s@kampus.ac.id', nim: '2401068', role: 'mahasiswa', status: 'inactive', level: 1, levelName: 'Beginner', xp: 200, streak: 0, lastActivity: '01 Oct 2026', quizAvg: 55, completedMaterials: 0, completedQuizzes: 2, avgScore: 55, longestStreak: 3 },
+  { id: 12, name: 'Super Administrator', email: 'admin@educlass.ac.id', nim: '-', role: 'admin', status: 'active', level: null, levelName: null, xp: null, streak: null, lastActivity: '07 Oct 2026', quizAvg: null, completedMaterials: null, completedQuizzes: null, avgScore: null, longestStreak: null },
+];
+
+// Categories for material management
+const initialCategories = [
+  { id: 1, name: 'Vocabulary', description: 'Word meaning, synonyms, antonyms, and academic vocabulary', color: 'violet', materialCount: 1, icon: 'menu_book', status: 'active' },
+  { id: 2, name: 'Grammar', description: 'Tenses, sentence structure, passive voice, conditionals', color: 'rose', materialCount: 2, icon: 'spellcheck', status: 'active' },
+  { id: 3, name: 'Reading', description: 'Reading comprehension, skimming, scanning, inference', color: 'sky', materialCount: 1, icon: 'chrome_reader_mode', status: 'active' },
+  { id: 4, name: 'Writing', description: 'Academic writing, paragraph structure, essay composition', color: 'lime', materialCount: 1, icon: 'edit_note', status: 'active' },
+  { id: 5, name: 'Listening', description: 'Listening comprehension and conversation interpretation', color: 'teal', materialCount: 0, icon: 'headphones', status: 'active' },
+  { id: 6, name: 'Conversation', description: 'Spoken English, academic dialogue, professional communication', color: 'indigo', materialCount: 0, icon: 'forum', status: 'active' },
+  { id: 7, name: 'Academic English', description: 'Formal academic language, research writing, citation', color: 'fuchsia', materialCount: 0, icon: 'school', status: 'active' },
+  { id: 8, name: 'Daily English', description: 'Everyday communication and practical English usage', color: 'emerald', materialCount: 0, icon: 'today', status: 'active' },
+];
+
+// Level system definitions
+const initialLevels = [
+  { id: 1, level: 1, name: 'Beginner', xpRequired: 0, badge: '🌱', color: 'gray', description: 'Starting your English learning journey', perks: 'Access to beginner materials' },
+  { id: 2, level: 2, name: 'English Learner', xpRequired: 200, badge: '📖', color: 'blue', description: 'Building foundational English skills', perks: 'Access to vocabulary and basic grammar' },
+  { id: 3, level: 3, name: 'English Explorer', xpRequired: 500, badge: '🔍', color: 'indigo', description: 'Exploring intermediate concepts', perks: 'Access to reading and listening modules' },
+  { id: 4, level: 4, name: 'Intermediate', xpRequired: 1000, badge: '⭐', color: 'violet', description: 'Achieving solid English proficiency', perks: 'Access to quiz arena + intermediate materials' },
+  { id: 5, level: 5, name: 'Advanced Learner', xpRequired: 2000, badge: '🏆', color: 'amber', description: 'Demonstrating advanced English mastery', perks: 'Unlock special quiz modes and rewards' },
+  { id: 6, level: 6, name: 'English Master', xpRequired: 3500, badge: '👑', color: 'rose', description: 'The highest level of English proficiency', perks: 'All content unlocked + exclusive themes' },
+];
+
+// XP Configuration
+const initialXpConfig = {
+  completeModule: { label: 'Complete a Module', value: 80, description: 'XP earned when student completes a learning module' },
+  completeQuizPass: { label: 'Pass Module Quiz', value: 100, description: 'XP earned when student passes a module quiz' },
+  quizArenaComplete: { label: 'Complete Quiz Arena', value: 50, description: 'XP earned for completing a quiz arena session' },
+  quizArenaHighScore: { label: 'Quiz Arena High Score Bonus', value: 25, description: 'Extra XP when scoring above 90%' },
+  streak7Days: { label: '7-Day Streak Bonus', value: 50, description: 'XP bonus for maintaining a 7-day learning streak' },
+  streak30Days: { label: '30-Day Streak Bonus', value: 150, description: 'XP bonus for maintaining a 30-day learning streak' },
+  firstLogin: { label: 'First Login', value: 20, description: 'XP for first time logging in to the platform' },
+  repeatQuiz: { label: 'Repeat Quiz (Max)', value: 0, description: 'XP from re-doing a quiz (0 = no repeat XP)' },
+};
+
+// Streak Configuration
+const initialStreakConfig = {
+  activitiesCountedForStreak: ['complete_module', 'complete_quiz', 'quiz_arena'],
+  resetOnMissedDays: true,
+  gracePeriodHours: 0,
+  milestones: [
+    { days: 7, xpBonus: 50, label: '7-Day Streak', badge: '🔥' },
+    { days: 14, xpBonus: 80, label: '2-Week Streak', badge: '⚡' },
+    { days: 30, xpBonus: 150, label: '30-Day Streak', badge: '💎' },
+    { days: 60, xpBonus: 300, label: '60-Day Streak', badge: '👑' },
+  ]
+};
+
+// Achievements
+const initialAchievements = [
+  { id: 1, name: 'First Step', description: 'Complete your first quiz', requirement: 'complete_quiz_1', requirementValue: 1, requirementLabel: 'Complete 1 quiz', icon: '🎯', xpBonus: 20, status: 'active', category: 'learning' },
+  { id: 2, name: '7-Day Warrior', description: 'Maintain a 7-day learning streak', requirement: 'streak_7', requirementValue: 7, requirementLabel: 'Reach 7-day streak', icon: '🔥', xpBonus: 50, status: 'active', category: 'streak' },
+  { id: 3, name: 'Perfect Score', description: 'Get 100% on any quiz', requirement: 'score_100', requirementValue: 100, requirementLabel: 'Score 100% on a quiz', icon: '💯', xpBonus: 30, status: 'active', category: 'performance' },
+  { id: 4, name: 'Quiz Master', description: 'Complete 20 quizzes', requirement: 'complete_quiz_20', requirementValue: 20, requirementLabel: 'Complete 20 quizzes', icon: '🏆', xpBonus: 100, status: 'active', category: 'learning' },
+  { id: 5, name: 'Consistent Learner', description: 'Maintain 30-day streak', requirement: 'streak_30', requirementValue: 30, requirementLabel: 'Reach 30-day streak', icon: '💎', xpBonus: 150, status: 'active', category: 'streak' },
+  { id: 6, name: 'Module Scholar', description: 'Complete all available modules', requirement: 'complete_all_modules', requirementValue: 5, requirementLabel: 'Complete all 5 modules', icon: '📚', xpBonus: 200, status: 'active', category: 'learning' },
+  { id: 7, name: 'Speed Learner', description: 'Complete 3 modules in one week', requirement: 'modules_week_3', requirementValue: 3, requirementLabel: 'Complete 3 modules in 7 days', icon: '⚡', xpBonus: 75, status: 'active', category: 'performance' },
+  { id: 8, name: 'Grammar Guru', description: 'Pass all Grammar quizzes with 90+', requirement: 'grammar_90', requirementValue: 90, requirementLabel: 'Score 90%+ on all Grammar quizzes', icon: '✍️', xpBonus: 80, status: 'inactive', category: 'performance' },
+];
+
+// Rewards / Themes
+const initialRewards = [
+  { id: 'theme_default', name: 'Classic Bright', description: 'Clean bright default theme', type: 'theme', themeClass: 'bg-[#f8fafc]', requirement: 'default', requirementLabel: 'Available by default', icon: '☀️', status: 'active', preview: '#f8fafc' },
+  { id: 'theme_slate', name: 'Midnight Slate', description: 'Dark and elegant dark mode theme', type: 'theme', themeClass: 'bg-slate-900', requirement: 'xp_500', requirementLabel: 'Reach 500 XP', icon: '🌑', status: 'active', preview: '#0f172a' },
+  { id: 'theme_indigo', name: 'Deep Indigo', description: 'Deep blue-purple mystical theme', type: 'theme', themeClass: 'bg-indigo-950', requirement: 'xp_1000', requirementLabel: 'Reach 1000 XP', icon: '🌌', status: 'active', preview: '#1e1b4b' },
+  { id: 'theme_emerald', name: 'Forest Emerald', description: 'Nature-inspired refreshing green', type: 'theme', themeClass: 'bg-emerald-950', requirement: 'xp_1500', requirementLabel: 'Reach 1500 XP', icon: '🌲', status: 'active', preview: '#022c22' },
+  { id: 'theme_rose', name: 'Crimson Rose', description: 'Passionate dark red theme', type: 'theme', themeClass: 'bg-rose-950', requirement: 'xp_2000', requirementLabel: 'Reach 2000 XP', icon: '🌹', status: 'active', preview: '#4c0519' },
+  { id: 'theme_amber', name: 'Golden Amber', description: 'Premium golden dark theme for high achievers', type: 'theme', themeClass: 'bg-[#1a1205]', requirement: 'xp_3000', requirementLabel: 'Reach 3000 XP', icon: '✨', status: 'active', preview: '#1a1205' },
+  { id: 'bonus_lesson_500', name: 'Bonus Lesson Pack', description: 'Unlock exclusive bonus vocabulary lesson', type: 'content', themeClass: null, requirement: 'xp_500', requirementLabel: 'Reach 500 XP', icon: '🎁', status: 'active', preview: null },
+  { id: 'special_quiz_1000', name: 'Special EELS Quiz', description: 'Unlock special EELS simulation quiz', type: 'content', themeClass: null, requirement: 'xp_1000', requirementLabel: 'Reach 1000 XP', icon: '🎯', status: 'active', preview: null },
+];
+
+// Activity Log
+const initialActivityLog = [
+  { id: 1, studentId: 10, studentName: 'Clara Oktaviani', activity: 'Completed Quiz', detail: 'Grammar Challenge', score: 96, xpEarned: 100, level: 5, date: '2026-10-07T10:15:00', type: 'quiz' },
+  { id: 2, studentId: 3, studentName: 'Siti Aminah', activity: 'Completed Module', detail: 'Passive Voice in Research Paper', score: 95, xpEarned: 100, level: 5, date: '2026-10-07T09:40:00', type: 'module' },
+  { id: 3, studentId: 1, studentName: 'Nabila Putri', activity: 'Completed Quiz', detail: 'Vocabulary Challenge', score: 90, xpEarned: 100, level: 4, date: '2026-10-07T09:10:00', type: 'quiz' },
+  { id: 4, studentId: 2, studentName: 'Budi Santoso', activity: 'Quiz Arena', detail: 'Daily English Quiz', score: 85, xpEarned: 50, level: 4, date: '2026-10-07T08:55:00', type: 'arena' },
+  { id: 5, studentId: 6, studentName: 'Anisa Rahmawati', activity: 'Achievement Unlocked', detail: '7-Day Warrior', score: null, xpEarned: 50, level: 4, date: '2026-10-07T08:30:00', type: 'achievement' },
+  { id: 6, studentId: 9, studentName: 'Bayu Wicaksono', activity: 'Completed Module', detail: 'Academic Vocabulary Mastery', score: 80, xpEarned: 80, level: 3, date: '2026-10-06T21:20:00', type: 'module' },
+  { id: 7, studentId: 4, studentName: 'Raka Pratama', activity: 'Level Up', detail: 'Reached English Explorer (Level 3)', score: null, xpEarned: 0, level: 3, date: '2026-10-06T18:45:00', type: 'level' },
+  { id: 8, studentId: 8, studentName: 'Tiara Larasati', activity: 'Completed Quiz', detail: 'Reading Challenge', score: 78, xpEarned: 80, level: 3, date: '2026-10-06T17:00:00', type: 'quiz' },
+  { id: 9, studentId: 5, studentName: 'Dimas Aditya', activity: 'Quiz Arena', detail: 'Mixed English Quiz', score: 72, xpEarned: 50, level: 3, date: '2026-10-06T15:30:00', type: 'arena' },
+  { id: 10, studentId: 7, studentName: 'Farhan Maulana', activity: 'Completed Module', detail: 'Past Perfect vs Past Simple', score: 65, xpEarned: 80, level: 2, date: '2026-10-06T14:10:00', type: 'module' },
+];
+
+// Learning Paths
+const initialLearningPaths = [
+  {
+    id: 1,
+    name: 'Beginner English Path',
+    description: 'Perfect starting path for English beginners',
+    level: 'Beginner',
+    status: 'active',
+    items: [
+      { order: 1, type: 'material', refId: 1, title: 'Academic Vocabulary Mastery', category: 'Vocabulary' },
+      { order: 2, type: 'material', refId: 2, title: 'Past Perfect vs Past Simple', category: 'Grammar' },
+    ]
+  },
+  {
+    id: 2,
+    name: 'Intermediate Research Writing Path',
+    description: 'Develop academic and research writing skills',
+    level: 'Intermediate',
+    status: 'active',
+    items: [
+      { order: 1, type: 'material', refId: 2, title: 'Past Perfect vs Past Simple', category: 'Grammar' },
+      { order: 2, type: 'material', refId: 3, title: 'Passive Voice in Research Paper', category: 'Grammar' },
+      { order: 3, type: 'material', refId: 4, title: 'Academic Reading Comprehension', category: 'Reading' },
+      { order: 4, type: 'material', refId: 5, title: 'Abstract & Thesis Argumentation', category: 'Writing' },
+    ]
+  },
+];
+
+// Platform Settings
+const initialSettings = {
+  general: {
+    platformName: 'EduClass',
+    tagline: 'Gamified English Learning Platform',
+    defaultLanguage: 'id',
+    semester: 'Semester Ganjil 2026/2027',
+  },
+  learning: {
+    defaultMinScore: 60,
+    allowRetake: true,
+    maxRetakeAttempts: 3,
+    completionRequiresPassing: true,
+    showExplanationAfterQuiz: true,
+  },
+  gamification: {
+    xpEnabled: true,
+    streakEnabled: true,
+    achievementsEnabled: true,
+    rewardsEnabled: true,
+    leaderboardEnabled: true,
+  }
+};
+
 export const useDataStore = create((set) => ({
   materials: initialMaterials,
   userStats: initialUserStats,
   leaderboard: initialLeaderboard,
   dailyQuests: initialDailyQuests,
   shopItems: initialShopItems,
-  inventory: ['perk_streak_freeze'],
+  inventory: ['theme_default'],
   bossBattle: initialBossBattle,
   lecturerData: initialLecturerData,
   rooms: initialRooms,
@@ -703,7 +867,124 @@ export const useDataStore = create((set) => ({
   manualSubmissions: initialManualSubmissions,
   studentGrades: initialStudentGrades,
 
-  // Lecturer Room Switcher
+  // === ADMIN DATA ===
+  students: initialStudents,
+  categories: initialCategories,
+  levels: initialLevels,
+  xpConfig: initialXpConfig,
+  streakConfig: initialStreakConfig,
+  achievements: initialAchievements,
+  rewards: initialRewards,
+  activityLog: initialActivityLog,
+  learningPaths: initialLearningPaths,
+  settings: initialSettings,
+
+  // === ADMIN ACTIONS ===
+
+  // Student management
+  updateStudentStatus: (studentId, status) => set((state) => ({
+    students: state.students.map(s => s.id === studentId ? { ...s, status } : s)
+  })),
+  deleteStudent: (studentId) => set((state) => ({
+    students: state.students.filter(s => s.id !== studentId)
+  })),
+  addStudent: (student) => set((state) => ({
+    students: [{ id: Date.now(), ...student }, ...state.students]
+  })),
+  updateStudent: (studentId, data) => set((state) => ({
+    students: state.students.map(s => s.id === studentId ? { ...s, ...data } : s)
+  })),
+
+  // Material management
+  addMaterial: (material) => set((state) => ({
+    materials: [...state.materials, { id: Date.now(), ...material }]
+  })),
+  updateMaterial: (materialId, data) => set((state) => ({
+    materials: state.materials.map(m => m.id === materialId ? { ...m, ...data } : m)
+  })),
+  deleteMaterial: (materialId) => set((state) => ({
+    materials: state.materials.filter(m => m.id !== materialId)
+  })),
+  publishMaterial: (materialId) => set((state) => ({
+    materials: state.materials.map(m => m.id === materialId ? { ...m, publishStatus: 'published' } : m)
+  })),
+
+  // Category management
+  addCategory: (category) => set((state) => ({
+    categories: [...state.categories, { id: Date.now(), materialCount: 0, ...category }]
+  })),
+  updateCategory: (categoryId, data) => set((state) => ({
+    categories: state.categories.map(c => c.id === categoryId ? { ...c, ...data } : c)
+  })),
+  deleteCategory: (categoryId) => set((state) => ({
+    categories: state.categories.filter(c => c.id !== categoryId)
+  })),
+
+  // Level management
+  updateLevel: (levelId, data) => set((state) => ({
+    levels: state.levels.map(l => l.id === levelId ? { ...l, ...data } : l)
+  })),
+  addLevel: (level) => set((state) => ({
+    levels: [...state.levels, { id: Date.now(), ...level }].sort((a, b) => a.level - b.level)
+  })),
+  deleteLevel: (levelId) => set((state) => ({
+    levels: state.levels.filter(l => l.id !== levelId)
+  })),
+
+  // XP config
+  updateXpConfig: (key, value) => set((state) => ({
+    xpConfig: { ...state.xpConfig, [key]: { ...state.xpConfig[key], value } }
+  })),
+
+  // Streak config
+  updateStreakConfig: (data) => set((state) => ({
+    streakConfig: { ...state.streakConfig, ...data }
+  })),
+
+  // Achievement management
+  addAchievement: (achievement) => set((state) => ({
+    achievements: [...state.achievements, { id: Date.now(), ...achievement }]
+  })),
+  updateAchievement: (achievementId, data) => set((state) => ({
+    achievements: state.achievements.map(a => a.id === achievementId ? { ...a, ...data } : a)
+  })),
+  deleteAchievement: (achievementId) => set((state) => ({
+    achievements: state.achievements.filter(a => a.id !== achievementId)
+  })),
+
+  // Reward management
+  addReward: (reward) => set((state) => ({
+    rewards: [...state.rewards, { id: `reward_${Date.now()}`, ...reward }]
+  })),
+  updateReward: (rewardId, data) => set((state) => ({
+    rewards: state.rewards.map(r => r.id === rewardId ? { ...r, ...data } : r)
+  })),
+  deleteReward: (rewardId) => set((state) => ({
+    rewards: state.rewards.filter(r => r.id !== rewardId)
+  })),
+
+  // Activity log
+  addActivity: (activity) => set((state) => ({
+    activityLog: [{ id: Date.now(), date: new Date().toISOString(), ...activity }, ...state.activityLog]
+  })),
+
+  // Learning path management
+  addLearningPath: (path) => set((state) => ({
+    learningPaths: [...state.learningPaths, { id: Date.now(), items: [], ...path }]
+  })),
+  updateLearningPath: (pathId, data) => set((state) => ({
+    learningPaths: state.learningPaths.map(p => p.id === pathId ? { ...p, ...data } : p)
+  })),
+  deleteLearningPath: (pathId) => set((state) => ({
+    learningPaths: state.learningPaths.filter(p => p.id !== pathId)
+  })),
+
+  // Settings
+  updateSettings: (section, data) => set((state) => ({
+    settings: { ...state.settings, [section]: { ...state.settings[section], ...data } }
+  })),
+
+
   setActiveRoom: (roomId) => set((state) => {
     const selectedRoom = state.rooms.find(r => r.id === roomId);
     if (!selectedRoom) return state;
@@ -902,10 +1183,11 @@ export const useDataStore = create((set) => ({
     };
   }),
 
-  // Buy item from shop
+  // Buy item from shop (Now using Gems)
   buyItem: (itemId) => set((state) => {
     const item = state.shopItems.find(i => i.id === itemId);
     if (!item || state.userStats.gems < item.priceGems) return state;
+    
     return {
       userStats: {
         ...state.userStats,
@@ -913,5 +1195,13 @@ export const useDataStore = create((set) => ({
       },
       inventory: [...state.inventory, itemId]
     };
-  })
+  }),
+
+  // Set active background theme
+  setActiveTheme: (themeClass) => set((state) => ({
+    userStats: {
+      ...state.userStats,
+      activeTheme: themeClass
+    }
+  }))
 }));

@@ -1,30 +1,13 @@
 import React, { useState } from 'react';
 import { useDataStore } from '../../store/dataStore';
-import HootieMascot from '../../components/mascot/HootieMascot';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import confetti from 'canvas-confetti';
 
 export default function ScholarShop() {
-  const { userStats, shopItems, inventory, buyItem, addGems } = useDataStore();
-  const [activeCategory, setActiveCategory] = useState('all');
-  const [chestClaimed, setChestClaimed] = useState(false);
+  const { userStats, shopItems, inventory, buyItem, setActiveTheme } = useDataStore();
   const [purchaseSuccess, setPurchaseSuccess] = useState('');
 
-  const filteredItems =
-    activeCategory === 'all'
-      ? shopItems
-      : shopItems.filter((i) => i.category === activeCategory);
-
-  const handleClaimChest = () => {
-    if (chestClaimed) return;
-    setChestClaimed(true);
-    addGems(100);
-    confetti({
-      particleCount: 80,
-      spread: 70,
-      origin: { y: 0.5 },
-    });
-  };
+  const filteredItems = shopItems; // Only themes now
 
   const handleBuy = (item) => {
     if (userStats.gems < item.priceGems) {
@@ -32,13 +15,18 @@ export default function ScholarShop() {
       return;
     }
     buyItem(item.id);
-    setPurchaseSuccess(`Berhasil membeli ${item.name}!`);
+    setActiveTheme(item.themeClass);
+    setPurchaseSuccess(`Berhasil mendapatkan tema ${item.name}!`);
     confetti({
       particleCount: 40,
       spread: 50,
       origin: { y: 0.8 },
     });
     setTimeout(() => setPurchaseSuccess(''), 3000);
+  };
+
+  const handleEquip = (item) => {
+    setActiveTheme(item.themeClass);
   };
 
   return (
@@ -52,41 +40,13 @@ export default function ScholarShop() {
               Bonus Harian Mahasiswa
             </div>
             <h1 className="text-xl md:text-3xl font-black tracking-tight leading-tight">
-              Toko Game & Kustomisasi Avatar
+              Toko Tema & Warna Latar
             </h1>
             <p className="text-xs md:text-sm text-white/90 leading-relaxed">
-              Tukarkan Permata hasil kuis akademis dengan booster ujian, perlindungan streak, serta ornamen avatar wisuda legendaris.
+              Tukarkan Permata (Gems) hasil belajar dengan tema warna latar belakang eksklusif. Kumpulkan lebih banyak permata dari kuis!
             </p>
           </div>
 
-          {/* Interactive Daily Chest Box */}
-          <div className="shrink-0 flex flex-col items-center p-4 bg-white/10 backdrop-blur-md rounded-3xl border-2 border-white/30 shadow-inner text-center">
-            <motion.div
-              whileHover={{ scale: 1.1, rotate: -3 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={handleClaimChest}
-              className="w-16 h-16 rounded-2xl bg-gradient-to-b from-amber-300 to-amber-500 border-b-4 border-amber-800 flex items-center justify-center shadow-lg cursor-pointer"
-            >
-              <span className="material-symbols-outlined text-3xl text-amber-950 fill-icon">
-                inventory_2
-              </span>
-            </motion.div>
-            <span className="text-xs font-black mt-2 text-white">Daily Mystery Chest</span>
-            <span className="text-[10px] text-amber-200 font-semibold mb-2">
-              {chestClaimed ? 'Sudah Diklaim Hari Ini' : 'Berisi +100 Permata Gratis'}
-            </span>
-            <button
-              onClick={handleClaimChest}
-              disabled={chestClaimed}
-              className={`tactile-btn px-4 py-2 font-black rounded-xl border-b-[4px] text-xs shadow-md cursor-pointer ${
-                chestClaimed
-                  ? 'bg-slate-400 border-slate-600 text-white cursor-not-allowed'
-                  : 'bg-emerald-500 hover:bg-emerald-600 border-emerald-700 text-white'
-              }`}
-            >
-              {chestClaimed ? 'Telah Diklaim' : 'Klaim Gratis Sekarang!'}
-            </button>
-          </div>
         </div>
       </section>
 
@@ -102,81 +62,69 @@ export default function ScholarShop() {
         </motion.div>
       )}
 
-      {/* ================= CATEGORY TABS ================= */}
-      <div className="flex items-center gap-2 border-b border-indigo-100 pb-3">
-        <button
-          onClick={() => setActiveCategory('all')}
-          className={`px-4 py-2 rounded-xl text-xs font-black transition-all cursor-pointer ${
-            activeCategory === 'all'
-              ? 'bg-indigo-600 text-white border-b-2 border-indigo-900 shadow-xs'
-              : 'text-slate-600 hover:bg-slate-100'
-          }`}
-        >
-          Semua Item
-        </button>
-        <button
-          onClick={() => setActiveCategory('perks')}
-          className={`px-4 py-2 rounded-xl text-xs font-black transition-all cursor-pointer ${
-            activeCategory === 'perks'
-              ? 'bg-indigo-600 text-white border-b-2 border-indigo-900 shadow-xs'
-              : 'text-slate-600 hover:bg-slate-100'
-          }`}
-        >
-          Academic Perks & Boosters
-        </button>
-        <button
-          onClick={() => setActiveCategory('avatar')}
-          className={`px-4 py-2 rounded-xl text-xs font-black transition-all cursor-pointer ${
-            activeCategory === 'avatar'
-              ? 'bg-indigo-600 text-white border-b-2 border-indigo-900 shadow-xs'
-              : 'text-slate-600 hover:bg-slate-100'
-          }`}
-        >
-          Perlengkapan Avatar & Wisuda
-        </button>
-      </div>
-
       {/* ================= CATALOG GRID ================= */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-4 border-t border-indigo-100">
         {filteredItems.map((item) => {
           const isOwned = inventory.includes(item.id);
+          const isActive = userStats.activeTheme === item.themeClass;
+          
           return (
             <motion.div
               key={item.id}
               whileHover={{ y: -4 }}
-              className="bg-white rounded-3xl p-5 border border-indigo-100 shadow-xs hover:shadow-md transition-all flex flex-col justify-between"
+              className={`bg-white rounded-3xl p-5 border shadow-xs hover:shadow-md transition-all flex flex-col justify-between ${
+                isActive ? 'border-amber-400 ring-2 ring-amber-100' : 'border-indigo-100'
+              }`}
             >
               <div>
                 <div className="flex items-start justify-between mb-4">
-                  <div className="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center border border-indigo-100 shadow-2xs">
+                  <div className={`w-12 h-12 rounded-2xl flex items-center justify-center border shadow-2xs text-${item.accentColor}-600 bg-${item.accentColor}-50 border-${item.accentColor}-100`}>
                     <span className="material-symbols-outlined text-2xl fill-icon">{item.icon}</span>
                   </div>
-                  <span className="flex items-center gap-1 px-3 py-1 rounded-full bg-sky-50 text-sky-700 font-black text-xs border border-sky-200">
-                    <span className="material-symbols-outlined text-sm fill-icon text-sky-500">
-                      diamond
+                  {isOwned ? (
+                    <span className="flex items-center gap-1 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 font-black text-xs border border-emerald-200">
+                      <span className="material-symbols-outlined text-sm fill-icon text-emerald-500">check_circle</span>
+                      Dimiliki
                     </span>
-                    {item.priceGems}
-                  </span>
+                  ) : (
+                    <span className="flex items-center gap-1 px-3 py-1 rounded-full bg-sky-50 text-sky-700 font-black text-xs border border-sky-200">
+                      <span className="material-symbols-outlined text-sm fill-icon text-sky-500">diamond</span>
+                      {item.priceGems}
+                    </span>
+                  )}
                 </div>
 
-                <h3 className="text-sm font-black text-slate-900 mb-1">{item.name}</h3>
+                <div className="flex items-center gap-2 mb-1">
+                  <h3 className="text-sm font-black text-slate-900">{item.name}</h3>
+                  {isActive && <span className="bg-amber-400 text-white text-[9px] px-2 py-0.5 rounded-full font-black">AKTIF</span>}
+                </div>
                 <p className="text-xs text-slate-500 leading-relaxed mb-4">{item.description}</p>
               </div>
 
-              <button
-                onClick={() => handleBuy(item)}
-                disabled={isOwned}
-                className={`tactile-btn w-full py-2.5 px-4 rounded-xl font-black text-xs border-b-[4px] flex items-center justify-center gap-2 cursor-pointer ${
-                  isOwned
-                    ? 'bg-slate-100 text-slate-400 border-slate-300 cursor-not-allowed'
-                    : 'bg-indigo-600 hover:bg-indigo-700 text-white border-indigo-900 shadow-xs'
-                }`}
-              >
-                <span className="material-symbols-outlined text-sm">
-                  {isOwned ? 'check' : 'shopping_bag'}
-                </span>
-                {isOwned ? 'Sudah Dimiliki' : `Beli Sekarang (${item.priceGems} Gems)`}
-              </button>
+              {isOwned ? (
+                <button
+                  onClick={() => handleEquip(item)}
+                  disabled={isActive}
+                  className={`tactile-btn w-full py-2.5 px-4 rounded-xl font-black text-xs border-b-[4px] flex items-center justify-center gap-2 cursor-pointer ${
+                    isActive
+                      ? 'bg-amber-100 text-amber-600 border-amber-200 cursor-default'
+                      : 'bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border-indigo-200'
+                  }`}
+                >
+                  <span className="material-symbols-outlined text-sm">
+                    {isActive ? 'check' : 'palette'}
+                  </span>
+                  {isActive ? 'Sedang Digunakan' : 'Gunakan Tema'}
+                </button>
+              ) : (
+                <button
+                  onClick={() => handleBuy(item)}
+                  className="tactile-btn w-full py-2.5 px-4 rounded-xl font-black text-xs border-b-[4px] flex items-center justify-center gap-2 cursor-pointer bg-indigo-600 hover:bg-indigo-700 text-white border-indigo-900 shadow-xs"
+                >
+                  <span className="material-symbols-outlined text-sm">lock_open</span>
+                  Beli Tema ({item.priceGems} Gems)
+                </button>
+              )}
             </motion.div>
           );
         })}

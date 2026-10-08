@@ -24,6 +24,17 @@ import AdminQuizzes from './pages/admin/Quizzes';
 import AdminGrading from './pages/admin/Grading';
 import AdminReports from './pages/admin/Reports';
 
+// New Admin Pages
+import AdminCategories from './pages/admin/Categories';
+import AdminLearningPath from './pages/admin/LearningPath';
+import AdminQuestions from './pages/admin/Questions';
+import AdminXpLevels from './pages/admin/gamification/XpLevels';
+import AdminAchievements from './pages/admin/gamification/Achievements';
+import AdminGamificationRewards from './pages/admin/gamification/Rewards';
+import AdminStreak from './pages/admin/gamification/Streak';
+import AdminMonitoring from './pages/admin/Monitoring';
+import AdminSettings from './pages/admin/Settings';
+
 export default function App() {
   return (
     <Routes>
@@ -56,10 +67,21 @@ export default function App() {
       <Route element={<DashboardLayout allowedRoles={['admin']} />}>
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/admin/quizzes" element={<AdminQuizzes />} />
+        <Route path="/admin/questions" element={<AdminQuestions />} />
         <Route path="/admin/grading" element={<AdminGrading />} />
         <Route path="/admin/materials" element={<AdminMaterials />} />
+        <Route path="/admin/categories" element={<AdminCategories />} />
+        <Route path="/admin/learning-path" element={<AdminLearningPath />} />
         <Route path="/admin/users" element={<AdminUsers />} />
+        <Route path="/admin/monitoring" element={<AdminMonitoring />} />
         <Route path="/admin/reports" element={<AdminReports />} />
+        <Route path="/admin/settings" element={<AdminSettings />} />
+        
+        {/* Admin Gamification Routes */}
+        <Route path="/admin/gamification/xp" element={<AdminXpLevels />} />
+        <Route path="/admin/gamification/achievements" element={<AdminAchievements />} />
+        <Route path="/admin/gamification/rewards" element={<AdminGamificationRewards />} />
+        <Route path="/admin/gamification/streak" element={<AdminStreak />} />
       </Route>
     </Routes>
   );

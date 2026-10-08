@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDataStore } from '../../store/dataStore';
 import { motion } from 'framer-motion';
@@ -59,85 +59,137 @@ export default function Modules() {
       </div>
 
       {/* Modules Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredMaterials.map((material) => {
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        {filteredMaterials.map((material, i) => {
           const isCompleted = material.status === 'completed';
           const isActive = material.status === 'active';
           const isLocked = material.status === 'locked';
 
+          const getModuleTheme = (category, status) => {
+            if (status === 'locked') {
+              return {
+                color: 'from-slate-400 to-slate-500',
+                border: 'border-slate-200',
+                badgeBg: 'bg-white/30',
+                badgeText: 'text-white',
+                icon: 'lock',
+                textColor: 'text-slate-500'
+              };
+            }
+          
+            switch (category?.toLowerCase()) {
+              case 'vocabulary':
+                return {
+                  color: 'from-cyan-500 to-blue-600',
+                  border: 'border-cyan-200',
+                  badgeBg: 'bg-white/20',
+                  badgeText: 'text-white',
+                  icon: 'menu_book',
+                  textColor: 'text-cyan-600'
+                };
+              case 'grammar':
+                return {
+                  color: 'from-fuchsia-500 to-pink-600',
+                  border: 'border-fuchsia-200',
+                  badgeBg: 'bg-white/20',
+                  badgeText: 'text-white',
+                  icon: 'spellcheck',
+                  textColor: 'text-fuchsia-600'
+                };
+              case 'reading':
+                return {
+                  color: 'from-emerald-500 to-teal-600',
+                  border: 'border-emerald-200',
+                  badgeBg: 'bg-white/20',
+                  badgeText: 'text-white',
+                  icon: 'chrome_reader_mode',
+                  textColor: 'text-emerald-600'
+                };
+              case 'writing':
+                return {
+                  color: 'from-orange-400 to-red-500',
+                  border: 'border-orange-200',
+                  badgeBg: 'bg-white/20',
+                  badgeText: 'text-white',
+                  icon: 'edit_document',
+                  textColor: 'text-orange-600'
+                };
+              default:
+                return {
+                  color: 'from-indigo-400 to-indigo-600',
+                  border: 'border-indigo-200',
+                  badgeBg: 'bg-white/20',
+                  badgeText: 'text-white',
+                  icon: 'auto_stories',
+                  textColor: 'text-indigo-600'
+                };
+            }
+          };
+
+          const theme = getModuleTheme(material.category, material.status);
+
           return (
             <motion.div
               key={material.id}
-              whileHover={{ y: isLocked ? 0 : -4 }}
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.05 }}
               onClick={() => {
                 if (!isLocked) navigate(`/dashboard/modules/${material.id}`);
               }}
-              className={`rounded-3xl p-5 border-2 flex flex-col justify-between transition-all ${
-                isLocked
-                  ? 'bg-slate-50/80 border-slate-200/80 opacity-60 cursor-not-allowed'
-                  : isCompleted
-                  ? 'bg-white border-emerald-200 shadow-xs hover:border-emerald-400 cursor-pointer'
-                  : 'bg-white border-indigo-300 shadow-md ring-2 ring-indigo-100 hover:border-indigo-500 cursor-pointer'
+              className={`relative bg-white rounded-3xl border-2 ${theme.border} shadow-sm overflow-hidden transition-all duration-300 ${
+                isLocked ? 'opacity-80 cursor-not-allowed' : 'cursor-pointer hover:shadow-xl group hover:-translate-y-1'
               }`}
             >
-              <div>
-                {/* Status & Level Badge */}
-                <div className="flex items-center justify-between mb-3">
-                  <span className="px-2.5 py-0.5 rounded-md bg-slate-100 text-slate-600 text-[10px] font-black uppercase">
+              <div className={`bg-gradient-to-br ${theme.color} p-5 relative overflow-hidden ${isLocked ? 'grayscale-[40%]' : ''}`}>
+                <div className="absolute -right-4 -top-4 w-24 h-24 bg-white/10 rounded-full" />
+                <div className="absolute -right-8 -bottom-6 w-32 h-32 bg-white/10 rounded-full" />
+                <div className="relative flex items-start justify-between">
+                  <div className="w-12 h-12 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center border border-white/30 shadow-sm">
+                    <span className="material-symbols-outlined text-2xl text-white">{theme.icon}</span>
+                  </div>
+                  <div className={`${theme.badgeBg} ${theme.badgeText} text-[10px] font-black px-2.5 py-1 rounded-full backdrop-blur-sm shadow-xs uppercase`}>
                     {material.cefr || `Level ${material.level}`}
-                  </span>
-
-                  {isCompleted && (
-                    <span className="flex items-center gap-1 text-[11px] font-black text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
-                      <span className="material-symbols-outlined text-xs fill-icon">check_circle</span>
-                      Selesai
-                    </span>
-                  )}
-                  {isActive && (
-                    <span className="flex items-center gap-1 text-[11px] font-black text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200">
-                      <span className="material-symbols-outlined text-xs fill-icon">play_arrow</span>
-                      Sedang Aktif
-                    </span>
-                  )}
-                  {isLocked && (
-                    <span className="flex items-center gap-1 text-[11px] font-bold text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full">
-                      <span className="material-symbols-outlined text-xs">lock</span>
-                      Terkunci
-                    </span>
-                  )}
+                  </div>
                 </div>
-
-                <span className="text-[10px] font-extrabold uppercase tracking-wider text-indigo-500">
-                  {material.unit} • {material.category}
-                </span>
-                <h3 className="text-base font-black text-slate-900 mt-1 mb-2 leading-snug">
-                  {material.title}
-                </h3>
-                <p className="text-xs text-slate-500 leading-relaxed line-clamp-2">
-                  {material.description}
-                </p>
+                <div className="mt-3 relative">
+                  <span className="text-[10px] font-black text-white/80 uppercase tracking-wider">
+                    {material.unit} • {material.category}
+                  </span>
+                  <h3 className="text-base font-black text-white leading-tight mt-0.5">{material.title}</h3>
+                </div>
               </div>
 
-              {/* Card Footer: Reward & Action */}
-              <div className="mt-5 pt-3 border-t border-slate-100 flex items-center justify-between">
-                <div className="flex items-center gap-1 text-xs font-black text-amber-700">
-                  <span className="material-symbols-outlined text-sm text-amber-500 fill-icon">bolt</span>
-                  +{material.xp_reward} XP
+              <div className="p-4 space-y-3">
+                <p className="text-xs text-slate-500 leading-relaxed line-clamp-2">{material.description}</p>
+                
+                <div className="grid grid-cols-2 gap-2">
+                   <div className="flex flex-col items-center gap-0.5 bg-slate-50 rounded-xl p-2 border border-slate-100">
+                     <span className={`material-symbols-outlined text-sm ${theme.textColor}`}>
+                       {isCompleted ? 'check_circle' : (isActive ? 'play_arrow' : 'lock')}
+                     </span>
+                     <span className="text-[10px] font-black text-slate-600">
+                       {isCompleted ? 'Selesai' : (isActive ? 'Sedang Aktif' : 'Terkunci')}
+                     </span>
+                   </div>
+                   <div className="flex flex-col items-center gap-0.5 bg-slate-50 rounded-xl p-2 border border-slate-100">
+                     <span className="material-symbols-outlined text-sm text-amber-500">bolt</span>
+                     <span className="text-[10px] font-black text-slate-600">+{material.xp_reward} XP</span>
+                   </div>
                 </div>
 
                 {!isLocked ? (
-                  <button
-                    className={`tactile-btn px-4 py-2 rounded-xl text-xs font-black border-b-[3px] flex items-center gap-1 shadow-2xs ${
-                      isCompleted
-                        ? 'bg-emerald-500 hover:bg-emerald-600 text-white border-emerald-700'
-                        : 'bg-blue-600 hover:bg-blue-700 text-white border-blue-800'
-                    }`}
+                  <motion.button whileTap={{ scale: 0.97 }}
+                    className={`w-full py-2.5 px-4 rounded-xl font-black text-xs text-white bg-gradient-to-r ${theme.color} border-b-[3px] border-black/20 shadow-sm flex items-center justify-center gap-1.5`}
                   >
-                    <span>{isCompleted ? 'Pelajari Ulang' : 'Mulai Belajar'}</span>
-                    <span className="material-symbols-outlined text-sm">arrow_forward</span>
-                  </button>
+                    <span className="material-symbols-outlined text-sm">{isCompleted ? 'refresh' : 'play_arrow'}</span>
+                    {isCompleted ? 'Pelajari Ulang' : 'Mulai Belajar'}
+                  </motion.button>
                 ) : (
-                  <span className="text-[11px] text-slate-400 font-bold">Kunci Unit Sebelumnya</span>
+                  <div className="w-full py-2.5 px-4 rounded-xl font-black text-xs text-slate-400 bg-slate-100 border-b-[3px] border-slate-200 flex items-center justify-center gap-1.5 cursor-not-allowed">
+                    <span className="material-symbols-outlined text-sm">lock</span>
+                    Kunci Unit Sebelumnya
+                  </div>
                 )}
               </div>
             </motion.div>
