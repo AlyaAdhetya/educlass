@@ -53,11 +53,6 @@ export default function AdminLearningPath() {
   // Current active path
   const currentPath = learningPaths.find(p => p.id === activePathId) || learningPaths[0];
 
-  // Students actively at this level
-  const studentsInCurrentLevel = currentPath 
-    ? students.filter(s => s.role === 'mahasiswa' && s.level === (currentPath.levelNumber || 1))
-    : [];
-
   // Filtered available paths list
   const filteredPaths = learningPaths.filter(p => {
     if (levelFilter === 'all') return true;
@@ -314,9 +309,6 @@ export default function AdminLearningPath() {
 
           <div className="space-y-2.5">
             {filteredPaths.map(path => {
-              const studentCount = students.filter(
-                s => s.role === 'mahasiswa' && s.level === (path.levelNumber || 1)
-              ).length;
               const isSelected = currentPath?.id === path.id;
 
               return (
@@ -342,18 +334,12 @@ export default function AdminLearningPath() {
                     {path.description || 'Tidak ada deskripsi path.'}
                   </p>
                   
-                  <div className="flex flex-wrap items-center justify-between gap-2 mt-3 pt-2.5 border-t border-slate-100/80">
-                    <div className="flex items-center gap-1.5">
-                      <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-white border border-slate-100 text-slate-600">
-                        {path.level}
-                      </span>
-                      <span className="text-[10px] text-slate-400 font-bold">
-                        {path.items?.length || 0} Modules
-                      </span>
-                    </div>
-
-                    <span className="text-[10px] font-bold text-emerald-600 flex items-center gap-1">
-                      <Users className="w-3 h-3" /> {studentCount} Mahasiswa
+                  <div className="flex items-center gap-1.5 mt-3 pt-2.5 border-t border-slate-100/80">
+                    <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-white border border-slate-100 text-slate-600">
+                      {path.level}
+                    </span>
+                    <span className="text-[10px] text-slate-400 font-bold">
+                      {path.items?.length || 0} Modules
                     </span>
                   </div>
                 </button>
@@ -406,42 +392,6 @@ export default function AdminLearningPath() {
                     <Trash2 className="w-4 h-4" />
                   </button>
                 </div>
-              </div>
-
-              {/* MAHASISWA YANG SEDANG MENEMPUH LEVEL INI */}
-              <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs font-bold text-slate-700 flex items-center gap-1.5">
-                    <Users className="w-4 h-4 text-indigo-600" /> Mahasiswa di Level {currentPath.levelNumber || 1} ({studentsInCurrentLevel.length})
-                  </span>
-                  <span className="text-[10px] font-bold text-slate-400">
-                    Semua progres terpetakan tanpa konflik status
-                  </span>
-                </div>
-
-                {studentsInCurrentLevel.length > 0 ? (
-                  <div className="flex flex-wrap gap-2 pt-1">
-                    {studentsInCurrentLevel.map(st => (
-                      <div 
-                        key={st.id} 
-                        className="bg-white px-2.5 py-1.5 rounded-xl border border-slate-200 flex items-center gap-2 shadow-2xs"
-                      >
-                        <div className="w-5 h-5 rounded-full bg-indigo-100 text-indigo-700 text-[10px] font-black flex items-center justify-center">
-                          {st.name.charAt(0)}
-                        </div>
-                        <span className="text-xs font-bold text-slate-800">{st.name}</span>
-                        <span className="text-[10px] text-slate-400">({st.nim})</span>
-                        <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded">
-                          {st.completedMaterials || 0} Selesai
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <p className="text-xs text-slate-400 italic">
-                    Belum ada mahasiswa yang berada di level ini. Mahasiswa baru otomatis memulai dari Level 1.
-                  </p>
-                )}
               </div>
 
               {/* PATH SEQUENCE - MATCHING SCREENSHOT */}
