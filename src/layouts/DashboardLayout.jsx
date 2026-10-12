@@ -7,7 +7,7 @@ import {
   Home, BookOpen, Trophy, ShoppingBag, User, Settings, HelpCircle,
   Play, Bell, Flame, Gem, Zap, GraduationCap, ShieldCheck,
   FileSpreadsheet, Users, BarChart3, Award, ChevronDown, ChevronRight,
-  Package, Target, Star, Layers, MapPin, ClipboardList, Monitor,
+  Package, Target, Star, Layers, MapPin, ClipboardList,
   FileText, Wrench, BookMarked, ListChecks, Activity, TrendingUp
 } from 'lucide-react';
 import EduLogo from '../components/mascot/EduLogo';
@@ -75,7 +75,6 @@ export default function DashboardLayout({ allowedRoles }) {
       key: 'gamification',
       items: [
         { name: 'XP & Levels', path: '/admin/gamification/xp', icon: Zap },
-        { name: 'Achievements', path: '/admin/gamification/achievements', icon: Award },
         { name: 'Rewards', path: '/admin/gamification/rewards', icon: Star },
         { name: 'Streak', path: '/admin/gamification/streak', icon: Flame },
       ]
@@ -83,7 +82,6 @@ export default function DashboardLayout({ allowedRoles }) {
     {
       label: null,
       items: [
-        { name: 'Monitoring', path: '/admin/monitoring', icon: Monitor },
         { name: 'Reports', path: '/admin/reports', icon: FileText },
         { name: 'Settings', path: '/admin/settings', icon: Wrench },
       ]
