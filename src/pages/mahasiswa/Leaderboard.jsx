@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 
 export default function LeaderboardArena() {
   const { leaderboard, userStats } = useDataStore();
-  const [activeTab, setActiveTab] = useState('kelas');
+  const [activeTab, setActiveTab] = useState('global');
   const [searchQuery, setSearchQuery] = useState('');
 
   const filteredLeaderboard = leaderboard.filter(
@@ -33,7 +33,7 @@ export default function LeaderboardArena() {
               Liga Mahasiswa Semester Ganjil — Minggu ke-4
             </h1>
             <p className="text-xs md:text-sm text-white/90 leading-relaxed">
-              Divisi <strong className="underline decoration-sky-300 underline-offset-4">Obsidian & Diamond</strong> (Kelas 3B Bahasa Inggris Akademis). Kumpulkan XP dari kuis harian, writing drill, dan grammar boss!
+              Divisi <strong className="underline decoration-sky-300 underline-offset-4">Obsidian & Diamond</strong> (Bahasa Inggris Akademis). Kumpulkan XP dari kuis harian, writing drill, dan grammar boss!
             </p>
           </div>
 
@@ -61,14 +61,14 @@ export default function LeaderboardArena() {
       <section className="flex flex-wrap items-center justify-between gap-4 border-b border-indigo-100 pb-4">
         <div className="inline-flex p-1.5 rounded-2xl bg-white border border-indigo-100 gap-1.5 shadow-xs">
           <button
-            onClick={() => setActiveTab('kelas')}
+            onClick={() => setActiveTab('global')}
             className={`px-4 py-2 rounded-xl text-xs font-black transition-all cursor-pointer ${
-              activeTab === 'kelas'
+              activeTab === 'global'
                 ? 'bg-indigo-600 text-white shadow-xs border-b-2 border-indigo-900'
                 : 'text-slate-600 hover:bg-slate-100'
             }`}
           >
-            Leaderboard Kelas 3B
+            Leaderboard Global
           </button>
           <button
             onClick={() => setActiveTab('guild')}

@@ -255,6 +255,63 @@ Contoh:
     quiz: [
       { q: 'What does the "R" in IMRAD stand for?', options: ['Review', 'Research', 'Results', 'Rationale'], answer: 2, explanation: 'IMRAD: Introduction, Methods, Results, and Discussion.' }
     ]
+  },
+  {
+    id: 6,
+    unit: 'Unit 6',
+    title: 'Literature Synthesis & Paraphrasing',
+    category: 'Academic English',
+    cefr: 'Menengah Atas',
+    level: 4,
+    status: 'active',
+    xp_reward: 120,
+    min_score: 75,
+    stars: 0,
+    description: 'Teknik merangkum dan memparafrase rujukan ilmiah internasional tanpa terkena plagiarisme.',
+    pages: [
+      { title: 'Teknik Paraphrasing Akademik', content: 'Gunakan sinonim kontekstual, ubah struktur klausa, dan pertahankan sitasi sumber rujukan secara presisi.' }
+    ],
+    quiz: [
+      { q: 'What is effective paraphrasing?', options: ['Swapping words randomly', 'Rewriting ideas in your own words while retaining original meaning', 'Copying with quotation marks only', 'Removing the citations'], answer: 1, explanation: 'Parafrase efektif menyampaikan inti pesan dengan struktur kalimat dan diksi sendiri tanpa menghilangkan sitasi.' }
+    ]
+  },
+  {
+    id: 7,
+    unit: 'Unit 7',
+    title: 'Academic Presentation & Q&A',
+    category: 'Conversation',
+    cefr: 'Mahir',
+    level: 5,
+    status: 'active',
+    xp_reward: 140,
+    min_score: 80,
+    stars: 0,
+    description: 'Penyampaian presentasi seminar proposal dan teknik menjawab pertanyaan penguji dalam bahasa Inggris.',
+    pages: [
+      { title: 'Signposting in Academic Presentations', content: 'Frasa transisi kunci seperti "Turning now to our methodology" dan "To illustrate this point clearly".' }
+    ],
+    quiz: [
+      { q: 'Which phrase is best for transitioning to a new topic in a presentation?', options: ['Hey listen to this', 'Turning our attention to the next finding', 'Stop looking there', 'Next slide please quickly'], answer: 1, explanation: '"Turning our attention to..." adalah signposting formal dalam seminar ilmiah.' }
+    ]
+  },
+  {
+    id: 8,
+    unit: 'Unit 8',
+    title: 'Journal Manuscript & Peer Review',
+    category: 'Writing',
+    cefr: 'Mahir',
+    level: 6,
+    status: 'active',
+    xp_reward: 150,
+    min_score: 80,
+    stars: 0,
+    description: 'Penulisan naskah publikasi Scopus/SINTA dan penanganan tanggapan reviewer jurnal internasional.',
+    pages: [
+      { title: 'Responding to Reviewers Politely', content: 'Teknik menjawab masukan reviewer secara persuasif, berbobot, dan menghormati etika ilmiah.' }
+    ],
+    quiz: [
+      { q: 'How should an author respond to a critical reviewer comment?', options: ['Argue aggressively', 'Acknowledge the constructive feedback and explain the revision clearly', 'Ignore the comment', 'Withdraw the paper immediately'], answer: 1, explanation: 'Penulis harus merespon secara sopan, menyambut saran konstruktif, dan menjelaskan perbaikan yang dilakukan.' }
+    ]
   }
 ];
 
@@ -269,7 +326,6 @@ const initialUserStats = {
   maxHearts: 5,
   sp_barrier: 850,
   max_sp: 1000,
-  roomName: 'Bahasa Inggris 3B',
   cefrLevel: 'Menengah',
   total_completed_materials: 2,
   activeTheme: 'bg-[#f8fafc]',
@@ -493,179 +549,6 @@ const initialBossBattle = {
   ]
 };
 
-// Dosen / Lecturer Class Data & Rooms
-const initialRooms = [
-  {
-    id: 'room-3b',
-    name: 'Bahasa Inggris Akademik A — Kelas 3B (TI-2024)',
-    shortName: 'Kelas 3B (TI-2024)',
-    code: 'ENG-3B-2026',
-    department: 'Teknik Informatika',
-    semester: 'Semester Ganjil 2026/2027',
-    schedule: 'Senin, 08:00 - 10:30 WIB',
-    totalStudents: 38,
-    levelTarget: 'Menengah Atas',
-    avgLevel: 'Menengah (68%)',
-    streakRate: '89%',
-    avgScore: '86.4'
-  },
-  {
-    id: 'room-2a',
-    name: 'English for IT & Communication — Kelas 2A (SI-2024)',
-    shortName: 'Kelas 2A (SI-2024)',
-    code: 'ENG-2A-2026',
-    department: 'Sistem Informasi',
-    semester: 'Semester Ganjil 2026/2027',
-    schedule: 'Rabu, 13:00 - 15:30 WIB',
-    totalStudents: 32,
-    levelTarget: 'Menengah',
-    avgLevel: 'Dasar (80%)',
-    streakRate: '75%',
-    avgScore: '81.2'
-  }
-];
-
-const initialLecturerAssignments = [
-  {
-    id: 'asg-1',
-    roomId: 'room-3b',
-    title: 'Unit 3: Academic Reading & Passive Voice in Scientific Abstracts',
-    type: 'global_module',
-    targetUnit: 'Unit 3',
-    cefr: 'Menengah',
-    deadline: '14 Okt 2026, 23:59 WIB',
-    submittedCount: 31,
-    totalCount: 38,
-    status: 'active',
-    minScore: 70,
-    xpReward: 120,
-    rubric: 'Penyelesaian Quest Unit 3 & Skor Kuis Min. 70%',
-    description: 'Selesaikan seluruh step pembelajaran pada Quest Unit 3 di Quest Map dan selesaikan quiz review pemahaman.'
-  },
-  {
-    id: 'asg-2',
-    roomId: 'room-3b',
-    title: 'Academic Writing & Speaking: The Future Impact of AI on Software Engineering',
-    type: 'custom_task',
-    targetUnit: 'Tugas Akademik Khusus',
-    cefr: 'Menengah Atas',
-    deadline: '18 Okt 2026, 23:59 WIB',
-    submittedCount: 32,
-    totalCount: 38,
-    status: 'active',
-    minScore: 75,
-    xpReward: 200,
-    rubric: 'Min 350 kata format IMRAD + Audio Speaking 2 menit',
-    description: 'Tulis esai terstruktur mengenai dampak Gen-AI terhadap arsitektur perangkat lunak serta rekam ringkasan oral presentasi.'
-  },
-  {
-    id: 'asg-3',
-    roomId: 'room-3b',
-    title: 'Grammar Duel: Inverted Conditionals & Passive Voice',
-    type: 'custom_quiz',
-    targetUnit: 'Kuis Singkat',
-    cefr: 'Mahir',
-    deadline: '22 Okt 2026, 23:59 WIB',
-    submittedCount: 28,
-    totalCount: 38,
-    status: 'active',
-    minScore: 65,
-    xpReward: 90,
-    rubric: 'Skor minimal evaluasi 75%',
-    description: '10 butir soal pilihan ganda evaluasi pemahaman inversion grammar tipe 1, 2, dan 3.'
-  }
-];
-
-const initialManualSubmissions = [
-  {
-    id: 'sub-1',
-    roomId: 'room-3b',
-    studentName: 'Nabila Putri',
-    nim: '2401082',
-    avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150',
-    taskTitle: 'Writing & Speaking: AI Impact on Software Engineering',
-    topic: 'The Future Impact of Generative AI on Software Engineering',
-    submittedAt: 'Kemarin, 21:15 WIB',
-    status: 'pending',
-    essayExcerpt: '...In conclusion, while automated code completion might accelerate standard scaffolding, the fundamental necessity of critical architectural evaluation and robust edge-case validation remains entirely human-driven. Therefore, software engineers must augment their cognitive versatility rather than merely relying on stochastic output generation...',
-    fullEssay: `Abstract & Introduction:
-Recent advancements in generative artificial intelligence have precipitated paradigm shifts across contemporary software engineering methodologies. Automated synthesis engines now routinely assist practitioners in boilerplate formulation, unit test authoring, and defect diagnosis.
-
-Methodology & Discussion:
-However, empirical observations reveal that automated language models frequently propagate latent security anti-patterns and syntactical hallucinations. While code completion velocity increases exponentially, systemic resilience necessitates rigorous peer evaluation. In our departmental case study involving twenty undergraduate developers, static analysis revealed that algorithmic correctness diminished when relying exclusively on unverified prompt iterations.
-
-Conclusion:
-In conclusion, while automated code completion might accelerate standard scaffolding, the fundamental necessity of critical architectural evaluation and robust edge-case validation remains entirely human-driven. Therefore, software engineers must augment their cognitive versatility rather than merely relying on stochastic output generation.`,
-    audioFile: 'Speaking_Response_Nabila.wav',
-    audioDuration: '01:42',
-    grammarScore: 88,
-    vocabScore: 82,
-    fluencyScore: 90,
-    finalScore: 87,
-    feedback: ''
-  },
-  {
-    id: 'sub-2',
-    roomId: 'room-3b',
-    studentName: 'Budi Santoso',
-    nim: '2401001',
-    avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150',
-    taskTitle: 'Writing & Speaking: AI Impact on Software Engineering',
-    topic: 'Autonomous Cloud Architecture & Microservices',
-    submittedAt: 'Hari ini, 09:30 WIB',
-    status: 'pending',
-    essayExcerpt: '...Distributed serverless computing has transformed high-availability deployment pipelines. The integration of containerization ensures that microservices can scale horizontally with minimal latency degradation...',
-    fullEssay: 'Distributed serverless computing has transformed high-availability deployment pipelines. The integration of containerization ensures that microservices can scale horizontally with minimal latency degradation. Nevertheless, monitoring multi-tenant orchestration remains challenging without automated tracing frameworks.',
-    audioFile: 'Speaking_Budi_Cloud.wav',
-    audioDuration: '01:15',
-    grammarScore: 80,
-    vocabScore: 85,
-    fluencyScore: 78,
-    finalScore: 81,
-    feedback: ''
-  },
-  {
-    id: 'sub-3',
-    roomId: 'room-3b',
-    studentName: 'Siti Aminah',
-    nim: '2401002',
-    avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150',
-    taskTitle: 'Writing & Speaking: AI Impact on Software Engineering',
-    topic: 'Ethical Implications of Algorithmic Biases in FinTech',
-    submittedAt: '2 hari lalu',
-    status: 'graded',
-    essayExcerpt: '...Algorithmic bias must be mitigated by comprehensive demographic parity audits prior to commercial loan underwriting deployments...',
-    fullEssay: 'Algorithmic bias must be mitigated by comprehensive demographic parity audits prior to commercial loan underwriting deployments. Machine learning models trained on historical redlining datasets inherently mirror systemic socioeconomic inequities.',
-    audioFile: 'Speaking_Siti_Fintech.wav',
-    audioDuration: '01:55',
-    grammarScore: 94,
-    vocabScore: 92,
-    fluencyScore: 90,
-    finalScore: 92,
-    feedback: 'Analisis etika sangat mendalam dan pemilihan vocabulary akademik (demographic parity, systemic inequities) sangat akurat. Pertahankan!'
-  },
-  {
-    id: 'sub-4',
-    roomId: 'room-3b',
-    studentName: 'Raka Pratama',
-    nim: '2401003',
-    avatar: 'https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=150',
-    taskTitle: 'Writing & Speaking: AI Impact on Software Engineering',
-    topic: 'Cybersecurity Threat Modeling in Zero-Trust Environments',
-    submittedAt: 'Hari ini, 07:45 WIB',
-    status: 'pending',
-    essayExcerpt: '...Zero-trust network architecture assumes perpetual adversarial compromise. Consequently, continuous mutual cryptographic authentication is mandated at every perimeter ingress...',
-    fullEssay: 'Zero-trust network architecture assumes perpetual adversarial compromise. Consequently, continuous mutual cryptographic authentication is mandated at every perimeter ingress. Legacy VPN frameworks are demonstrably inadequate for decentralized workforce models.',
-    audioFile: 'Speaking_Raka_ZeroTrust.wav',
-    audioDuration: '01:30',
-    grammarScore: 85,
-    vocabScore: 88,
-    fluencyScore: 84,
-    finalScore: 86,
-    feedback: ''
-  }
-];
-
 const initialStudentGrades = [
   { id: 1, nim: '2401082', name: 'Nabila Putri', cefr: 'Menengah Atas', streak: 14, quizAvg: 92, assignmentAvg: 87, finalScore: 90.0, letterGrade: 'A', status: 'Lulus' },
   { id: 2, nim: '2401001', name: 'Budi Santoso', cefr: 'Menengah', streak: 14, quizAvg: 85, assignmentAvg: 81, finalScore: 83.4, letterGrade: 'A-', status: 'Lulus' },
@@ -678,22 +561,6 @@ const initialStudentGrades = [
   { id: 9, nim: '2401053', name: 'Bayu Wicaksono', cefr: 'Menengah', streak: 10, quizAvg: 84, assignmentAvg: 83, finalScore: 83.6, letterGrade: 'A-', status: 'Lulus' },
   { id: 10, nim: '2401067', name: 'Clara Oktaviani', cefr: 'Menengah Atas', streak: 15, quizAvg: 96, assignmentAvg: 94, finalScore: 95.2, letterGrade: 'A', status: 'Lulus' },
 ];
-
-const initialLecturerData = {
-  className: 'Bahasa Inggris Akademik A — Kelas 3B (TI-2024)',
-  lecturerName: 'Dr. Hendra Wijaya, M.Hum.',
-  nip: '198204122010121003',
-  semester: 'Semester Ganjil 2026/2027',
-  metrics: {
-    totalStudents: 38,
-    placementTestRate: '100%',
-    avgClassLevel: 'Menengah (68%)',
-    activeStreakRate: '89%',
-    avgScore: '86.4 / 100',
-    pendingGradingCount: 3
-  },
-  assignments: initialLecturerAssignments
-};
 
 // ============================================================
 // === ADMIN DATA SECTION =====================================
@@ -800,30 +667,74 @@ const initialActivityLog = [
   { id: 10, studentId: 7, studentName: 'Farhan Maulana', activity: 'Completed Module', detail: 'Past Perfect vs Past Simple', score: 65, xpEarned: 80, level: 2, date: '2026-10-06T14:10:00', type: 'module' },
 ];
 
-// Learning Paths
+// Learning Paths organized per student level
 const initialLearningPaths = [
   {
     id: 1,
-    name: 'Beginner English Path',
-    description: 'Perfect starting path for English beginners',
+    levelNumber: 1,
+    name: 'Level 1: Beginner English Path',
+    description: 'Fondasi kosakata dasar dan pemahaman kalimat untuk mahasiswa baru.',
     level: 'Beginner',
     status: 'active',
     items: [
-      { order: 1, type: 'material', refId: 1, title: 'Academic Vocabulary Mastery', category: 'Vocabulary' },
-      { order: 2, type: 'material', refId: 2, title: 'Past Perfect vs Past Simple', category: 'Grammar' },
+      { order: 1, type: 'material', refId: 1, title: 'Academic Vocabulary Mastery', category: 'Vocabulary', level: 1 },
+      { order: 2, type: 'material', refId: 2, title: 'Past Perfect vs Past Simple', category: 'Grammar', level: 1 },
     ]
   },
   {
     id: 2,
-    name: 'Intermediate Research Writing Path',
-    description: 'Develop academic and research writing skills',
+    levelNumber: 2,
+    name: 'Level 2: English Learner Path',
+    description: 'Konstruksi kalimat pasif ilmiah dan teknik membaca teks akademik.',
+    level: 'English Learner',
+    status: 'active',
+    items: [
+      { order: 1, type: 'material', refId: 3, title: 'Passive Voice in Research Paper', category: 'Grammar', level: 2 },
+      { order: 2, type: 'material', refId: 4, title: 'Academic Reading Comprehension', category: 'Reading', level: 2 },
+    ]
+  },
+  {
+    id: 3,
+    levelNumber: 3,
+    name: 'Level 3: English Explorer Path',
+    description: 'Penulisan abstrak dan argumentasi skripsi dalam bahasa Inggris.',
+    level: 'English Explorer',
+    status: 'active',
+    items: [
+      { order: 1, type: 'material', refId: 5, title: 'Abstract & Thesis Argumentation', category: 'Writing', level: 3 },
+    ]
+  },
+  {
+    id: 4,
+    levelNumber: 4,
+    name: 'Level 4: Intermediate Proficiency Path',
+    description: 'Penyusunan sintesis literatur ilmiah dan presentasi akademik.',
     level: 'Intermediate',
     status: 'active',
     items: [
-      { order: 1, type: 'material', refId: 2, title: 'Past Perfect vs Past Simple', category: 'Grammar' },
-      { order: 2, type: 'material', refId: 3, title: 'Passive Voice in Research Paper', category: 'Grammar' },
-      { order: 3, type: 'material', refId: 4, title: 'Academic Reading Comprehension', category: 'Reading' },
-      { order: 4, type: 'material', refId: 5, title: 'Abstract & Thesis Argumentation', category: 'Writing' },
+      { order: 1, type: 'material', refId: 6, title: 'Literature Synthesis & Paraphrasing', category: 'Academic English', level: 4 }
+    ]
+  },
+  {
+    id: 5,
+    levelNumber: 5,
+    name: 'Level 5: Advanced Learner Path',
+    description: 'Persiapan simulasi EELS / TOEFL dan penulisan publikasi jurnal.',
+    level: 'Advanced Learner',
+    status: 'active',
+    items: [
+      { order: 1, type: 'material', refId: 7, title: 'Academic Presentation & Q&A', category: 'Conversation', level: 5 }
+    ]
+  },
+  {
+    id: 6,
+    levelNumber: 6,
+    name: 'Level 6: English Master Path',
+    description: 'Penguasaan wacana akademik tingkat tinggi dan debat ilmiah.',
+    level: 'English Master',
+    status: 'active',
+    items: [
+      { order: 1, type: 'material', refId: 8, title: 'Journal Manuscript & Peer Review', category: 'Writing', level: 6 }
     ]
   },
 ];
@@ -860,11 +771,6 @@ export const useDataStore = create((set) => ({
   shopItems: initialShopItems,
   inventory: ['theme_default'],
   bossBattle: initialBossBattle,
-  lecturerData: initialLecturerData,
-  rooms: initialRooms,
-  activeRoomId: 'room-3b',
-  lecturerAssignments: initialLecturerAssignments,
-  manualSubmissions: initialManualSubmissions,
   studentGrades: initialStudentGrades,
 
   // === ADMIN DATA ===
@@ -983,126 +889,6 @@ export const useDataStore = create((set) => ({
   updateSettings: (section, data) => set((state) => ({
     settings: { ...state.settings, [section]: { ...state.settings[section], ...data } }
   })),
-
-
-  setActiveRoom: (roomId) => set((state) => {
-    const selectedRoom = state.rooms.find(r => r.id === roomId);
-    if (!selectedRoom) return state;
-    return {
-      activeRoomId: roomId,
-      lecturerData: {
-        ...state.lecturerData,
-        className: selectedRoom.name,
-        semester: selectedRoom.semester,
-        metrics: {
-          ...state.lecturerData.metrics,
-          totalStudents: selectedRoom.totalStudents,
-          avgClassLevel: selectedRoom.avgLevel,
-          activeStreakRate: selectedRoom.streakRate,
-          avgScore: `${selectedRoom.avgScore} / 100`
-        }
-      }
-    };
-  }),
-
-  // Lecturer Room Creation
-  createRoom: (newRoom) => set((state) => {
-    const fullRoom = {
-      id: `room-${Date.now()}`,
-      totalStudents: 0,
-      avgLevel: 'Menunggu Tes',
-      streakRate: '0%',
-      avgScore: '0',
-      ...newRoom
-    };
-    return {
-      rooms: [fullRoom, ...state.rooms],
-      activeRoomId: fullRoom.id,
-      lecturerData: {
-        ...state.lecturerData,
-        className: fullRoom.name
-      }
-    };
-  }),
-
-  // Lecturer Hybrid Assignment Creation
-  createAssignment: (newAsg) => set((state) => {
-    const created = {
-      id: `asg-${Date.now()}`,
-      roomId: state.activeRoomId,
-      submittedCount: 0,
-      totalCount: state.lecturerData.metrics.totalStudents || 38,
-      status: 'active',
-      ...newAsg
-    };
-    const updatedAssignments = [created, ...state.lecturerAssignments];
-    return {
-      lecturerAssignments: updatedAssignments,
-      lecturerData: {
-        ...state.lecturerData,
-        assignments: updatedAssignments
-      }
-    };
-  }),
-
-  // Lecturer Manual Grading (Rubrics)
-  gradeSubmission: (submissionId, { grammarScore, vocabScore, fluencyScore, feedback }) => set((state) => {
-    const finalScore = Math.round((Number(grammarScore) + Number(vocabScore) + Number(fluencyScore)) / 3);
-    const updatedSubmissions = state.manualSubmissions.map((sub) => {
-      if (sub.id === submissionId) {
-        return {
-          ...sub,
-          status: 'graded',
-          grammarScore: Number(grammarScore),
-          vocabScore: Number(vocabScore),
-          fluencyScore: Number(fluencyScore),
-          finalScore,
-          feedback
-        };
-      }
-      return sub;
-    });
-
-    // Also update studentGrades table
-    const targetSub = state.manualSubmissions.find(s => s.id === submissionId);
-    let updatedGrades = state.studentGrades;
-    if (targetSub) {
-      updatedGrades = state.studentGrades.map((grade) => {
-        if (grade.nim === targetSub.nim) {
-          const newAssignmentAvg = Math.round((grade.assignmentAvg + finalScore) / 2);
-          const newFinalScore = Number(((grade.quizAvg * 0.4) + (newAssignmentAvg * 0.6)).toFixed(1));
-          let letterGrade = 'B';
-          if (newFinalScore >= 85) letterGrade = 'A';
-          else if (newFinalScore >= 80) letterGrade = 'A-';
-          else if (newFinalScore >= 75) letterGrade = 'B+';
-          else if (newFinalScore >= 70) letterGrade = 'B';
-          else if (newFinalScore >= 65) letterGrade = 'C+';
-          return {
-            ...grade,
-            assignmentAvg: newAssignmentAvg,
-            finalScore: newFinalScore,
-            letterGrade,
-            status: newFinalScore >= 70 ? 'Lulus' : 'Perlu Perhatian'
-          };
-        }
-        return grade;
-      });
-    }
-
-    const pendingCount = updatedSubmissions.filter(s => s.status === 'pending').length;
-
-    return {
-      manualSubmissions: updatedSubmissions,
-      studentGrades: updatedGrades,
-      lecturerData: {
-        ...state.lecturerData,
-        metrics: {
-          ...state.lecturerData.metrics,
-          pendingGradingCount: pendingCount
-        }
-      }
-    };
-  }),
 
   // Add XP and handle leveling
   addXP: (amount) => set((state) => {
