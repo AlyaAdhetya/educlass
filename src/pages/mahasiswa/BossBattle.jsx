@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useDataStore } from '../../store/dataStore';
 import { useAuthStore } from '../../store/authStore';
+import { supabase } from '../../lib/supabase';
 import HootieMascot from '../../components/mascot/HootieMascot';
 import { motion, AnimatePresence } from 'framer-motion';
 import confetti from 'canvas-confetti';
@@ -286,7 +286,7 @@ const QUIZ_CATALOGUE = [
       { type: 'EELS', question: '"The data are _____ to suggest a causal relationship." (insufficient)', options: ['inadequate', 'sufficient', 'enough', 'appropriate'], answer: 0, explanation: '"Inadequate" means not sufficient or not enough to meet a requirement.' },
       { type: 'EELS', question: 'Which word can replace "however" to show contrast?', options: ['Therefore', 'Consequently', 'Nevertheless', 'Furthermore'], answer: 2, explanation: '"Nevertheless" (like "however") introduces a contrasting or concessive idea.' },
       { type: 'EELS', question: '"He was given a scholarship _____ his outstanding academic record."', options: ['in spite of', 'owing to', 'regardless of', 'despite'], answer: 1, explanation: '"Owing to" means "because of" and is used to introduce a reason.' },
-      { type: 'EELS', question: 'Choose the correct passive: "The policy _____ by the administration last semester."', options: ['is revised', 'was revised', 'revised', 'has revised'], answer: 1, explanation: '"Last semester" indicates past time, so passive past tense: "was revised".' },
+      { type: 'EELS', question: 'Choose the correct passive: "The policy _____ by the administration last year."', options: ['is revised', 'was revised', 'revised', 'has revised'], answer: 1, explanation: '"Last year" indicates past time, so passive past tense: "was revised".' },
       { type: 'EELS', question: '"A growing body of evidence _____ the link between sleep and cognitive function."', options: ['support', 'supports', 'are supporting', 'have supported'], answer: 1, explanation: '"A growing body of evidence" is singular (the body), so verb is singular: "supports".' },
       { type: 'EELS', question: 'Error identification: "Neither the professor nor the students was prepared."', options: ['"Neither"', '"nor"', '"was prepared"', 'No error'], answer: 2, explanation: 'With "neither...nor", verb agrees with the nearest subject "the students" (plural) → "were prepared".' },
       { type: 'EELS', question: '"The experiment _____ in controlled conditions to minimize variables."', options: ['was conducted', 'conducted', 'conducting', 'has conducted'], answer: 0, explanation: 'Passive voice + past tense for describing completed research: "was conducted".' },
@@ -390,7 +390,24 @@ function QuizSelectionScreen({ onSelectQuiz }) {
 function QuizArena({ quiz, onBack }) {
   const navigate = useNavigate();
   const { user } = useAuthStore();
-  const { userStats, addXP, addGems } = useDataStore();
+  const [userStats, setUserStats] = useState({ level: 1, sp_barrier: 100, max_sp: 100 });
+
+  useEffect(() => {
+    if (!user) return;
+    supabase.from('user_stats').select('*').eq('user_id', user.id).single()
+      .then(({ data }) => { if (data) setUserStats(data); });
+  }, [user]);
+
+  const addXP = async (amount) => {
+    if (!user) return;
+    const { data } = await supabase.from('user_stats').select('total_xp').eq('user_id', user.id).single();
+    if (data) await supabase.from('user_stats').update({ total_xp: (data.total_xp || 0) + amount }).eq('user_id', user.id);
+  };
+  const addGems = async (amount) => {
+    if (!user) return;
+    const { data } = await supabase.from('user_stats').select('gems').eq('user_id', user.id).single();
+    if (data) await supabase.from('user_stats').update({ gems: (data.gems || 0) + amount }).eq('user_id', user.id);
+  };
 
   const questions = quiz.questions_data;
   const [currentQIndex, setCurrentQIndex] = useState(0);

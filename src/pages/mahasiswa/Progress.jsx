@@ -1,21 +1,67 @@
-﻿import React from 'react';
-import { useDataStore } from '../../store/dataStore';
+import React, { useState, useEffect } from 'react';
+import { useAuthStore } from '../../store/authStore';
+import { supabase } from '../../lib/supabase';
 import HootieMascot from '../../components/mascot/HootieMascot';
 import { motion } from 'framer-motion';
 
 export default function StudentProgress() {
-  const { userStats, materials } = useDataStore();
+  const { user } = useAuthStore();
+  const [userStats,  setUserStats]  = useState({ total_xp: 0, streak_days: 0 });
+  const [levelInfo,  setLevelInfo]  = useState({ level_number: 1, name: 'Beginner' });
+  const [completed,  setCompleted]  = useState(0);
+  const [totalMats,  setTotalMats]  = useState(0);
+  const [catProgress, setCatProgress] = useState([]);
 
-  const totalMaterials = materials.length;
-  const completedMaterials = materials.filter((m) => m.status === 'completed').length;
-  const materialProgress = Math.round((completedMaterials / totalMaterials) * 100) || 0;
+  useEffect(() => {
+    if (user?.id) fetchProgress();
+  }, [user?.id]);
 
-  const categories = [
-    { name: 'Academic Vocabulary', progress: 100, level: 'Menengah', color: 'bg-emerald-500' },
-    { name: 'Grammar & Syntax', progress: 75, level: 'Menengah Atas', color: 'bg-indigo-600' },
-    { name: 'Reading Comprehension', progress: 30, level: 'Menengah Atas', color: 'bg-amber-500' },
-    { name: 'Academic Writing', progress: 15, level: 'Mahir', color: 'bg-purple-600' },
-  ];
+  async function fetchProgress() {
+    // user stats
+    const { data: us } = await supabase
+      .from('user_stats').select('*').eq('user_id', user.id).single();
+    if (us) setUserStats(us);
+
+    // level from profile
+    const { data: prof } = await supabase
+      .from('profiles').select('levels(level_number, name)').eq('id', user.id).single();
+    if (prof?.levels) setLevelInfo(prof.levels);
+
+    // Fetch all published materials
+    const { data: mats } = await supabase
+      .from('material_with_category')
+      .select('id, category_name')
+      .eq('publish_status', 'published');
+    const totalMaterialsList = mats || [];
+    setTotalMats(totalMaterialsList.length);
+
+    // Fetch user material progress
+    const { data: prog } = await supabase
+      .from('material_progress')
+      .select('material_id, status')
+      .eq('user_id', user.id);
+
+    const completedSet = new Set((prog || []).filter(p => p.status === 'completed').map(p => p.material_id));
+    setCompleted(completedSet.size);
+
+    // Category progress
+    const catMap = {};
+    totalMaterialsList.forEach(m => {
+      const cat = m.category_name || 'General';
+      if (!catMap[cat]) catMap[cat] = { total: 0, done: 0 };
+      catMap[cat].total++;
+      if (completedSet.has(m.id)) catMap[cat].done++;
+    });
+
+    const colors = ['bg-emerald-500','bg-indigo-600','bg-amber-500','bg-purple-600','bg-rose-500','bg-cyan-600'];
+    setCatProgress(Object.entries(catMap).map(([name, v], i) => ({
+      name,
+      progress: v.total > 0 ? Math.round((v.done / v.total) * 100) : 0,
+      color: colors[i % colors.length]
+    })));
+  }
+
+  const materialProgress = totalMats > 0 ? Math.round((completed / totalMats) * 100) : 0;
 
   return (
     <div className="max-w-5xl mx-auto px-4 md:px-8 py-6 space-y-6">
@@ -46,7 +92,7 @@ export default function StudentProgress() {
           <div className="w-10 h-10 rounded-2xl bg-amber-50 text-amber-500 flex items-center justify-center mb-2">
             <span className="material-symbols-outlined text-xl fill-icon">bolt</span>
           </div>
-          <h3 className="text-xl font-black text-slate-900">{userStats.total_xp.toLocaleString()}</h3>
+          <h3 className="text-xl font-black text-slate-900">{(userStats.total_xp || 0).toLocaleString()}</h3>
           <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Total XP</p>
         </div>
 
@@ -54,7 +100,7 @@ export default function StudentProgress() {
           <div className="w-10 h-10 rounded-2xl bg-rose-50 text-rose-500 flex items-center justify-center mb-2">
             <span className="material-symbols-outlined text-xl fill-icon">local_fire_department</span>
           </div>
-          <h3 className="text-xl font-black text-slate-900">{userStats.current_streak} Hari</h3>
+          <h3 className="text-xl font-black text-slate-900">{userStats.streak_days || 0} Hari</h3>
           <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Streak Konsisten</p>
         </div>
 
@@ -63,7 +109,7 @@ export default function StudentProgress() {
             <span className="material-symbols-outlined text-xl fill-icon">check_circle</span>
           </div>
           <h3 className="text-xl font-black text-slate-900">
-            {completedMaterials} / {totalMaterials}
+            {completed} / {totalMats}
           </h3>
           <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Unit Tuntas</p>
         </div>
@@ -72,9 +118,9 @@ export default function StudentProgress() {
           <div className="w-10 h-10 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center mb-2">
             <span className="material-symbols-outlined text-xl fill-icon">school</span>
           </div>
-          <h3 className="text-xl font-black text-slate-900">Level {userStats.level}</h3>
+          <h3 className="text-xl font-black text-slate-900">Level {levelInfo.level_number}</h3>
           <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider truncate max-w-[120px]">
-            {userStats.levelName}
+            {levelInfo.name}
           </p>
         </div>
       </div>
@@ -89,14 +135,11 @@ export default function StudentProgress() {
           </h2>
 
           <div className="space-y-4">
-            {categories.map((cat) => (
+            {catProgress.length > 0 ? catProgress.map((cat) => (
               <div key={cat.name} className="space-y-1.5">
                 <div className="flex justify-between items-center text-xs">
                   <span className="font-extrabold text-slate-800">{cat.name}</span>
-                  <div className="flex items-center gap-2">
-                    <span className="text-[10px] font-black text-slate-400">{cat.level}</span>
-                    <span className="font-black text-indigo-600">{cat.progress}%</span>
-                  </div>
+                  <span className="font-black text-indigo-600">{cat.progress}%</span>
                 </div>
                 <div className="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden p-0.5 border border-slate-200">
                   <div
@@ -105,7 +148,9 @@ export default function StudentProgress() {
                   />
                 </div>
               </div>
-            ))}
+            )) : (
+              <p className="text-xs text-slate-400 text-center py-4">Belum ada progres belajar.</p>
+            )}
           </div>
         </div>
 

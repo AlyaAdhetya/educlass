@@ -1,9 +1,36 @@
-﻿import React, { useState } from 'react';
-import { useDataStore } from '../../store/dataStore';
+import React, { useState, useEffect } from 'react';
+import { supabase } from '../../lib/supabase';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function AdminGrading() {
-  const { studentGrades } = useDataStore();
+  const [studentGrades, setStudentGrades] = useState([]);
+
+  useEffect(() => {
+    async function fetchGrades() {
+      // Use the admin_student_overview view which aggregates profile + user_stats
+      const { data } = await supabase
+        .from('admin_student_overview')
+        .select('*')
+        .order('full_name');
+
+      if (data) {
+        // Map Supabase columns to the expected shape for the table
+        setStudentGrades(data.map((s, i) => ({
+          id:             s.id,
+          nim:            s.nim || `NIM${String(i + 1).padStart(6, '0')}`,
+          name:           s.full_name || 'Mahasiswa',
+          cefr:           s.cefr_level || 'A2',
+          streak:         s.streak_days || 0,
+          quizAvg:        s.quiz_average || 0,
+          assignmentAvg:  s.assignment_average || 0,
+          finalScore:     s.final_score || 0,
+          letterGrade:    s.letter_grade || 'D',
+          status:         (s.final_score || 0) >= 60 ? 'Lulus' : 'Perlu Perhatian',
+        })));
+      }
+    }
+    fetchGrades();
+  }, []);
 
   const [searchQuery, setSearchQuery] = useState('');
   const [levelFilter, setLevelFilter] = useState('all');
@@ -104,7 +131,7 @@ export default function AdminGrading() {
             Transkrip Nilai Mahasiswa & Ekspor SIAKAD
           </h1>
           <p className="text-xs text-slate-500 mt-1">
-            Data penilaian terintegrasi dari kuis otomatis dan penugasan akademik untuk penginputan nilai akhir semester.
+            Data penilaian terintegrasi dari kuis otomatis dan penugasan akademik untuk rekapitulasi nilai akhir mahasiswa.
           </p>
         </div>
 

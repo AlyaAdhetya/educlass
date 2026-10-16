@@ -55,7 +55,7 @@ Tujuan utama EduClass adalah menjadikan proses belajar bahasa Inggris di lingkun
 - Membuat dan menugaskan tugas dengan deadline.
 - Memberi penilaian manual untuk tugas writing/speaking.
 - Memantau dashboard progres seluruh mahasiswa di kelasnya.
-- Mengekspor rekap nilai/progres (misalnya untuk nilai akhir semester).
+- Mengekspor rekap nilai/progres (rekapitulasi nilai akhir mahasiswa).
 
 ### 4.3 (Opsional Fase Lanjut) Super Admin
 - Mengelola akun dosen, struktur kampus/prodi, dan konfigurasi global sistem.
@@ -131,7 +131,7 @@ Salah satu keputusan arsitektur penting di EduClass adalah **siapa yang menyedia
 | Riwayat Tugas & Nilai | Melihat tugas dari dosen, status pengumpulan, dan nilai | Must Have |
 | Notifikasi | Reminder streak harian & deadline tugas | Should Have |
 | Forum Diskusi Kelas | Tanya jawab antar mahasiswa/dosen per kelas | Could Have |
-| Sertifikat/Laporan Progres | Unduh laporan progres belajar per semester | Could Have
+| Sertifikat/Laporan Progres | Unduh laporan progres belajar berkala | Could Have
 
 ### 6.2 Fitur Inti — Dosen (Admin Kelas)
 

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useDataStore } from '../../store/dataStore';
+import React, { useState, useEffect } from 'react';
+import { supabase } from '../../lib/supabase';
 import { Plus, Search, Edit, Trash2, BookOpen, X, Check, AlertCircle } from 'lucide-react';
 import * as LucideIcons from 'lucide-react';
 
@@ -40,12 +40,22 @@ const emptyForm = {
   description: '',
   color: 'indigo',
   icon: 'menu_book',
-  status: 'active',
+  is_active: true,
 };
 
 export default function AdminCategories() {
-  const { categories, addCategory, updateCategory, deleteCategory } = useDataStore();
+  const [categories, setCategories] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
+
+  useEffect(() => { fetchCategories(); }, []);
+
+  async function fetchCategories() {
+    const { data } = await supabase
+      .from('categories')
+      .select('*, materials(id)')
+      .order('sort_order');
+    if (data) setCategories(data.map(c => ({ ...c, materialCount: c.materials?.length || 0 })));
+  }
 
   // Modal state
   const [modalOpen, setModalOpen] = useState(false);
@@ -55,8 +65,8 @@ export default function AdminCategories() {
   const [savedToast, setSavedToast] = useState(false);
 
   const filteredCategories = categories.filter(c =>
-    c.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    c.description.toLowerCase().includes(searchQuery.toLowerCase())
+    (c.name || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+    (c.description || '').toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const openAdd = () => {
@@ -67,31 +77,38 @@ export default function AdminCategories() {
 
   const openEdit = (cat) => {
     setForm({
-      name: cat.name,
-      description: cat.description,
-      color: cat.color,
-      icon: cat.icon,
-      status: cat.status,
+      name:        cat.name,
+      description: cat.description || '',
+      color:       cat.color || 'indigo',
+      icon:        cat.icon  || 'menu_book',
+      is_active:   cat.is_active !== false,
     });
     setEditTarget(cat);
     setModalOpen(true);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (editTarget) {
-      updateCategory(editTarget.id, form);
+      await supabase.from('categories').update(form).eq('id', editTarget.id);
     } else {
-      addCategory({ ...form, materialCount: 0 });
+      await supabase.from('categories').insert({ ...form, sort_order: categories.length + 1 });
     }
     setModalOpen(false);
     setSavedToast(true);
     setTimeout(() => setSavedToast(false), 2500);
+    fetchCategories();
   };
 
-  const handleDelete = () => {
-    deleteCategory(deletingId);
+  const handleDelete = async () => {
+    await supabase.from('categories').delete().eq('id', deletingId);
     setDeletingId(null);
+    fetchCategories();
+  };
+
+  const toggleStatus = async (cat) => {
+    await supabase.from('categories').update({ is_active: !cat.is_active }).eq('id', cat.id);
+    fetchCategories();
   };
 
   const renderIcon = (iconName, className) => {
@@ -178,15 +195,15 @@ export default function AdminCategories() {
                   <span>{cat.materialCount} Materials</span>
                 </div>
                 <button
-                  onClick={() => updateCategory(cat.id, { status: cat.status === 'active' ? 'inactive' : 'active' })}
+                  onClick={() => toggleStatus(cat)}
                   className={`px-2 py-0.5 rounded-md text-[11px] cursor-pointer transition-colors ${
-                    cat.status === 'active'
+                    cat.is_active !== false
                       ? 'bg-emerald-50 text-emerald-600 hover:bg-emerald-100'
                       : 'bg-slate-100 text-slate-500 hover:bg-slate-200'
                   }`}
                   title="Klik untuk toggle status"
                 >
-                  {cat.status}
+                  {cat.is_active !== false ? 'active' : 'inactive'}
                 </button>
               </div>
             </div>
@@ -298,14 +315,14 @@ export default function AdminCategories() {
               {/* Status toggle */}
               <div
                 className="flex items-center justify-between p-3 rounded-xl border border-slate-100 bg-slate-50 cursor-pointer"
-                onClick={() => setForm({ ...form, status: form.status === 'active' ? 'inactive' : 'active' })}
+                onClick={() => setForm({ ...form, is_active: !form.is_active })}
               >
                 <div>
                   <p className="text-xs font-bold text-slate-700">Status Kategori</p>
                   <p className="text-[10px] text-slate-500 mt-0.5">Kategori aktif akan tampil di halaman materi mahasiswa</p>
                 </div>
-                <div className={`relative w-11 h-6 rounded-full transition-colors ${form.status === 'active' ? 'bg-indigo-600' : 'bg-slate-300'}`}>
-                  <span className={`absolute top-1 left-1 w-4 h-4 rounded-full bg-white shadow transition-transform ${form.status === 'active' ? 'translate-x-5' : 'translate-x-0'}`} />
+                <div className={`relative w-11 h-6 rounded-full transition-colors ${form.is_active ? 'bg-indigo-600' : 'bg-slate-300'}`}>
+                  <span className={`absolute top-1 left-1 w-4 h-4 rounded-full bg-white shadow transition-transform ${form.is_active ? 'translate-x-5' : 'translate-x-0'}`} />
                 </div>
               </div>
 

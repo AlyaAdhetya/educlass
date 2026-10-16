@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Outlet, Navigate, Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
-import { useDataStore } from '../store/dataStore';
+import { supabase } from '../lib/supabase';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Home, BookOpen, Trophy, ShoppingBag, User, Settings, HelpCircle,
@@ -13,13 +13,33 @@ import {
 import EduLogo from '../components/mascot/EduLogo';
 
 export default function DashboardLayout({ allowedRoles }) {
-  const { user, role, logout } = useAuthStore();
-  const { userStats } = useDataStore();
-  const navigate = useNavigate();
-  const location = useLocation();
+  const { user, role, logout, loading } = useAuthStore();
+  const [userStats, setUserStats] = useState({ total_xp: 0, gems: 0, streak_days: 0 });
+  const navigate  = useNavigate();
+  const location  = useLocation();
   const [expandedGroups, setExpandedGroups] = useState({ content: true, quiz: false, gamification: false });
 
+  useEffect(() => {
+    if (user?.id) {
+      supabase.from('user_stats').select('total_xp,gems,current_streak').eq('user_id', user.id).single()
+        .then(({ data }) => { if (data) setUserStats({ total_xp: data.total_xp, gems: data.gems, streak_days: data.current_streak }); });
+    }
+  }, [user?.id]);
+
+  // While Supabase is restoring the session, show a loader
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-slate-50">
+        <div className="flex flex-col items-center gap-3">
+          <div className="w-8 h-8 border-3 border-blue-200 border-t-blue-600 rounded-full animate-spin" />
+          <p className="text-xs font-bold text-slate-400">Memuat sesi...</p>
+        </div>
+      </div>
+    );
+  }
+
   if (!user) return <Navigate to="/login" replace />;
+
 
   if (allowedRoles && !allowedRoles.includes(role)) {
     if (role === 'mahasiswa') return <Navigate to="/dashboard" replace />;
@@ -112,7 +132,7 @@ export default function DashboardLayout({ allowedRoles }) {
               {role === 'admin' ? 'Admin Panel' : 'Dashboard Mahasiswa'}
             </h1>
             <span className="text-[11px] font-bold text-slate-500 bg-slate-100 px-2.5 py-0.5 rounded-full border border-slate-200">
-              {role === 'admin' ? 'Administrator' : 'Semester Genap'}
+              {role === 'admin' ? 'Administrator' : 'Mahasiswa'}
             </span>
           </div>
         </div>
@@ -122,15 +142,15 @@ export default function DashboardLayout({ allowedRoles }) {
             <>
               <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-orange-50/80 border border-orange-200 text-orange-700 text-xs font-black shadow-2xs">
                 <Flame className="w-4 h-4 fill-orange-500 text-orange-500" />
-                <span>{userStats?.current_streak || 14} Hari</span>
+                <span>{userStats?.streak_days || 0} Hari</span>
               </div>
               <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-purple-50/80 border border-purple-200 text-purple-700 text-xs font-black shadow-2xs hidden sm:flex">
                 <Gem className="w-4 h-4 text-purple-600" />
-                <span>{(userStats?.gems || 850).toLocaleString()}</span>
+                <span>{(userStats?.gems || 0).toLocaleString()}</span>
               </div>
               <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-50/80 border border-amber-200 text-amber-700 text-xs font-black shadow-2xs">
                 <Zap className="w-4 h-4 fill-amber-500 text-amber-500" />
-                <span>{(userStats?.total_xp || 2450).toLocaleString()} XP</span>
+                <span>{(userStats?.total_xp || 0).toLocaleString()} XP</span>
               </div>
             </>
           )}

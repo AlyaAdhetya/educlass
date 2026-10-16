@@ -1,14 +1,16 @@
-import React, { useState } from 'react';
-import { useDataStore } from '../../store/dataStore';
+import React, { useState, useEffect } from 'react';
+import { supabase } from '../../lib/supabase';
 import {
   ClipboardList, Plus, Search, Edit, Trash2, Check,
   X, CheckCircle2, HelpCircle
 } from 'lucide-react';
 
 export default function AdminQuestions() {
-  const { materials, updateMaterial } = useDataStore();
-  const [selectedModuleId, setSelectedModuleId] = useState(materials[0]?.id || null);
+  const [materials, setMaterials] = useState([]);
+  const [questions, setQuestions] = useState([]);
+  const [selectedModuleId, setSelectedModuleId] = useState(null);
   const [moduleSearch, setModuleSearch] = useState('');
+  const [saving, setSaving] = useState(false);
 
   // Toast
   const [toastMessage, setToastMessage] = useState('');
@@ -17,10 +19,36 @@ export default function AdminQuestions() {
     setTimeout(() => setToastMessage(''), 3000);
   };
 
+  useEffect(() => { fetchMaterials(); }, []);
+
+  async function fetchMaterials() {
+    const { data } = await supabase
+      .from('material_with_category')
+      .select('id, title, unit, category_name')
+      .order('sort_order');
+    if (data) {
+      setMaterials(data);
+      if (!selectedModuleId && data.length > 0) setSelectedModuleId(data[0].id);
+    }
+  }
+
+  useEffect(() => {
+    if (selectedModuleId) fetchQuestions(selectedModuleId);
+  }, [selectedModuleId]);
+
+  async function fetchQuestions(materialId) {
+    const { data } = await supabase
+      .from('quiz_questions')
+      .select('*')
+      .eq('material_id', materialId)
+      .order('sort_order');
+    setQuestions(data || []);
+  }
+
   // Question modal / form state
   const [questionModalOpen, setQuestionModalOpen] = useState(false);
-  const [editingIndex, setEditingIndex] = useState(null);
-  const [deletingIndex, setDeletingIndex] = useState(null);
+  const [editingQuestion, setEditingQuestion] = useState(null); // full question row
+  const [deletingId, setDeletingId] = useState(null);
   const [questionForm, setQuestionForm] = useState({
     q: '',
     options: ['', '', '', ''],
@@ -29,7 +57,6 @@ export default function AdminQuestions() {
   });
 
   const selectedModule = materials.find(m => m.id === selectedModuleId);
-  const questions = selectedModule?.quiz || [];
 
   const filteredMaterials = materials.filter(m =>
     (m.title || '').toLowerCase().includes(moduleSearch.toLowerCase()) ||
@@ -37,68 +64,55 @@ export default function AdminQuestions() {
   );
 
   const handleOpenAdd = () => {
-    setEditingIndex(null);
-    setQuestionForm({
-      q: '',
-      options: ['', '', '', ''],
-      answer: 0,
-      explanation: ''
-    });
+    setEditingQuestion(null);
+    setQuestionForm({ q: '', options: ['', '', '', ''], answer: 0, explanation: '' });
     setQuestionModalOpen(true);
   };
 
-  const handleOpenEdit = (idx) => {
-    const q = questions[idx];
-    if (!q) return;
-    setEditingIndex(idx);
+  const handleOpenEdit = (q) => {
+    setEditingQuestion(q);
     setQuestionForm({
-      q: q.q || '',
-      options: q.options && q.options.length ? [...q.options] : ['', '', '', ''],
-      answer: q.answer || 0,
+      q:           q.question_text || '',
+      options:     q.options && q.options.length ? [...q.options] : ['', '', '', ''],
+      answer:      q.correct_answer_index || 0,
       explanation: q.explanation || ''
     });
     setQuestionModalOpen(true);
   };
 
-  const handleSaveQuestion = (e) => {
+  const handleSaveQuestion = async (e) => {
     e.preventDefault();
     if (!selectedModule) return;
+    if (!questionForm.q.trim()) { alert('Pertanyaan tidak boleh kosong.'); return; }
+    if (questionForm.options.some(opt => !opt.trim())) { alert('Semua 4 pilihan jawaban harus diisi.'); return; }
 
-    if (!questionForm.q.trim()) {
-      alert('Pertanyaan tidak boleh kosong.');
-      return;
-    }
-
-    if (questionForm.options.some(opt => !opt.trim())) {
-      alert('Semua 4 pilihan jawaban harus diisi.');
-      return;
-    }
-
-    let updatedQuestions = [...questions];
-    const newQ = {
-      q: questionForm.q.trim(),
-      options: questionForm.options.map(o => o.trim()),
-      answer: Number(questionForm.answer),
-      explanation: questionForm.explanation.trim()
+    setSaving(true);
+    const payload = {
+      material_id:          selectedModuleId,
+      question_text:        questionForm.q.trim(),
+      options:              questionForm.options.map(o => o.trim()),
+      correct_answer_index: Number(questionForm.answer),
+      explanation:          questionForm.explanation.trim(),
+      sort_order:           editingQuestion ? editingQuestion.sort_order : (questions.length + 1),
     };
 
-    if (editingIndex !== null) {
-      updatedQuestions[editingIndex] = newQ;
+    if (editingQuestion) {
+      await supabase.from('quiz_questions').update(payload).eq('id', editingQuestion.id);
+      showToast('Soal berhasil diperbarui!');
     } else {
-      updatedQuestions.push(newQ);
+      await supabase.from('quiz_questions').insert(payload);
+      showToast('Soal baru berhasil ditambahkan!');
     }
-
-    updateMaterial(selectedModule.id, { quiz: updatedQuestions });
+    setSaving(false);
     setQuestionModalOpen(false);
-    showToast(editingIndex !== null ? 'Soal berhasil diperbarui!' : 'Soal baru berhasil ditambahkan!');
+    fetchQuestions(selectedModuleId);
   };
 
-  const handleDelete = (idx) => {
-    if (!selectedModule) return;
-    const updatedQuestions = questions.filter((_, i) => i !== idx);
-    updateMaterial(selectedModule.id, { quiz: updatedQuestions });
-    setDeletingIndex(null);
+  const handleDelete = async (id) => {
+    await supabase.from('quiz_questions').delete().eq('id', id);
+    setDeletingId(null);
     showToast('Soal berhasil dihapus.');
+    fetchQuestions(selectedModuleId);
   };
 
   return (
@@ -148,9 +162,9 @@ export default function AdminQuestions() {
                 }`}
               >
                 <div className="flex items-center gap-2 mb-1">
-                  <span className={`text-[9px] font-black uppercase px-1.5 py-0.5 rounded ${
+                <span className="text-[10px] font-black uppercase px-1.5 py-0.5 rounded ${
                     selectedModuleId === m.id ? 'bg-indigo-100 text-indigo-700' : 'bg-slate-100 text-slate-600'
-                  }`}>
+                  }">
                     {m.unit}
                   </span>
                 </div>
@@ -174,7 +188,7 @@ export default function AdminQuestions() {
               <div className="bg-white rounded-3xl border border-slate-100 shadow-xs p-5 md:p-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
                   <span className="text-[10px] font-black text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-md uppercase tracking-wider mb-2 inline-block">
-                    {selectedModule.unit} • {selectedModule.category}
+                {selectedModule.unit} • {selectedModule.category_name || 'General'}
                   </span>
                   <h2 className="text-xl font-black text-slate-900 leading-tight">{selectedModule.title}</h2>
                 </div>
@@ -188,7 +202,6 @@ export default function AdminQuestions() {
               </div>
 
               {/* Standard Quiz Questions */}
-              <div className="space-y-4">
                 <h3 className="text-sm font-black text-slate-800 flex items-center gap-2">
                   <ClipboardList className="w-4 h-4 text-indigo-500" /> Multiple Choice Questions ({questions.length})
                 </h3>
@@ -207,51 +220,34 @@ export default function AdminQuestions() {
                   </div>
                 ) : (
                   <div className="space-y-3">
-                    {questions.map((q, idx) => (
-                      <div key={idx} className="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs group">
+                      {questions.map((q) => (
+                      <div key={q.id} className="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs group">
                         <div className="flex items-start justify-between gap-4 mb-4">
                           <div className="flex items-start gap-3">
                             <span className="w-6 h-6 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center text-xs font-black shrink-0 mt-0.5">
-                              {idx + 1}
+                              {q.sort_order}
                             </span>
-                            <p className="text-sm font-bold text-slate-900 leading-relaxed">{q.q}</p>
+                            <p className="text-sm font-bold text-slate-900 leading-relaxed">{q.question_text}</p>
                           </div>
                           
                           <div className="flex items-center gap-1 shrink-0">
                             <button
                               type="button"
-                              onClick={() => handleOpenEdit(idx)}
+                              onClick={() => handleOpenEdit(q)}
                               title="Edit Soal"
                               className="p-1.5 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"
                             >
                               <Edit className="w-4 h-4"/>
                             </button>
                             
-                            {deletingIndex === idx ? (
+                            {deletingId === q.id ? (
                               <div className="flex items-center gap-1 bg-rose-50 p-1 rounded-lg border border-rose-200">
                                 <span className="text-[10px] font-bold text-rose-700 px-1">Hapus?</span>
-                                <button
-                                  type="button"
-                                  onClick={() => handleDelete(idx)}
-                                  className="p-1 bg-rose-600 text-white rounded text-[10px] font-black"
-                                >
-                                  Ya
-                                </button>
-                                <button
-                                  type="button"
-                                  onClick={() => setDeletingIndex(null)}
-                                  className="p-1 text-slate-500 hover:bg-slate-200 rounded text-[10px]"
-                                >
-                                  Batal
-                                </button>
+                                <button type="button" onClick={() => handleDelete(q.id)} className="p-1 bg-rose-600 text-white rounded text-[10px] font-black">Ya</button>
+                                <button type="button" onClick={() => setDeletingId(null)} className="p-1 text-slate-500 hover:bg-slate-200 rounded text-[10px]">Batal</button>
                               </div>
                             ) : (
-                              <button
-                                type="button"
-                                onClick={() => setDeletingIndex(idx)}
-                                title="Hapus Soal"
-                                className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
-                              >
+                              <button type="button" onClick={() => setDeletingId(q.id)} title="Hapus Soal" className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors">
                                 <Trash2 className="w-4 h-4"/>
                               </button>
                             )}
@@ -260,20 +256,16 @@ export default function AdminQuestions() {
                         
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pl-9">
                           {q.options && q.options.map((opt, oIdx) => (
-                            <div 
-                              key={oIdx} 
-                              className={`p-2.5 rounded-xl border text-xs font-medium flex items-center gap-2 ${
-                                oIdx === q.answer 
-                                  ? 'bg-emerald-50 border-emerald-200 text-emerald-800 font-bold' 
-                                  : 'bg-slate-50 border-slate-100 text-slate-600'
-                              }`}
-                            >
-                              {oIdx === q.answer ? <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" /> : <div className="w-3.5 h-3.5 rounded-full border border-slate-300 shrink-0" />}
+                            <div key={oIdx} className={`p-2.5 rounded-xl border text-xs font-medium flex items-center gap-2 ${
+                              oIdx === q.correct_answer_index
+                                ? 'bg-emerald-50 border-emerald-200 text-emerald-800 font-bold'
+                                : 'bg-slate-50 border-slate-100 text-slate-600'
+                            }`}>
+                              {oIdx === q.correct_answer_index ? <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" /> : <div className="w-3.5 h-3.5 rounded-full border border-slate-300 shrink-0" />}
                               <span>{opt}</span>
                             </div>
                           ))}
                         </div>
-                        
                         {q.explanation && (
                           <div className="mt-4 pl-9">
                             <div className="bg-slate-50 rounded-xl p-3 text-[11px] text-slate-600 border border-slate-100">
@@ -285,7 +277,6 @@ export default function AdminQuestions() {
                     ))}
                   </div>
                 )}
-              </div>
 
             </>
           ) : (
@@ -309,7 +300,7 @@ export default function AdminQuestions() {
                 </div>
                 <div>
                   <h3 className="text-base font-black text-slate-900">
-                    {editingIndex !== null ? `Edit Question #${editingIndex + 1}` : 'Add New Question'}
+                    {editingQuestion ? `Edit Question` : 'Add New Question'}
                   </h3>
                   <p className="text-xs text-slate-500">{selectedModule?.title}</p>
                 </div>
@@ -407,7 +398,7 @@ export default function AdminQuestions() {
                   type="submit"
                   className="px-5 py-2 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl transition-colors shadow-xs"
                 >
-                  {editingIndex !== null ? 'Save Changes' : 'Create Question'}
+                  {editingQuestion ? 'Save Changes' : 'Create Question'}
                 </button>
               </div>
             </form>

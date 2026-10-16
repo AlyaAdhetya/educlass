@@ -1,19 +1,90 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useDataStore } from '../../store/dataStore';
+import { useAuthStore } from '../../store/authStore';
+import { supabase } from '../../lib/supabase';
 import { motion } from 'framer-motion';
 
 export default function Modules() {
-  const navigate = useNavigate();
-  const { materials, userStats } = useDataStore();
+  const navigate       = useNavigate();
+  const { user }       = useAuthStore();
+  const [materials, setMaterials]               = useState([]);
+  const [loading, setLoading]                   = useState(true);
   const [selectedCategory, setSelectedCategory] = useState('All');
 
-  const categories = ['All', ...new Set(materials.map((m) => m.category))];
+  useEffect(() => { fetchMaterials(); }, [user?.id]);
 
-  const filteredMaterials =
-    selectedCategory === 'All'
-      ? materials
-      : materials.filter((m) => m.category === selectedCategory);
+  async function fetchMaterials() {
+    setLoading(true);
+    const { data, error } = await supabase
+      .from('material_with_category')
+      .select('*')
+      .eq('publish_status', 'published')
+      .order('sort_order');
+
+    if (!error && data && user?.id) {
+      // Fetch user profile level
+      const { data: prof } = await supabase
+        .from('profiles')
+        .select('current_level_id')
+        .eq('id', user.id)
+        .single();
+      const userLevel = prof?.current_level_id || 1;
+
+      // Fetch user progress for each material
+      const { data: prog } = await supabase
+        .from('material_progress')
+        .select('material_id, status')
+        .eq('user_id', user.id);
+
+      const progressMap = {};
+      (prog || []).forEach(p => { progressMap[p.material_id] = p.status; });
+
+      const shaped = data.map((m, idx, arr) => {
+        const matLevel = m.level_id || m.level_number || 1;
+        const pStatus = progressMap[m.id];
+        let status = 'locked';
+
+        if (pStatus === 'completed') {
+          status = 'completed';
+        } else if (pStatus === 'in_progress') {
+          status = 'active';
+        } else if (matLevel > userLevel) {
+          status = 'locked';
+        } else if (matLevel < userLevel) {
+          status = 'unlocked';
+        } else {
+          // In user's current level: sequential unlock
+          const matsInSameLevel = arr.filter(x => (x.level_id || x.level_number || 1) === matLevel);
+          const posInLevel = matsInSameLevel.findIndex(x => x.id === m.id);
+          if (posInLevel <= 0) {
+            status = 'active';
+          } else {
+            const prevMat = matsInSameLevel[posInLevel - 1];
+            if (progressMap[prevMat.id] === 'completed') {
+              status = 'active';
+            } else {
+              status = 'locked';
+            }
+          }
+        }
+
+        return {
+          ...m,
+          category: m.category_name || 'General',
+          level:    m.level_number  || 1,
+          cefr:     m.cefr_label    || '',
+          status,
+        };
+      });
+      setMaterials(shaped);
+    } else if (!error && data) {
+      setMaterials(data.map(m => ({ ...m, category: m.category_name || 'General', level: m.level_number || 1, cefr: m.cefr_label || '', status: 'unlocked' })));
+    }
+    setLoading(false);
+  }
+
+  const categories = ['All', ...new Set(materials.map((m) => m.category))];
+  const filteredMaterials = selectedCategory === 'All' ? materials : materials.filter((m) => m.category === selectedCategory);
 
   return (
     <div className="max-w-6xl mx-auto px-4 md:px-8 py-6 space-y-6">
@@ -35,7 +106,7 @@ export default function Modules() {
           <div className="px-4 py-2 bg-blue-50/70 rounded-2xl border border-blue-200 text-center">
             <span className="text-[10px] font-bold text-slate-400 block uppercase">Selesai</span>
             <span className="text-base font-black text-blue-700">
-              {materials.filter((m) => m.status === 'completed').length} / {materials.length} Unit
+              {loading ? '...' : `${materials.filter((m) => m.status === 'completed').length} / ${materials.length} Unit`}
             </span>
           </div>
         </div>

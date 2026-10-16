@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useDataStore } from '../../store/dataStore';
+import React, { useState, useEffect } from 'react';
+import { supabase } from '../../lib/supabase';
 import { 
   BookOpen, Plus, Search, Filter, MoreVertical, 
   Edit, Trash2, Layout, CheckCircle2, AlertCircle, PlayCircle, Clock,
@@ -7,22 +7,45 @@ import {
 } from 'lucide-react';
 
 export default function AdminMaterials() {
-  const { materials, addMaterial, updateMaterial, deleteMaterial } = useDataStore();
+  const [materials, setMaterials] = useState([]);
+  const [loading, setLoading]     = useState(true);
+  const [saving, setSaving]       = useState(false);
   
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery]   = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
-  const [filterLevel, setFilterLevel] = useState('all');
+  const [filterLevel, setFilterLevel]   = useState('all');
 
   // Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingMaterial, setEditingMaterial] = useState(null);
-  const [activeModalTab, setActiveModalTab] = useState('info'); // 'info' | 'pages' | 'quiz'
-  
-  // Delete Confirmation State
+  const [activeModalTab, setActiveModalTab]   = useState('info');
   const [deleteConfirmId, setDeleteConfirmId] = useState(null);
+  const [toastMessage, setToastMessage]       = useState(null);
 
-  // Toast State
-  const [toastMessage, setToastMessage] = useState(null);
+  useEffect(() => { fetchMaterials(); }, []);
+
+  async function fetchMaterials() {
+    setLoading(true);
+    const { data, error } = await supabase
+      .from('material_with_category')
+      .select('*, material_pages(*), quiz_questions(*)')
+      .order('sort_order', { ascending: true });
+    if (!error && data) {
+      // Shape data to match UI expectations
+      const shaped = data.map(m => ({
+        ...m,
+        category:   m.category_name || 'General',
+        level:      m.level_number  || 1,
+        cefr:       m.cefr_label    || '',
+        pages:      (m.material_pages || []).sort((a,b) => a.page_number - b.page_number)
+                      .map(p => ({ title: p.title, content: p.content })),
+        quiz:       (m.quiz_questions || []).sort((a,b) => a.sort_order - b.sort_order)
+                      .map(q => ({ q: q.question_text, options: q.options, answer: q.correct_answer_index, explanation: q.explanation || '' })),
+      }));
+      setMaterials(shaped);
+    }
+    setLoading(false);
+  }
 
   const showToast = (msg) => {
     setToastMessage(msg);
@@ -42,7 +65,7 @@ export default function AdminMaterials() {
 
   // Form State
   const initialFormState = {
-    unit: `Unit ${materials.length + 1}`,
+    unit: 'Unit',
     title: '',
     category: 'Vocabulary',
     level: 1,
@@ -50,21 +73,9 @@ export default function AdminMaterials() {
     description: '',
     xp_reward: 100,
     min_score: 70,
-    status: 'completed', // 'completed' = Published, 'draft' = Draft
-    pages: [
-      {
-        title: 'Pengantar Materi',
-        content: 'Tuliskan materi pembelajaran teori atau literatur akademik di sini...'
-      }
-    ],
-    quiz: [
-      {
-        q: 'Pertanyaan evaluasi kuis pertama...',
-        options: ['Pilihan A', 'Pilihan B', 'Pilihan C', 'Pilihan D'],
-        answer: 0,
-        explanation: 'Penjelasan mengapa jawaban ini benar.'
-      }
-    ]
+    status: 'completed',
+    pages: [{ title: 'Pengantar Materi', content: 'Tuliskan materi pembelajaran teori atau literatur akademik di sini...' }],
+    quiz: [{ q: 'Pertanyaan evaluasi kuis pertama...', options: ['Pilihan A', 'Pilihan B', 'Pilihan C', 'Pilihan D'], answer: 0, explanation: 'Penjelasan mengapa jawaban ini benar.' }]
   };
 
   const [formData, setFormData] = useState(initialFormState);
@@ -72,10 +83,7 @@ export default function AdminMaterials() {
   // Open Create Modal
   const handleOpenCreateModal = () => {
     setEditingMaterial(null);
-    setFormData({
-      ...initialFormState,
-      unit: `Unit ${materials.length + 1}`
-    });
+    setFormData({ ...initialFormState, unit: `Unit ${materials.length + 1}` });
     setActiveModalTab('info');
     setIsModalOpen(true);
   };
@@ -105,55 +113,91 @@ export default function AdminMaterials() {
   };
 
   // Handle Form Submit
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.title.trim()) {
-      alert('Judul materi wajib diisi!');
-      return;
-    }
+    if (!formData.title.trim()) { alert('Judul materi wajib diisi!'); return; }
+    setSaving(true);
+    try {
+      // Find category_id
+      const { data: cats } = await supabase.from('categories').select('id,name');
+      const catObj = cats?.find(c => c.name === formData.category);
 
-    if (editingMaterial) {
-      updateMaterial(editingMaterial.id, {
-        unit: formData.unit,
-        title: formData.title,
-        category: formData.category,
-        level: Number(formData.level),
-        cefr: formData.cefr,
-        description: formData.description,
-        xp_reward: Number(formData.xp_reward),
-        min_score: Number(formData.min_score),
-        status: formData.status,
-        pages: formData.pages,
-        quiz: formData.quiz
-      });
-      showToast(`Materi "${formData.title}" berhasil diperbarui!`);
-    } else {
-      addMaterial({
-        unit: formData.unit,
-        title: formData.title,
-        category: formData.category,
-        level: Number(formData.level),
-        cefr: formData.cefr,
-        description: formData.description,
-        xp_reward: Number(formData.xp_reward),
-        min_score: Number(formData.min_score),
-        status: formData.status,
-        stars: 0,
-        pages: formData.pages,
-        quiz: formData.quiz,
-        questSteps: []
-      });
-      showToast(`Materi baru "${formData.title}" berhasil ditambahkan!`);
-    }
+      // Find level_id
+      const levelId = Number(formData.level);
 
-    setIsModalOpen(false);
+      const payload = {
+        unit:           formData.unit,
+        title:          formData.title,
+        category_id:    catObj?.id || null,
+        level_id:       levelId,
+        cefr_label:     formData.cefr,
+        description:    formData.description,
+        xp_reward:      Number(formData.xp_reward),
+        min_score:      Number(formData.min_score),
+        publish_status: formData.status === 'completed' ? 'published' : 'draft',
+        status:         formData.status === 'completed' ? 'active' : 'locked',
+        sort_order:     materials.length + 1,
+      };
+
+      let materialId;
+      if (editingMaterial) {
+        const { error } = await supabase.from('materials').update(payload).eq('id', editingMaterial.id);
+        if (error) throw error;
+        materialId = editingMaterial.id;
+        // Delete old pages & quiz, re-insert
+        await supabase.from('material_pages').delete().eq('material_id', materialId);
+        await supabase.from('quiz_questions').delete().eq('material_id', materialId);
+      } else {
+        const { data: mat, error } = await supabase.from('materials').insert(payload).select().single();
+        if (error) throw error;
+        materialId = mat.id;
+      }
+
+      // Insert pages
+      if (formData.pages.length > 0) {
+        await supabase.from('material_pages').insert(
+          formData.pages.map((p, i) => ({ material_id: materialId, page_number: i + 1, title: p.title, content: p.content }))
+        );
+      }
+
+      // Insert quiz questions
+      if (formData.quiz.length > 0) {
+        await supabase.from('quiz_questions').insert(
+          formData.quiz.map((q, i) => ({
+            material_id:          materialId,
+            question_text:        q.q,
+            options:              q.options,
+            correct_answer_index: q.answer,
+            explanation:          q.explanation,
+            sort_order:           i + 1,
+          }))
+        );
+      }
+
+      await fetchMaterials();
+      setIsModalOpen(false);
+      showToast(editingMaterial ? `Materi "${formData.title}" berhasil diperbarui!` : `Materi baru "${formData.title}" berhasil ditambahkan!`);
+    } catch (err) {
+      showToast(`Error: ${err.message}`);
+    } finally {
+      setSaving(false);
+    }
   };
 
   // Delete Material Handler
-  const handleDelete = (id) => {
-    deleteMaterial(id);
-    setDeleteConfirmId(null);
-    showToast('Materi berhasil dihapus.');
+  const handleDelete = async (id) => {
+    setSaving(true);
+    try {
+      const { error } = await supabase.from('materials').delete().eq('id', id);
+      if (error) throw error;
+      await fetchMaterials();
+      setDeleteConfirmId(null);
+      showToast('Materi berhasil dihapus.');
+    } catch (err) {
+      showToast(`Error: ${err.message}`);
+    } finally {
+      setSaving(false);
+    }
   };
 
   // Handlers for Pages inside modal

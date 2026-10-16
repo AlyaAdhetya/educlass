@@ -1,18 +1,46 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useDataStore } from '../../store/dataStore';
+import { useAuthStore } from '../../store/authStore';
+import { supabase } from '../../lib/supabase';
 import HootieMascot from '../../components/mascot/HootieMascot';
 import { motion, AnimatePresence } from 'framer-motion';
 import confetti from 'canvas-confetti';
 
 export default function LessonQuiz() {
-  const { id } = useParams();
-  const navigate = useNavigate();
-  const { materials, userStats, completeMaterialAndUnlockNext, deductHeart, addXP, addGems } =
-    useDataStore();
+  const { id }     = useParams();
+  const navigate   = useNavigate();
+  const { user }   = useAuthStore();
 
-  const material = materials.find((m) => m.id === parseInt(id)) || materials[0];
-  const questions = material.quiz || [];
+  const [material, setMaterial]   = useState(null);
+  const [questions, setQuestions] = useState([]);
+  const [hearts, setHearts]       = useState(5);
+  const [loadingQuiz, setLoadingQuiz] = useState(true);
+
+  useEffect(() => {
+    async function fetchQuiz() {
+      setLoadingQuiz(true);
+      const { data: mat } = await supabase
+        .from('material_with_category')
+        .select('*')
+        .eq('id', id)
+        .single();
+      if (mat) setMaterial(mat);
+
+      const { data: qs } = await supabase
+        .from('quiz_questions')
+        .select('*')
+        .eq('material_id', id)
+        .order('sort_order');
+      if (qs) setQuestions(qs.map(q => ({
+        q:           q.question_text,
+        options:     q.options,
+        answer:      q.correct_answer_index,
+        explanation: q.explanation || ''
+      })));
+      setLoadingQuiz(false);
+    }
+    if (id) fetchQuiz();
+  }, [id]);
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState(null);
@@ -31,43 +59,91 @@ export default function LessonQuiz() {
 
   const handleCheckAnswer = () => {
     if (selectedOption === null || isAnswered) return;
-
     const correct = selectedOption === currentQ.answer;
     setIsCorrect(correct);
     setIsAnswered(true);
-
     if (correct) {
       setScore((prev) => prev + 1);
-      confetti({
-        particleCount: 35,
-        spread: 50,
-        origin: { y: 0.8 },
-      });
+      confetti({ particleCount: 35, spread: 50, origin: { y: 0.8 } });
     } else {
-      deductHeart();
+      setHearts(h => Math.max(0, h - 1));
     }
   };
 
-  const handleNextQuestion = () => {
+  const handleNextQuestion = async () => {
     if (currentIndex < questions.length - 1) {
       setCurrentIndex((prev) => prev + 1);
       setSelectedOption(null);
       setIsAnswered(false);
       setIsCorrect(false);
     } else {
-      // Quiz finished
-      const finalPercentage = Math.round(((score + (isCorrect ? 0 : 0)) / questions.length) * 100);
-      completeMaterialAndUnlockNext(material.id, finalPercentage);
-      addXP(material.xp_reward);
-      addGems(35);
+      const totalCorrect = score + (isCorrect ? 1 : 0);
+      const finalScore   = Math.round((totalCorrect / questions.length) * 100);
+      const xpReward     = material?.xp_reward || 100;
+      const gemsReward   = 35;
+
+      // Save progress to Supabase
+      if (user?.id && id) {
+        await supabase.from('material_progress').upsert({
+          user_id:      user.id,
+          material_id:  id,
+          status:       finalScore >= (material?.min_score || 70) ? 'completed' : 'in_progress',
+          score:        finalScore,
+          xp_earned:    xpReward,
+          attempts:     1,
+          completed_at: finalScore >= (material?.min_score || 70) ? new Date().toISOString() : null,
+        }, { onConflict: 'user_id,material_id' });
+
+        // Update user_stats XP and gems
+        await supabase.rpc('increment_user_stats', {
+          p_user_id: user.id,
+          p_xp:      xpReward,
+          p_gems:    gemsReward
+        }).catch(() => {
+          // Fallback if RPC not available
+          supabase.from('user_stats')
+            .select('total_xp,gems,materials_completed')
+            .eq('user_id', user.id)
+            .single()
+            .then(({ data }) => {
+              if (data) {
+                supabase.from('user_stats').update({
+                  total_xp:            (data.total_xp || 0) + xpReward,
+                  gems:                (data.gems || 0) + gemsReward,
+                  materials_completed: (data.materials_completed || 0) + 1,
+                }).eq('user_id', user.id);
+              }
+            });
+        });
+
+        // Log activity
+        await supabase.from('activity_log').insert({
+          user_id:     user.id,
+          action_type: 'quiz_complete',
+          material_id: id,
+          xp_earned:   xpReward,
+          metadata:    { score: finalScore, correct: totalCorrect, total: questions.length }
+        });
+      }
+
       setIsCompleted(true);
-      confetti({
-        particleCount: 120,
-        spread: 80,
-        origin: { y: 0.6 },
-      });
+      confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
     }
   };
+
+  if (loadingQuiz) return (
+    <div className="min-h-screen flex items-center justify-center">
+      <div className="w-8 h-8 border-4 border-indigo-200 border-t-indigo-600 rounded-full animate-spin" />
+    </div>
+  );
+
+  if (!material || questions.length === 0) return (
+    <div className="min-h-screen flex flex-col items-center justify-center text-slate-500 gap-3">
+      <span className="text-4xl">📭</span>
+      <p className="font-bold">Belum ada soal kuis untuk materi ini.</p>
+      <button onClick={() => navigate('/dashboard/modules')} className="text-indigo-600 font-bold text-sm mt-2 underline cursor-pointer">← Kembali ke Modul</button>
+    </div>
+  );
 
   return (
     <div className="min-h-[calc(100vh-4rem)] flex flex-col justify-between max-w-3xl mx-auto px-4 py-6">
@@ -95,7 +171,7 @@ export default function LessonQuiz() {
           <span className="material-symbols-outlined fill-icon text-rose-500 text-base">
             favorite
           </span>
-          <span>{userStats.hearts}</span>
+        <span>{hearts}</span>
         </div>
       </div>
 

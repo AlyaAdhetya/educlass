@@ -1,30 +1,49 @@
-﻿import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { useDataStore } from '../../store/dataStore';
+import { useAuthStore } from '../../store/authStore';
+import { supabase } from '../../lib/supabase';
 import HootieMascot from '../../components/mascot/HootieMascot';
 import { motion, AnimatePresence } from 'framer-motion';
 import confetti from 'canvas-confetti';
 
 export default function MaterialDetail() {
-  const { id } = useParams();
-  const navigate = useNavigate();
-  const { materials, addXP, addGems } = useDataStore();
+  const { id }     = useParams();
+  const navigate   = useNavigate();
+  const { user }   = useAuthStore();
+  const [material, setMaterial] = useState(null);
+  const [loadingMat, setLoadingMat] = useState(true);
 
-  const material = materials.find((m) => m.id === parseInt(id));
+  useEffect(() => {
+    async function fetchMaterial() {
+      setLoadingMat(true);
+      const { data } = await supabase
+        .from('material_with_category')
+        .select('*')
+        .eq('id', id)
+        .single();
+      if (data) setMaterial(data);
+      setLoadingMat(false);
+    }
+    if (id) fetchMaterial();
+  }, [id]);
+
   const [currentPage, setCurrentPage] = useState(0);
   const [showCompletion, setShowCompletion] = useState(false);
-  const [activeTab, setActiveTab] = useState('materi'); // 'materi' | 'glosarium'
+  const [activeTab, setActiveTab] = useState('materi');
   const [revealedCards, setRevealedCards] = useState({});
+
+  if (loadingMat) return (
+    <div className="flex items-center justify-center min-h-[60vh]">
+      <div className="w-8 h-8 border-4 border-indigo-200 border-t-indigo-600 rounded-full animate-spin" />
+    </div>
+  );
 
   if (!material) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
         <div className="text-center p-8 bg-white rounded-3xl border border-indigo-100 shadow-sm">
           <p className="text-slate-600 text-sm font-bold mb-4">Modul materi tidak ditemukan.</p>
-          <Link
-            to="/dashboard"
-            className="tactile-btn px-5 py-2.5 bg-indigo-600 text-white rounded-xl font-bold text-xs"
-          >
+          <Link to="/dashboard" className="tactile-btn px-5 py-2.5 bg-indigo-600 text-white rounded-xl font-bold text-xs">
             ← Kembali ke Dashboard
           </Link>
         </div>
@@ -32,8 +51,8 @@ export default function MaterialDetail() {
     );
   }
 
-  const pages = material.pages || [];
-  const totalPages = pages.length;
+  const pages      = material.pages || [];
+  const totalPages = pages.length || 1;
   const isLastPage = currentPage === totalPages - 1;
   const page = pages[currentPage] || { title: material.title, content: '' };
   const progress = Math.round(((currentPage + 1) / totalPages) * 100);

@@ -1,13 +1,18 @@
 import React, { useState } from 'react';
-import { useDataStore } from '../../../store/dataStore';
 import { Star, Plus, Search, Edit, Trash2, Palette, Unlock } from 'lucide-react';
 
+const STATIC_REWARDS = [
+  { id: 1, name: 'Ocean Breeze', type: 'theme', status: 'active', description: 'Tema biru laut yang menenangkan.', icon: 'waves', preview: '#bfdbfe', requirementLabel: '50 Gems' },
+  { id: 2, name: 'Forest Night', type: 'theme', status: 'active', description: 'Tema hijau gelap nuansa hutan.', icon: 'forest', preview: '#bbf7d0', requirementLabel: '75 Gems' },
+  { id: 3, name: 'Sunset Glow', type: 'theme', status: 'active', description: 'Tema oranye hangat seperti matahari terbenam.', icon: 'wb_sunny', preview: '#fed7aa', requirementLabel: '100 Gems' },
+];
+
 export default function AdminGamificationRewards() {
-  const { rewards, deleteReward } = useDataStore();
+  const [rewards]      = useState(STATIC_REWARDS);
   const [searchQuery, setSearchQuery] = useState('');
 
-  const filteredRewards = rewards.filter(r => 
-    r.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+  const filteredRewards = rewards.filter(r =>
+    r.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     r.description.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
@@ -53,7 +58,7 @@ export default function AdminGamificationRewards() {
               </div>
               <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                 <button className="p-1.5 text-white bg-black/20 hover:bg-black/40 rounded-lg backdrop-blur-sm"><Edit className="w-3.5 h-3.5"/></button>
-                <button onClick={() => deleteReward(reward.id)} className="p-1.5 text-white bg-rose-500/80 hover:bg-rose-600 rounded-lg backdrop-blur-sm"><Trash2 className="w-3.5 h-3.5"/></button>
+                <button onClick={() => alert('Hapus reward: ' + reward.name)} className="p-1.5 text-white bg-rose-500/80 hover:bg-rose-600 rounded-lg backdrop-blur-sm"><Trash2 className="w-3.5 h-3.5"/></button>
               </div>
             </div>
 

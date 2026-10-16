@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { useDataStore } from '../../store/dataStore';
+import React, { useState, useEffect } from 'react';
+import { supabase } from '../../lib/supabase';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Users as UsersIcon, Search, Filter, Mail, Calendar, 
   Edit, Trash2, ShieldCheck, ChevronRight, CheckCircle2, XCircle,
-  X, Plus, UserCheck, AlertTriangle
+  X, Plus, UserCheck, AlertTriangle, Loader2
 } from 'lucide-react';
 
 const availableLevels = [
@@ -17,32 +17,67 @@ const availableLevels = [
 ];
 
 export default function AdminUsers() {
-  const { students, addStudent, updateStudent, deleteStudent } = useDataStore();
-  const [activeTab, setActiveTab] = useState('mahasiswa');
+  const [users, setUsers]           = useState([]);
+  const [loading, setLoading]       = useState(true);
+  const [activeTab, setActiveTab]   = useState('mahasiswa');
   const [searchQuery, setSearchQuery] = useState('');
-  
-  // Filter States
   const [showFilter, setShowFilter] = useState(false);
   const [statusFilter, setStatusFilter] = useState('all');
-  const [levelFilter, setLevelFilter] = useState('all');
-
-  // Modal States
+  const [levelFilter, setLevelFilter]   = useState('all');
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const [editingUser, setEditingUser] = useState(null);
-  const [viewingUser, setViewingUser] = useState(null);
+  const [editingUser, setEditingUser]   = useState(null);
+  const [viewingUser, setViewingUser]   = useState(null);
   const [userToDelete, setUserToDelete] = useState(null);
   const [toastMessage, setToastMessage] = useState('');
+  const [saving, setSaving] = useState(false);
 
-  // Form State for Add User
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    role: 'mahasiswa',
-    nim: '',
-    level: 1,
-    levelName: 'Beginner',
-    status: 'active'
+    name: '', email: '', role: 'mahasiswa', nim: '', level: 1, status: 'active'
   });
+
+  useEffect(() => { fetchUsers(); }, []);
+
+  async function fetchUsers() {
+    setLoading(true);
+    const { data, error } = await supabase
+      .from('profiles')
+      .select(`
+        id, email, name, nim, role, status, avatar_url, current_level_id, created_at,
+        user_stats (*),
+        levels (*)
+      `)
+      .order('created_at', { ascending: false });
+
+    if (!error && data) {
+      const formatted = data.map(p => {
+        const stats = Array.isArray(p.user_stats) ? p.user_stats[0] : (p.user_stats || {});
+        const lvl = Array.isArray(p.levels) ? p.levels[0] : (p.levels || {});
+        const displayName = p.name || p.email?.split('@')[0] || 'User';
+        return {
+          ...p,
+          name: displayName,
+          full_name: displayName,
+          level_name: lvl.name || 'Beginner',
+          level_number: lvl.level_number || p.current_level_id || 1,
+          level_badge: lvl.badge_emoji || '🌱',
+          cefr_level: lvl.cefr_equivalent || 'A1',
+          total_xp: stats.total_xp || 0,
+          gems: stats.gems || 0,
+          streak_days: stats.current_streak || 0,
+          longest_streak: stats.longest_streak || 0,
+          total_completed_materials: stats.total_completed_materials || 0,
+          total_completed_quizzes: stats.total_completed_quizzes || 0,
+          last_activity_date: stats.last_activity_date,
+          quiz_average: stats.quiz_average || 0,
+          assignment_average: stats.assignment_average || 0,
+          final_score: stats.final_score || 0,
+          letter_grade: stats.letter_grade || 'E',
+        };
+      });
+      setUsers(formatted);
+    }
+    setLoading(false);
+  }
 
   const showToast = (msg) => {
     setToastMessage(msg);
@@ -50,93 +85,105 @@ export default function AdminUsers() {
   };
 
   const isFilterActive = statusFilter !== 'all' || levelFilter !== 'all';
+  const resetFilters   = () => { setStatusFilter('all'); setLevelFilter('all'); };
 
-  const resetFilters = () => {
-    setStatusFilter('all');
-    setLevelFilter('all');
-  };
-
-  const filteredUsers = students.filter(user => {
+  const filteredUsers = users.filter(user => {
     if (activeTab === 'mahasiswa' && user.role !== 'mahasiswa') return false;
-    if (activeTab === 'admin' && user.role !== 'admin') return false;
-    if (statusFilter !== 'all' && user.status !== statusFilter) return false;
-    if (levelFilter !== 'all' && user.level !== Number(levelFilter)) return false;
-    
+    if (activeTab === 'admin'     && user.role !== 'admin')     return false;
+    if (statusFilter !== 'all'   && user.status !== statusFilter) return false;
+    if (levelFilter  !== 'all'   && user.level_number !== Number(levelFilter)) return false;
     if (searchQuery) {
       const q = searchQuery.toLowerCase();
-      return user.name.toLowerCase().includes(q) || 
-             user.email.toLowerCase().includes(q) || 
-             (user.nim && user.nim.toLowerCase().includes(q));
+      const userName = (user.name || user.full_name || '').toLowerCase();
+      return userName.includes(q) ||
+             user.email?.toLowerCase().includes(q) ||
+             user.nim?.toLowerCase().includes(q);
     }
     return true;
   });
 
-  const getLevelColor = (level) => {
-    if (!level) return 'bg-slate-100 text-slate-600';
-    if (level >= 5) return 'bg-amber-100 text-amber-700';
-    if (level >= 3) return 'bg-violet-100 text-violet-700';
+  const getLevelColor = (lvl) => {
+    if (!lvl) return 'bg-slate-100 text-slate-600';
+    if (lvl >= 5) return 'bg-amber-100 text-amber-700';
+    if (lvl >= 3) return 'bg-violet-100 text-violet-700';
     return 'bg-blue-100 text-blue-700';
   };
 
-  // Handle Add User
-  const handleAddSubmit = (e) => {
+  // Handle Add User — create via Supabase Auth + profile insert
+  const handleAddSubmit = async (e) => {
     e.preventDefault();
     if (!formData.name || !formData.email) return;
-
-    const matchedLevel = availableLevels.find(l => l.level === Number(formData.level));
-    
-    addStudent({
-      name: formData.name,
-      email: formData.email,
-      role: formData.role,
-      nim: formData.role === 'mahasiswa' ? (formData.nim || '240' + Math.floor(1000 + Math.random() * 9000)) : '-',
-      level: formData.role === 'mahasiswa' ? Number(formData.level) : null,
-      levelName: formData.role === 'mahasiswa' ? (matchedLevel?.name || 'Beginner') : null,
-      status: formData.status,
-      lastActivity: 'Just now',
-    });
-
-    setIsAddModalOpen(false);
-    setFormData({
-      name: '',
-      email: '',
-      role: 'mahasiswa',
-      nim: '',
-      level: 1,
-      levelName: 'Beginner',
-      status: 'active'
-    });
-    showToast(`User "${formData.name}" berhasil ditambahkan!`);
+    setSaving(true);
+    try {
+      // Insert profile directly (admin pre-creates user)
+      // In a real app, you'd invite via email or use service_role to create auth user
+      // For now we insert into profiles only (user can register themselves)
+      const { error } = await supabase.from('profiles').upsert({
+        email: formData.email,
+        name: formData.name,
+        nim: formData.nim || null,
+        role: formData.role,
+        status: formData.status,
+        current_level_id: Number(formData.level),
+      });
+      if (error) throw error;
+      await fetchUsers();
+      setIsAddModalOpen(false);
+      setFormData({ name: '', email: '', role: 'mahasiswa', nim: '', level: 1, status: 'active' });
+      showToast(`User "${formData.name}" berhasil ditambahkan!`);
+    } catch (err) {
+      showToast(`Error: ${err.message}`);
+    } finally {
+      setSaving(false);
+    }
   };
 
   // Handle Edit User
-  const handleEditSubmit = (e) => {
+  const handleEditSubmit = async (e) => {
     e.preventDefault();
     if (!editingUser) return;
-
-    const matchedLevel = availableLevels.find(l => l.level === Number(editingUser.level));
-
-    updateStudent(editingUser.id, {
-      name: editingUser.name,
-      email: editingUser.email,
-      nim: editingUser.role === 'mahasiswa' ? editingUser.nim : '-',
-      level: editingUser.role === 'mahasiswa' ? Number(editingUser.level) : null,
-      levelName: editingUser.role === 'mahasiswa' ? (matchedLevel?.name || editingUser.levelName) : null,
-      status: editingUser.status,
-    });
-
-    const savedName = editingUser.name;
-    setEditingUser(null);
-    showToast(`Perubahan data "${savedName}" berhasil disimpan!`);
+    setSaving(true);
+    try {
+      const { error } = await supabase
+        .from('profiles')
+        .update({
+          name:             editingUser.name,
+          nim:              editingUser.nim || null,
+          status:           editingUser.status,
+          current_level_id: Number(editingUser.level_number) || 1,
+        })
+        .eq('id', editingUser.id);
+      if (error) throw error;
+      await fetchUsers();
+      const savedName = editingUser.name;
+      setEditingUser(null);
+      showToast(`Perubahan data "${savedName}" berhasil disimpan!`);
+    } catch (err) {
+      showToast(`Error: ${err.message}`);
+    } finally {
+      setSaving(false);
+    }
   };
 
-  // Handle Confirm Delete
-  const handleConfirmDelete = () => {
+  // Handle Delete User (profiles only — auth user remains)
+  const handleConfirmDelete = async () => {
     if (!userToDelete) return;
-    deleteStudent(userToDelete.id);
-    const deletedName = userToDelete.name;
-    setUserToDelete(null);
-    showToast(`User "${deletedName}" berhasil dihapus.`);
+    setSaving(true);
+    try {
+      const { error } = await supabase
+        .from('profiles')
+        .update({ status: 'inactive' })
+        .eq('id', userToDelete.id);
+      if (error) throw error;
+      await fetchUsers();
+      const deletedName = userToDelete.name;
+      setUserToDelete(null);
+      showToast(`User "${deletedName}" berhasil dinonaktifkan.`);
+    } catch (err) {
+      showToast(`Error: ${err.message}`);
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (
@@ -259,7 +306,9 @@ export default function AdminUsers() {
           </div>
           <div>
             <p className="text-xs font-bold text-slate-400 uppercase">Total Students</p>
-            <h3 className="text-2xl font-black text-slate-900">{students.filter(s => s.role === 'mahasiswa').length}</h3>
+            {loading ? <div className="w-12 h-6 bg-slate-100 rounded animate-pulse mt-1" /> :
+              <h3 className="text-2xl font-black text-slate-900">{users.filter(s => s.role === 'mahasiswa').length}</h3>
+            }
           </div>
         </div>
         
@@ -269,7 +318,9 @@ export default function AdminUsers() {
           </div>
           <div>
             <p className="text-xs font-bold text-slate-400 uppercase">Active Accounts</p>
-            <h3 className="text-2xl font-black text-slate-900">{students.filter(s => s.status === 'active').length}</h3>
+            {loading ? <div className="w-12 h-6 bg-slate-100 rounded animate-pulse mt-1" /> :
+              <h3 className="text-2xl font-black text-slate-900">{users.filter(s => s.status === 'active').length}</h3>
+            }
           </div>
         </div>
 
@@ -279,7 +330,9 @@ export default function AdminUsers() {
           </div>
           <div>
             <p className="text-xs font-bold text-slate-400 uppercase">Administrators</p>
-            <h3 className="text-2xl font-black text-slate-900">{students.filter(s => s.role === 'admin').length}</h3>
+            {loading ? <div className="w-12 h-6 bg-slate-100 rounded animate-pulse mt-1" /> :
+              <h3 className="text-2xl font-black text-slate-900">{users.filter(s => s.role === 'admin').length}</h3>
+            }
           </div>
         </div>
       </div>
@@ -339,7 +392,7 @@ export default function AdminUsers() {
                       <div className={`w-9 h-9 rounded-full flex items-center justify-center text-xs font-black shrink-0 ${
                         user.role === 'admin' ? 'bg-indigo-100 text-indigo-700' : 'bg-slate-100 text-slate-700'
                       }`}>
-                        {user.name.slice(0, 2).toUpperCase()}
+                        {(user.name || user.email || 'US').slice(0, 2).toUpperCase()}
                       </div>
                       <div>
                         <p className="font-bold text-slate-900 text-xs">{user.name}</p>
@@ -356,11 +409,10 @@ export default function AdminUsers() {
                     </td>
                   )}
                   
-                  {/* HANYA TAMPILKAN LEVEL SAJA (XP DIHAPUS) */}
                   {activeTab === 'mahasiswa' && (
                     <td className="py-4 px-6">
-                      <span className={`px-2.5 py-1 rounded-lg text-xs font-bold inline-flex items-center gap-1 ${getLevelColor(user.level)}`}>
-                        Lv.{user.level || 1} {user.levelName || 'Beginner'}
+                      <span className={`px-2.5 py-1 rounded-lg text-xs font-bold inline-flex items-center gap-1 ${getLevelColor(user.level_number)}`}>
+                        Lv.{user.level_number || 1} {user.level_name || 'Beginner'}
                       </span>
                     </td>
                   )}
@@ -378,7 +430,9 @@ export default function AdminUsers() {
                   
                   <td className="py-4 px-6">
                     <p className="text-[11px] text-slate-500 font-medium flex items-center gap-1.5">
-                      <Calendar className="w-3 h-3" /> {user.lastActivity || '-'}
+                      <Calendar className="w-3 h-3" /> {user.last_activity_date 
+                        ? new Date(user.last_activity_date).toLocaleDateString('id-ID') 
+                        : '-'}
                     </p>
                   </td>
                   
@@ -702,7 +756,7 @@ export default function AdminUsers() {
 
               <div className="flex flex-col items-center text-center space-y-2">
                 <div className="w-16 h-16 rounded-2xl bg-indigo-100 text-indigo-700 font-black text-xl flex items-center justify-center shadow-inner">
-                  {viewingUser.name.slice(0, 2).toUpperCase()}
+                  {(viewingUser.name || viewingUser.email || 'US').slice(0, 2).toUpperCase()}
                 </div>
                 <h4 className="font-extrabold text-base text-slate-900">{viewingUser.name}</h4>
                 <p className="text-xs text-slate-500 font-medium">{viewingUser.email}</p>

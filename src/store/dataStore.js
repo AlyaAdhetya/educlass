@@ -745,7 +745,6 @@ const initialSettings = {
     platformName: 'EduClass',
     tagline: 'Gamified English Learning Platform',
     defaultLanguage: 'id',
-    semester: 'Semester Ganjil 2026/2027',
   },
   learning: {
     defaultMinScore: 60,

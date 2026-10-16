@@ -1,21 +1,39 @@
 import React, { useState } from 'react';
-import { useDataStore } from '../../store/dataStore';
 import {
   Settings, Save, Globe, BookOpen, Gamepad2, Check,
   RefreshCcw, Shield, ChevronRight, AlertCircle
 } from 'lucide-react';
 
+const DEFAULT_SETTINGS = {
+  general: {
+    platformName: 'EduClass',
+    tagline: 'Platform Pembelajaran Bahasa Inggris Berbasis Gamifikasi',
+    defaultLanguage: 'id',
+  },
+  learning: {
+    defaultMinScore: 70,
+    maxRetakeAttempts: 3,
+    allowRetake: true,
+    completionRequiresPassing: true,
+    showExplanationAfterQuiz: true,
+  },
+  gamification: {
+    xpEnabled: true,
+    streakEnabled: true,
+    rewardsEnabled: true,
+    leaderboardEnabled: true,
+  },
+};
+
 const navItems = [
-  { key: 'general', label: 'General', icon: Globe, desc: 'Identitas platform & semester' },
+  { key: 'general', label: 'General', icon: Globe, desc: 'Identitas & konfigurasi platform' },
   { key: 'learning', label: 'Learning Rules', icon: BookOpen, desc: 'Aturan kuis, retake & kelulusan' },
   { key: 'gamification', label: 'Gamification', icon: Gamepad2, desc: 'XP, streak, rewards & leaderboard' },
 ];
 
 export default function AdminSettings() {
-  const { settings, updateSettings } = useDataStore();
-
   const [activeSection, setActiveSection] = useState('general');
-  const [localSettings, setLocalSettings] = useState(() => JSON.parse(JSON.stringify(settings)));
+  const [localSettings, setLocalSettings] = useState(() => JSON.parse(JSON.stringify(DEFAULT_SETTINGS)));
   const [savedSection, setSavedSection] = useState(null);
 
   const handleChange = (section, key, value) => {
@@ -26,15 +44,13 @@ export default function AdminSettings() {
   };
 
   const handleSave = () => {
-    updateSettings('general', localSettings.general);
-    updateSettings('learning', localSettings.learning);
-    updateSettings('gamification', localSettings.gamification);
+    // Settings stored in local state; a backend endpoint can be added later
     setSavedSection(activeSection);
     setTimeout(() => setSavedSection(null), 2500);
   };
 
   const handleReset = () => {
-    setLocalSettings(JSON.parse(JSON.stringify(settings)));
+    setLocalSettings(JSON.parse(JSON.stringify(DEFAULT_SETTINGS)));
   };
 
   const ToggleSwitch = ({ section, field, label, desc }) => {

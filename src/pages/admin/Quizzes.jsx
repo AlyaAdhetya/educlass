@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card';
 import { Button } from '../../components/ui/button';
@@ -7,12 +7,29 @@ import {
   AlertCircle, Plus, X, Check, Settings, Sliders, HelpCircle,
   Clock, Zap, Shield, RotateCcw, Sparkles, ExternalLink
 } from 'lucide-react';
-import { useDataStore } from '../../store/dataStore';
+import { supabase } from '../../lib/supabase';
 
 export default function AdminQuizzes() {
   const navigate = useNavigate();
-  const { materials, activityLog, updateMaterial, settings, updateSettings } = useDataStore();
-  
+  const [materials, setMaterials] = useState([]);
+  const [activityLog] = useState([]);
+
+  useEffect(() => {
+    async function loadMaterials() {
+      const { data } = await supabase
+        .from('material_with_category')
+        .select('*')
+        .order('unit');
+      if (data) setMaterials(data);
+    }
+    loadMaterials();
+  }, []);
+
+  const updateMaterial = async (id, updates) => {
+    await supabase.from('materials').update(updates).eq('id', id);
+    setMaterials(prev => prev.map(m => m.id === id ? { ...m, ...updates } : m));
+  };
+
   const [activeTab, setActiveTab] = useState('bank'); // 'bank' (Configurations) | 'monitoring'
   const [searchStudent, setSearchStudent] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
@@ -172,30 +189,18 @@ export default function AdminQuizzes() {
   // --- GLOBAL SETTINGS MODAL ---
   const [globalModalOpen, setGlobalModalOpen] = useState(false);
   const [globalSettingsForm, setGlobalSettingsForm] = useState({
-    minPassingScore: settings?.learning?.minPassingScore || 60,
-    maxRetakes: settings?.learning?.maxRetakes || 3,
-    allowRetake: settings?.learning?.allowRetake !== undefined ? settings?.learning?.allowRetake : true,
-    showExplanation: settings?.learning?.showExplanation !== undefined ? settings?.learning?.showExplanation : true,
+    minPassingScore: 60,
+    maxRetakes: 3,
+    allowRetake: true,
+    showExplanation: true,
   });
 
   const openGlobalModal = () => {
-    setGlobalSettingsForm({
-      minPassingScore: settings?.learning?.minPassingScore || 60,
-      maxRetakes: settings?.learning?.maxRetakes || 3,
-      allowRetake: settings?.learning?.allowRetake !== undefined ? settings?.learning?.allowRetake : true,
-      showExplanation: settings?.learning?.showExplanation !== undefined ? settings?.learning?.showExplanation : true,
-    });
     setGlobalModalOpen(true);
   };
 
   const handleSaveGlobalSettings = (e) => {
     e.preventDefault();
-    updateSettings('learning', {
-      minPassingScore: Number(globalSettingsForm.minPassingScore),
-      maxRetakes: Number(globalSettingsForm.maxRetakes),
-      allowRetake: Boolean(globalSettingsForm.allowRetake),
-      showExplanation: Boolean(globalSettingsForm.showExplanation),
-    });
     setGlobalModalOpen(false);
     showToast('Pengaturan global kuis berhasil diperbarui!');
   };

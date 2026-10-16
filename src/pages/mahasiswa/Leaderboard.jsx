@@ -1,11 +1,39 @@
-import React, { useState } from 'react';
-import { useDataStore } from '../../store/dataStore';
+import React, { useState, useEffect } from 'react';
+import { useAuthStore } from '../../store/authStore';
+import { supabase } from '../../lib/supabase';
 import { motion } from 'framer-motion';
 
 export default function LeaderboardArena() {
-  const { leaderboard, userStats } = useDataStore();
-  const [activeTab, setActiveTab] = useState('global');
+  const { user }   = useAuthStore();
+  const [leaderboard, setLeaderboard] = useState([]);
+  const [loading, setLoading]         = useState(true);
+  const [activeTab, setActiveTab]     = useState('global');
   const [searchQuery, setSearchQuery] = useState('');
+
+  useEffect(() => { fetchLeaderboard(); }, []);
+
+  async function fetchLeaderboard() {
+    setLoading(true);
+    const { data, error } = await supabase
+      .from('leaderboard_view')
+      .select('*')
+      .order('rank', { ascending: true })
+      .limit(50);
+    if (!error && data) {
+      setLeaderboard(data.map((item, i) => ({
+        ...item,
+        rank:          item.rank || (i + 1),
+        name:          item.name || 'Anonymous',
+        nim:           item.nim  || '-',
+        title:         item.level_name || 'Beginner',
+        xp:            item.total_xp   || 0,
+        streak:        item.streak_days || 0,
+        avatar:        null,
+        isCurrentUser: item.user_id === user?.id,
+      })));
+    }
+    setLoading(false);
+  }
 
   const filteredLeaderboard = leaderboard.filter(
     (item) =>
@@ -16,6 +44,14 @@ export default function LeaderboardArena() {
   const top1 = leaderboard.find((item) => item.rank === 1);
   const top2 = leaderboard.find((item) => item.rank === 2);
   const top3 = leaderboard.find((item) => item.rank === 3);
+
+  function Avatar({ name, size = 'md' }) {
+    const initials = name ? name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0,2) : '?';
+    const colors   = ['bg-indigo-500','bg-violet-500','bg-emerald-500','bg-amber-500','bg-rose-500','bg-cyan-500'];
+    const color    = colors[(name?.charCodeAt(0) || 0) % colors.length];
+    const sz       = size === 'lg' ? 'w-20 h-20 sm:w-24 sm:h-24 text-2xl' : size === 'md' ? 'w-16 h-16 sm:w-20 sm:h-20 text-xl' : 'w-8 h-8 text-xs';
+    return <div className={`${sz} ${color} rounded-2xl flex items-center justify-center text-white font-black flex-shrink-0`}>{initials}</div>;
+  }
 
   return (
     <div className="max-w-[1400px] mx-auto px-4 md:px-8 py-6 space-y-8">
@@ -30,7 +66,7 @@ export default function LeaderboardArena() {
               Turnamen Esports Akademik Mingguan
             </div>
             <h1 className="text-xl md:text-3xl font-black tracking-tight leading-tight">
-              Liga Mahasiswa Semester Ganjil — Minggu ke-4
+              Liga Mahasiswa EduClass — Minggu ke-4
             </h1>
             <p className="text-xs md:text-sm text-white/90 leading-relaxed">
               Divisi <strong className="underline decoration-sky-300 underline-offset-4">Obsidian & Diamond</strong> (Bahasa Inggris Akademis). Kumpulkan XP dari kuis harian, writing drill, dan grammar boss!
@@ -132,11 +168,7 @@ export default function LeaderboardArena() {
                     workspace_premium
                   </span>
                 </div>
-                <img
-                  src={top2.avatar}
-                  alt={top2.name}
-                  className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl object-cover border-4 border-slate-300 shadow-md"
-                />
+                <Avatar name={top2.name} size="md" />
                 <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded-full bg-slate-700 text-white text-[9px] font-black shadow-xs whitespace-nowrap">
                   #2 Perak
                 </span>
@@ -163,11 +195,7 @@ export default function LeaderboardArena() {
                 <div className="absolute -top-6 left-1/2 -translate-x-1/2 w-9 h-9 rounded-full bg-amber-400 border-2 border-white shadow-md flex items-center justify-center text-amber-950 z-10 animate-bounce">
                   <span className="material-symbols-outlined text-lg fill-icon">crown</span>
                 </div>
-                <img
-                  src={top1.avatar}
-                  alt={top1.name}
-                  className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl object-cover border-4 border-amber-400 shadow-lg"
-                />
+                <Avatar name={top1.name} size="lg" />
                 <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 px-2.5 py-0.5 rounded-full bg-amber-500 text-white text-[10px] font-black shadow-xs whitespace-nowrap">
                   #1 Emas
                 </span>
@@ -196,11 +224,7 @@ export default function LeaderboardArena() {
                     military_tech
                   </span>
                 </div>
-                <img
-                  src={top3.avatar}
-                  alt={top3.name}
-                  className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl object-cover border-4 border-amber-600 shadow-md"
-                />
+                <Avatar name={top3.name} size="md" />
                 <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded-full bg-amber-800 text-white text-[9px] font-black shadow-xs whitespace-nowrap">
                   #3 Perunggu
                 </span>
@@ -264,11 +288,7 @@ export default function LeaderboardArena() {
                     </span>
                   </td>
                   <td className="py-3.5 px-4 flex items-center gap-3">
-                    <img
-                      src={item.avatar}
-                      alt={item.name}
-                      className="w-8 h-8 rounded-xl object-cover border border-slate-200"
-                    />
+                    <Avatar name={item.name} size="sm" />
                     <div>
                       <p className="font-extrabold text-slate-900">{item.name}</p>
                       <p className="text-[10px] text-slate-400">NIM: {item.nim}</p>

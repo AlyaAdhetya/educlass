@@ -1,33 +1,54 @@
-import React, { useState } from 'react';
-import { useDataStore } from '../../store/dataStore';
+import React, { useState, useEffect } from 'react';
+import { useAuthStore } from '../../store/authStore';
+import { supabase } from '../../lib/supabase';
 import { motion } from 'framer-motion';
 import confetti from 'canvas-confetti';
 
+const SHOP_ITEMS = [
+  { id: 1, name: 'Ocean Breeze',  description: 'Tema biru laut yang menenangkan.',        priceGems: 50,  accentColor: 'blue',   icon: 'waves',    themeClass: 'theme-ocean' },
+  { id: 2, name: 'Forest Night',  description: 'Tema hijau gelap nuansa hutan.',           priceGems: 75,  accentColor: 'green',  icon: 'forest',   themeClass: 'theme-forest' },
+  { id: 3, name: 'Sunset Glow',   description: 'Tema oranye hangat seperti matahari.',     priceGems: 100, accentColor: 'orange', icon: 'wb_sunny', themeClass: 'theme-sunset' },
+  { id: 4, name: 'Galaxy Night',  description: 'Tema ungu gelap galaxy yang keren.',       priceGems: 120, accentColor: 'purple', icon: 'stars',    themeClass: 'theme-galaxy' },
+];
+
 export default function ScholarShop() {
-  const { userStats, shopItems, inventory, buyItem, setActiveTheme } = useDataStore();
+  const { user } = useAuthStore();
+  const [userStats,  setUserStats]  = useState({ gems: 0, activeTheme: '' });
+  const [inventory,  setInventory]  = useState([]);
   const [purchaseSuccess, setPurchaseSuccess] = useState('');
 
-  const filteredItems = shopItems; // Only themes now
+  useEffect(() => {
+    if (!user) return;
+    supabase.from('user_stats').select('gems').eq('user_id', user.id).single()
+      .then(({ data }) => { if (data) setUserStats(s => ({ ...s, gems: data.gems || 0 })); });
+  }, [user]);
 
-  const handleBuy = (item) => {
+  const shopItems = SHOP_ITEMS;
+  const filteredItems = shopItems;
+
+  const handleBuy = async (item) => {
     if (userStats.gems < item.priceGems) {
       alert('Permata tidak cukup! Selesaikan kuis atau misi harian untuk menambah permata.');
       return;
     }
-    buyItem(item.id);
-    setActiveTheme(item.themeClass);
+    // Deduct gems in DB
+    if (user) {
+      const { data } = await supabase.from('user_stats').select('gems').eq('user_id', user.id).single();
+      if (data) {
+        await supabase.from('user_stats').update({ gems: Math.max(0, (data.gems || 0) - item.priceGems) }).eq('user_id', user.id);
+        setUserStats(s => ({ ...s, gems: s.gems - item.priceGems, activeTheme: item.themeClass }));
+      }
+    }
+    setInventory(prev => [...prev, item.id]);
     setPurchaseSuccess(`Berhasil mendapatkan tema ${item.name}!`);
-    confetti({
-      particleCount: 40,
-      spread: 50,
-      origin: { y: 0.8 },
-    });
+    confetti({ particleCount: 40, spread: 50, origin: { y: 0.8 } });
     setTimeout(() => setPurchaseSuccess(''), 3000);
   };
 
   const handleEquip = (item) => {
-    setActiveTheme(item.themeClass);
+    setUserStats(s => ({ ...s, activeTheme: item.themeClass }));
   };
+
 
   return (
     <div className="max-w-[1400px] mx-auto px-4 md:px-8 py-6 space-y-8">

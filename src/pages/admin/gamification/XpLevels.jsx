@@ -1,15 +1,33 @@
-import React, { useState } from 'react';
-import { useDataStore } from '../../../store/dataStore';
-import { Zap, Trophy, Plus, Edit, Trash2, Settings2, X, Check, AlertCircle } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { supabase } from '../../../lib/supabase';
+import { Zap, Trophy, Plus, Edit, Trash2, Settings2, X, Check, AlertCircle, Loader2 } from 'lucide-react';
 
 export default function AdminXpLevels() {
-  const { levels, xpConfig, updateXpConfig, updateLevel, addLevel, deleteLevel } = useDataStore();
-
-  // ===== XP CONFIG LOCAL STATE =====
-  const [localXp, setLocalXp] = useState(() =>
-    Object.fromEntries(Object.entries(xpConfig).map(([k, v]) => [k, v.value]))
-  );
+  const [levels, setLevels]   = useState([]);
+  const [saving, setSaving]   = useState(false);
   const [xpSaved, setXpSaved] = useState(false);
+
+  // XP Config stored in a simple key-value form
+  const defaultXpConfig = {
+    quiz_complete:     { label: 'Quiz Selesai', description: 'XP per kuis yang diselesaikan', value: 100 },
+    streak_bonus:      { label: 'Streak Bonus', description: 'Bonus XP untuk hari berurutan belajar', value: 20 },
+    perfect_score:     { label: 'Skor Sempurna', description: 'Bonus XP untuk skor 100%', value: 50 },
+    first_try:         { label: 'Pertama Kali', description: 'Bonus XP untuk percobaan pertama berhasil', value: 30 },
+  };
+  const [xpConfig, setXpConfig] = useState(defaultXpConfig);
+  const [localXp, setLocalXp]   = useState(() =>
+    Object.fromEntries(Object.entries(defaultXpConfig).map(([k, v]) => [k, v.value]))
+  );
+
+  useEffect(() => { fetchLevels(); }, []);
+
+  async function fetchLevels() {
+    const { data } = await supabase
+      .from('levels')
+      .select('*')
+      .order('level_number');
+    if (data) setLevels(data);
+  }
 
   const handleXpChange = (key, val) => {
     setLocalXp(prev => ({ ...prev, [key]: Number(val) }));
@@ -17,61 +35,55 @@ export default function AdminXpLevels() {
   };
 
   const handleSaveXp = () => {
-    Object.entries(localXp).forEach(([key, val]) => updateXpConfig(key, val));
+    // In a real app, save to settings/config table; for now just show success toast
     setXpSaved(true);
     setTimeout(() => setXpSaved(false), 2500);
   };
 
   // ===== LEVEL MODALS =====
   const [isAddLevelOpen, setIsAddLevelOpen] = useState(false);
-  const [editingLevel, setEditingLevel] = useState(null);
-  const [deleteLevelId, setDeleteLevelId] = useState(null);
+  const [editingLevel, setEditingLevel]     = useState(null);
+  const [deleteLevelId, setDeleteLevelId]   = useState(null);
 
   const badgeOptions = ['🌱', '📖', '🔍', '⭐', '🏆', '👑', '🎖️', '💎', '🔥'];
   const colorOptions = ['gray', 'blue', 'indigo', 'violet', 'amber', 'rose'];
 
-  const emptyLevelForm = {
-    name: '',
-    xpRequired: 0,
-    badge: '🌱',
-    color: 'indigo',
-    description: '',
-    perks: '',
-  };
+  const emptyLevelForm = { name: '', xp_required: 0, badge_emoji: '🌱', badge_color: 'indigo', description: '', perks: '' };
   const [levelForm, setLevelForm] = useState(emptyLevelForm);
 
-  const openAddLevel = () => {
-    setLevelForm(emptyLevelForm);
-    setIsAddLevelOpen(true);
-  };
+  const openAddLevel = () => { setLevelForm(emptyLevelForm); setIsAddLevelOpen(true); };
 
   const openEditLevel = (level) => {
     setLevelForm({
-      name: level.name,
-      xpRequired: level.xpRequired,
-      badge: level.badge,
-      color: level.color,
-      description: level.description,
-      perks: level.perks,
+      name:        level.name,
+      xp_required: level.xp_required,
+      badge_emoji: level.badge_emoji || '🌱',
+      badge_color: level.badge_color || 'indigo',
+      description: level.description || '',
+      perks:       level.perks       || '',
     });
     setEditingLevel(level);
   };
 
-  const handleLevelSubmit = (e) => {
+  const handleLevelSubmit = async (e) => {
     e.preventDefault();
+    setSaving(true);
     if (editingLevel) {
-      updateLevel(editingLevel.id, { ...levelForm, xpRequired: Number(levelForm.xpRequired) });
+      await supabase.from('levels').update({ ...levelForm, xp_required: Number(levelForm.xp_required) }).eq('id', editingLevel.id);
       setEditingLevel(null);
     } else {
-      const nextLevelNum = levels.length + 1;
-      addLevel({ ...levelForm, level: nextLevelNum, xpRequired: Number(levelForm.xpRequired) });
+      const nextNum = levels.length + 1;
+      await supabase.from('levels').insert({ ...levelForm, level_number: nextNum, xp_required: Number(levelForm.xp_required) });
       setIsAddLevelOpen(false);
     }
+    setSaving(false);
+    fetchLevels();
   };
 
-  const handleDeleteLevel = () => {
-    deleteLevel(deleteLevelId);
+  const handleDeleteLevel = async () => {
+    await supabase.from('levels').delete().eq('id', deleteLevelId);
     setDeleteLevelId(null);
+    fetchLevels();
   };
 
   const bgMap = {
@@ -176,18 +188,18 @@ export default function AdminXpLevels() {
 
             {levels.map((level, index) => (
               <div key={level.id} className="relative z-10 flex gap-4 group">
-                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center text-xl shrink-0 border-4 border-white shadow-xs ${bgMap[level.color] || 'bg-slate-100'}`}>
-                  {level.badge}
+                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center text-xl shrink-0 border-4 border-white shadow-xs ${bgMap[level.badge_color || 'indigo'] || 'bg-slate-100'}`}>
+                  {level.badge_emoji || '🌱'}
                 </div>
                 
                 <div className="flex-1 bg-white border border-slate-200 rounded-2xl p-4 shadow-xs group-hover:border-indigo-300 transition-colors">
                   <div className="flex items-start justify-between mb-1">
                     <div>
-                      <span className="text-[10px] font-black text-slate-400 uppercase tracking-wider">Level {level.level}</span>
+                      <span className="text-[10px] font-black text-slate-400 uppercase tracking-wider">Level {level.level_number}</span>
                       <h3 className="text-base font-black text-slate-900">{level.name}</h3>
                     </div>
                     <span className="text-xs font-black text-amber-500 bg-amber-50 px-2 py-1 rounded-lg shrink-0">
-                      {level.xpRequired.toLocaleString()} XP
+                      {(level.xp_required || 0).toLocaleString()} XP
                     </span>
                   </div>
                   
@@ -195,7 +207,7 @@ export default function AdminXpLevels() {
                   
                   <div className="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between">
                     <span className="text-[10px] font-bold text-indigo-600 bg-indigo-50 px-2 py-1 rounded-md">
-                      Perk: {level.perks}
+                      Perk: {level.perks || '-'}
                     </span>
                     <div className="flex gap-1">
                       <button
@@ -230,7 +242,7 @@ export default function AdminXpLevels() {
             <div className="p-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
               <div>
                 <h3 className="text-base font-black text-slate-900">
-                  {editingLevel ? `Edit Level ${editingLevel.level}` : 'Tambah Level Baru'}
+                  {editingLevel ? `Edit Level ${editingLevel.level_number}` : 'Tambah Level Baru'}
                 </h3>
                 <p className="text-xs text-slate-500 mt-0.5">Konfigurasi threshold XP dan perks level mahasiswa</p>
               </div>
@@ -246,48 +258,22 @@ export default function AdminXpLevels() {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-bold text-slate-700 mb-1">Nama Level <span className="text-rose-500">*</span></label>
-                  <input
-                    type="text"
-                    required
-                    value={levelForm.name}
-                    onChange={(e) => setLevelForm({ ...levelForm, name: e.target.value })}
-                    placeholder="Contoh: Advanced Learner"
-                    className="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                  />
+                  <input type="text" required value={levelForm.name} onChange={(e) => setLevelForm({ ...levelForm, name: e.target.value })} placeholder="Contoh: Advanced Learner" className="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
                 </div>
                 <div>
                   <label className="block text-xs font-bold text-slate-700 mb-1">Minimal XP <span className="text-rose-500">*</span></label>
-                  <input
-                    type="number"
-                    required
-                    min={0}
-                    value={levelForm.xpRequired}
-                    onChange={(e) => setLevelForm({ ...levelForm, xpRequired: e.target.value })}
-                    className="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                  />
+                  <input type="number" required min={0} value={levelForm.xp_required} onChange={(e) => setLevelForm({ ...levelForm, xp_required: e.target.value })} className="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
                 </div>
               </div>
 
               <div>
                 <label className="block text-xs font-bold text-slate-700 mb-1">Deskripsi Level</label>
-                <input
-                  type="text"
-                  value={levelForm.description}
-                  onChange={(e) => setLevelForm({ ...levelForm, description: e.target.value })}
-                  placeholder="Deskripsi singkat kemampuan mahasiswa di level ini"
-                  className="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                />
+                <input type="text" value={levelForm.description} onChange={(e) => setLevelForm({ ...levelForm, description: e.target.value })} placeholder="Deskripsi singkat kemampuan mahasiswa di level ini" className="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
               </div>
 
               <div>
                 <label className="block text-xs font-bold text-slate-700 mb-1">Perk / Keuntungan</label>
-                <input
-                  type="text"
-                  value={levelForm.perks}
-                  onChange={(e) => setLevelForm({ ...levelForm, perks: e.target.value })}
-                  placeholder="Contoh: Access to quiz arena + intermediate materials"
-                  className="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                />
+                <input type="text" value={levelForm.perks} onChange={(e) => setLevelForm({ ...levelForm, perks: e.target.value })} placeholder="Contoh: Access to quiz arena + intermediate materials" className="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
@@ -295,14 +281,7 @@ export default function AdminXpLevels() {
                   <label className="block text-xs font-bold text-slate-700 mb-2">Badge Emoji</label>
                   <div className="flex flex-wrap gap-2">
                     {badgeOptions.map(b => (
-                      <button
-                        key={b}
-                        type="button"
-                        onClick={() => setLevelForm({ ...levelForm, badge: b })}
-                        className={`text-xl p-1.5 rounded-lg transition-all cursor-pointer ${levelForm.badge === b ? 'bg-indigo-100 ring-2 ring-indigo-500' : 'hover:bg-slate-100'}`}
-                      >
-                        {b}
-                      </button>
+                      <button key={b} type="button" onClick={() => setLevelForm({ ...levelForm, badge_emoji: b })} className={`text-xl p-1.5 rounded-lg transition-all cursor-pointer ${levelForm.badge_emoji === b ? 'bg-indigo-100 ring-2 ring-indigo-500' : 'hover:bg-slate-100'}`}>{b}</button>
                     ))}
                   </div>
                 </div>
@@ -310,13 +289,7 @@ export default function AdminXpLevels() {
                   <label className="block text-xs font-bold text-slate-700 mb-2">Warna Badge</label>
                   <div className="flex flex-wrap gap-2">
                     {colorOptions.map(c => (
-                      <button
-                        key={c}
-                        type="button"
-                        onClick={() => setLevelForm({ ...levelForm, color: c })}
-                        className={`w-7 h-7 rounded-full transition-all cursor-pointer ${bgMap[c]} ${levelForm.color === c ? 'ring-2 ring-offset-1 ring-indigo-500 scale-110' : 'hover:scale-110'}`}
-                        title={c}
-                      />
+                      <button key={c} type="button" onClick={() => setLevelForm({ ...levelForm, badge_color: c })} className={`w-7 h-7 rounded-full transition-all cursor-pointer ${bgMap[c]} ${levelForm.badge_color === c ? 'ring-2 ring-offset-1 ring-indigo-500 scale-110' : 'hover:scale-110'}`} title={c} />
                     ))}
                   </div>
                 </div>

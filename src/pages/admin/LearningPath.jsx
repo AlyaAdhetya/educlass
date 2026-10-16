@@ -1,20 +1,36 @@
-import React, { useState } from 'react';
-import { useDataStore } from '../../store/dataStore';
+import React, { useState, useEffect } from 'react';
+import { supabase } from '../../lib/supabase';
 import { 
   MapPin, Plus, GripVertical, Edit, Trash2, ArrowUp, ArrowDown, 
   CheckCircle2, AlertCircle, Users, BookOpen, Layers, X, Check,
   ShieldCheck, Sparkles, ChevronRight, Filter, Award
 } from 'lucide-react';
 
+const DEFAULT_PATHS = [
+  { id: 1, name: 'Level 1: Beginner English Path', description: 'Kurikulum terstruktur untuk mahasiswa Beginner.', levelNumber: 1, level: 'Beginner', status: 'active', items: [] },
+  { id: 2, name: 'Level 2: English Learner Path',  description: 'Kurikulum terstruktur untuk mahasiswa English Learner.', levelNumber: 2, level: 'English Learner', status: 'active', items: [] },
+];
+
 export default function AdminLearningPath() {
-  const { 
-    learningPaths, 
-    materials, 
-    students,
-    addLearningPath,
-    updateLearningPath, 
-    deleteLearningPath 
-  } = useDataStore();
+  const [learningPaths, setLearningPaths] = useState(DEFAULT_PATHS);
+  const [materials,     setMaterials]     = useState([]);
+  const [students,      setStudents]      = useState([]);
+
+  useEffect(() => {
+    async function load() {
+      const [mRes, sRes] = await Promise.all([
+        supabase.from('material_with_category').select('*').order('unit'),
+        supabase.from('profiles').select('*').eq('role', 'mahasiswa'),
+      ]);
+      if (mRes.data) setMaterials(mRes.data);
+      if (sRes.data) setStudents(sRes.data);
+    }
+    load();
+  }, []);
+
+  const addLearningPath    = (path)         => setLearningPaths(prev => [...prev, { ...path, id: Date.now(), items: [] }]);
+  const updateLearningPath = (id, updates)  => setLearningPaths(prev => prev.map(p => p.id === id ? { ...p, ...updates } : p));
+  const deleteLearningPath = (id)           => setLearningPaths(prev => prev.filter(p => p.id !== id));
 
   const [activePathId, setActivePathId] = useState(learningPaths[0]?.id || 1);
   const [levelFilter, setLevelFilter] = useState('all');

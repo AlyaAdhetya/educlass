@@ -1,27 +1,39 @@
-import React, { useState } from 'react';
-import { useDataStore } from '../../store/dataStore';
+import React, { useState, useEffect } from 'react';
+import { supabase } from '../../lib/supabase';
 import { FileSpreadsheet, Download, Filter, Search, TrendingUp, Users, Award, BookOpen } from 'lucide-react';
 
 export default function AdminReports() {
-  const { students } = useDataStore();
+  const [students, setStudents]   = useState([]);
+  const [loading, setLoading]     = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
-  
-  const mahasiswaList = students.filter(s => s.role === 'mahasiswa');
 
-  const filteredStudents = mahasiswaList.filter(s => 
-    s.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-    (s.nim && s.nim.toLowerCase().includes(searchQuery.toLowerCase()))
+  useEffect(() => { fetchStudents(); }, []);
+
+  async function fetchStudents() {
+    setLoading(true);
+    const { data, error } = await supabase
+      .from('admin_student_overview')
+      .select('*')
+      .eq('role', 'mahasiswa')
+      .order('total_xp', { ascending: false });
+    if (!error && data) setStudents(data);
+    setLoading(false);
+  }
+
+  const mahasiswaList = students;
+  const filteredStudents = mahasiswaList.filter(s =>
+    (s.name || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+    (s.nim  || '').toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const handleExport = () => {
     alert('Generating report to Excel (.xlsx)...');
   };
 
-  // Metrics
   const totalStudents = mahasiswaList.length;
-  const avgXp = totalStudents > 0 ? Math.round(mahasiswaList.reduce((acc, curr) => acc + (curr.xp || 0), 0) / totalStudents) : 0;
-  const avgScore = totalStudents > 0 ? Math.round(mahasiswaList.reduce((acc, curr) => acc + (curr.avgScore || 0), 0) / totalStudents) : 0;
-  const activeStreak = mahasiswaList.filter(s => s.streak > 0).length;
+  const avgXp = totalStudents > 0 ? Math.round(mahasiswaList.reduce((acc, s) => acc + (s.total_xp || 0), 0) / totalStudents) : 0;
+  const avgCompletion = totalStudents > 0 ? Math.round(mahasiswaList.reduce((acc, s) => acc + (s.materials_completed || 0), 0) / totalStudents) : 0;
+  const activeStreak = mahasiswaList.filter(s => (s.streak_days || 0) > 0).length;
 
   return (
     <div className="max-w-7xl mx-auto px-4 md:px-6 py-6 space-y-6">
@@ -57,9 +69,9 @@ export default function AdminReports() {
         <div className="bg-white rounded-2xl border border-slate-100 p-4 shadow-xs">
           <div className="flex items-center gap-2 text-emerald-600 mb-2">
             <BookOpen className="w-4 h-4" />
-            <span className="text-[10px] font-black uppercase tracking-wider">Avg Quiz Score</span>
+            <span className="text-[10px] font-black uppercase tracking-wider">Avg Units Done</span>
           </div>
-          <h3 className="text-2xl font-black text-slate-900">{avgScore}%</h3>
+          <h3 className="text-2xl font-black text-slate-900">{avgCompletion}</h3>
         </div>
         <div className="bg-white rounded-2xl border border-slate-100 p-4 shadow-xs">
           <div className="flex items-center gap-2 text-orange-500 mb-2">
@@ -93,24 +105,26 @@ export default function AdminReports() {
                 <th className="py-4 px-6">Student</th>
                 <th className="py-4 px-6">NIM</th>
                 <th className="py-4 px-6">Level</th>
-                <th className="py-4 px-6">XP Earned</th>
-                <th className="py-4 px-6">Avg Score</th>
+          <th className="py-4 px-6">XP Earned</th>
+              <th className="py-4 px-6">Units Done</th>
                 <th className="py-4 px-6 text-right">Streak</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-50">
-              {filteredStudents.map(s => (
+              {loading ? (
+                <tr><td colSpan={6} className="py-12 text-center text-slate-400"><div className="flex items-center justify-center gap-2"><div className="w-5 h-5 border-2 border-indigo-200 border-t-indigo-500 rounded-full animate-spin"/><span className="text-sm">Memuat data...</span></div></td></tr>
+              ) : filteredStudents.map(s => (
                 <tr key={s.id} className="hover:bg-slate-50/80 transition-colors">
                   <td className="py-4 px-6 font-bold text-slate-800">{s.name}</td>
                   <td className="py-4 px-6 font-mono text-xs text-slate-500">{s.nim || '-'}</td>
                   <td className="py-4 px-6">
                     <span className="px-2 py-1 bg-indigo-50 text-indigo-700 font-bold rounded-lg text-[10px]">
-                      Lv.{s.level || 0} {s.levelName}
+                      Lv.{s.level_number || 0} {s.level_name || ''}
                     </span>
                   </td>
-                  <td className="py-4 px-6 font-black text-amber-600">{(s.xp || 0).toLocaleString()}</td>
-                  <td className="py-4 px-6 font-black text-emerald-600">{s.avgScore || 0}%</td>
-                  <td className="py-4 px-6 font-black text-orange-500 text-right">{s.streak || 0} 🔥</td>
+                  <td className="py-4 px-6 font-black text-amber-600">{(s.total_xp || 0).toLocaleString()}</td>
+                  <td className="py-4 px-6 font-black text-emerald-600">{s.materials_completed || 0} unit</td>
+                  <td className="py-4 px-6 font-black text-orange-500 text-right">{s.streak_days || 0} 🔥</td>
                 </tr>
               ))}
               {filteredStudents.length === 0 && (

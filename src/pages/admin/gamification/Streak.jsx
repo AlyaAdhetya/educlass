@@ -1,9 +1,20 @@
-import React from 'react';
-import { useDataStore } from '../../../store/dataStore';
+import React, { useState } from 'react';
 import { Flame, Save, Edit, Trash2, Plus, Calendar, Clock, Target } from 'lucide-react';
 
+const DEFAULT_STREAK_CONFIG = {
+  activitiesCountedForStreak: ['complete_module', 'complete_quiz', 'quiz_arena'],
+  gracePeriodHours: 2,
+  resetOnMissedDays: true,
+  milestones: [
+    { days: 3,  badge: '🔥', label: 'Hot Start',      xpBonus: 50 },
+    { days: 7,  badge: '⚡', label: 'One Week Streak', xpBonus: 100 },
+    { days: 14, badge: '🌟', label: 'Two Weeks Strong', xpBonus: 200 },
+    { days: 30, badge: '🏆', label: 'Monthly Warrior',  xpBonus: 500 },
+  ],
+};
+
 export default function AdminStreak() {
-  const { streakConfig, updateStreakConfig } = useDataStore();
+  const [streakConfig] = useState(DEFAULT_STREAK_CONFIG);
 
   return (
     <div className="max-w-7xl mx-auto px-4 md:px-6 py-6 space-y-6">

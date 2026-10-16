@@ -21,48 +21,41 @@ import {
 import EduLogo from '../../components/mascot/EduLogo';
 
 export default function Login() {
-  const [email, setEmail] = useState('budi.santoso@mahasiswa.ac.id');
-  const [password, setPassword] = useState('••••••••');
-  const [role, setRole] = useState('mahasiswa');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
 
   const navigate = useNavigate();
-  const setAuth = useAuthStore((state) => state.setAuth);
+  const { login } = useAuthStore();
 
-  const handleRoleChange = (newRole) => {
-    setRole(newRole);
-    if (newRole === 'mahasiswa') {
-      setEmail('budi.santoso@mahasiswa.ac.id');
-    } else {
-      setEmail('admin@educlass.ac.id');
-    }
-  };
 
-  const handleQuickDemo = (demoRole) => {
-    setRole(demoRole);
-    if (demoRole === 'mahasiswa') {
-      setEmail('budi.santoso@mahasiswa.ac.id');
-    } else {
-      setEmail('admin@educlass.ac.id');
-    }
-    setPassword('demo12345');
-  };
-
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    setTimeout(() => {
-      const userName = role === 'mahasiswa' ? 'Budi Santoso' : 'Super Administrator';
-      setAuth({ id: '1', email, name: userName }, role);
-      setIsLoading(false);
-      if (role === 'mahasiswa') {
-        navigate('/dashboard');
-      } else {
-        navigate('/admin');
-      }
-    }, 400);
+    setErrorMsg('');
+
+    const { error } = await login(email, password);
+
+    setIsLoading(false);
+    if (error) {
+      setErrorMsg(
+        error.message?.includes('Invalid login')
+          ? 'Email atau password salah. Silakan coba lagi.'
+          : error.message || 'Login gagal. Silakan coba lagi.'
+      );
+      return;
+    }
+
+    // Navigate based on role stored in DB (loaded by authStore)
+    const { role: dbRole } = useAuthStore.getState();
+    if (dbRole === 'admin') {
+      navigate('/admin');
+    } else {
+      navigate('/dashboard');
+    }
   };
 
   return (
@@ -89,7 +82,6 @@ export default function Login() {
           {/* Floating Speech Bubble */}
           <div className="relative mb-5 bg-white px-5 py-3 rounded-2xl border border-blue-100 shadow-md max-w-md animate-fade-in">
             <p className="text-xs font-bold text-slate-700 flex items-center justify-center gap-1.5">
-              <span>👋</span>
               Hello Future Scholar! Ready to conquer your EELS target score today?
             </p>
             {/* Bubble arrow */}
@@ -144,34 +136,6 @@ export default function Login() {
             </p>
           </div>
 
-          {/* Segmented Role Selector */}
-          <div className="grid grid-cols-2 p-1.5 bg-slate-100 rounded-2xl border border-slate-200">
-            <button
-              type="button"
-              onClick={() => handleRoleChange('mahasiswa')}
-              className={`py-2.5 px-3 rounded-xl text-xs font-extrabold transition-all flex items-center justify-center gap-2 cursor-pointer ${
-                role === 'mahasiswa'
-                  ? 'bg-blue-600 text-white shadow-sm'
-                  : 'text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              <GraduationCap className="w-4 h-4" />
-              Student
-            </button>
-            <button
-              type="button"
-              onClick={() => handleRoleChange('admin')}
-              className={`py-2.5 px-3 rounded-xl text-xs font-extrabold transition-all flex items-center justify-center gap-2 cursor-pointer ${
-                role === 'admin'
-                  ? 'bg-blue-600 text-white shadow-sm'
-                  : 'text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              <ShieldCheck className="w-4 h-4" />
-              Administrator
-            </button>
-          </div>
-
           {/* Form */}
           <form onSubmit={handleLogin} className="space-y-4">
             {/* Email Field */}
@@ -188,7 +152,7 @@ export default function Login() {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder={role === 'mahasiswa' ? 'budi.santoso@mahasiswa.ac.id' : 'admin@educlass.ac.id'}
+                  placeholder="nama@email.com atau akun EduClass"
                   className="w-full pl-10 pr-4 py-2.5 sm:py-3 bg-white border border-slate-200 rounded-xl text-xs sm:text-sm font-medium focus:outline-hidden focus:border-blue-600 focus:ring-2 focus:ring-blue-100 transition-all text-slate-800"
                 />
               </div>
@@ -247,11 +211,19 @@ export default function Login() {
               </span>
             </div>
 
+            {/* Error Message */}
+            {errorMsg && (
+              <div className="px-4 py-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-bold flex items-center gap-2">
+                <span>⚠️</span>
+                <span>{errorMsg}</span>
+              </div>
+            )}
+
             {/* Primary Submit Button */}
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full py-3 sm:py-3.5 px-4 bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs sm:text-sm rounded-xl border-b-2 border-blue-800 shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer"
+              className="w-full py-3 sm:py-3.5 px-4 bg-blue-600 hover:bg-blue-700 disabled:opacity-60 text-white font-extrabold text-xs sm:text-sm rounded-xl border-b-2 border-blue-800 shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer"
             >
               {isLoading ? (
                 <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
